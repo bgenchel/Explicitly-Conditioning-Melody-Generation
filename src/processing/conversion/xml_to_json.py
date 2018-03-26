@@ -12,6 +12,8 @@ def xml_to_dict(fpath):
         if root.tag == "measure":
             root_dict["harmonies"] = []
             root_dict["notes"] = []
+        if root.tag == "harmony":
+            root_dict["degrees"] = []
 
         for child in root:
             child_dict = {'attributes': child.attrib}
@@ -26,6 +28,8 @@ def xml_to_dict(fpath):
                 root_dict["harmonies"].append(child_dict)
             elif child.tag == "note":
                 root_dict["notes"].append(child_dict)
+            elif child.tag == "degree":
+                root_dict["degrees"].append(child_dict)
             else:
                 root_dict[child.tag] = child_dict
         return root_dict
