@@ -5,6 +5,7 @@ import os
 import os.path as op
 import pickle
 from pathlib import Path
+from harmony import Harmony
 
 NOTES_MAP = {'B#': 1, 'C': 1, 'C#': 2, 'Db': 2, 'D': 3, 'D#': 4, 'Eb': 4, 'E': 5, 
               'Fb': 5, 'E#': 6, 'F': 6, 'F#': 7, 'Gb': 7, 'G': 8, 'G#': 9, 'Ab': 9, 
@@ -25,7 +26,7 @@ def get_key(jsdict):
     key_dict = jsdict["part"]["measures"][0]["attributes"]["key"]
     position = key_dict["fifths"]["text"]
     mode = key_dict["mode"]["text"]
-    return "%s %s" % (KEY_DICT[mode][position], mode)
+    return "%s %s" % (KEYS_DICT[mode][position], mode)
 
 def get_time_signature(jsdict):
     time_dict = jsdict["part"]["measures"][0]["attributes"]["time"]
@@ -33,9 +34,6 @@ def get_time_signature(jsdict):
 
 def get_divisions(jsdict):
     return int(jsdict["part"]["measures"][0]["attributes"]["divisions"]["text"])
-
-def convert_to_harte(harmony_dict):
-    return None, None
 
 def get_note_duration(note_dict, division=24):
     note_dur = int(note_dict["duration"]["text"])
@@ -71,10 +69,10 @@ def parse_note(note_dict, division=24):
     duration = get_note_duration(note_dict, division)
     return note, octave, duration
 
-def parse_measure(measure_dict, divisions=24, **kwargs):
+def parse_measure(measure_dict, divisions=24):
     parsed = {"harmonies": [], "notes": [], "octaves": [], "duration-tags": []}
     for harmony_dict in measure_dict["harmonies"]:
-        parsed["harmonies"].append(convert_to_harte(harmony_dict))
+        parsed["harmonies"].append(Harmony(harmony_dict).get_pitch_classes_binary())
     
     for note_dict in measure_dict["notes"]:
         note, octave, duration = parse_note(note_dict, divisions) 
@@ -86,7 +84,7 @@ def parse_measure(measure_dict, divisions=24, **kwargs):
 
 def parse_json(fpath):
     print("Parsing %s" % fpath)
-    jsdict = json.load(fpath)
+    jsdict = json.load(open(fpath))
     divisions = get_divisions(jsdict)
 
     parsed = {"title": jsdict["movement-title"]["text"],
@@ -108,6 +106,8 @@ if __name__ == '__main__':
     json_paths = [op.join(json_dir, fname) for fname in os.listdir(json_dir)]
     parsed_data = []
     for json_path in json_paths:
+        import pdb
         parsed_data.append(parse_json(json_path))
+        pdb.set_trace()
 
     pickle.dump(parsed_data, "parsed_data.pkl")

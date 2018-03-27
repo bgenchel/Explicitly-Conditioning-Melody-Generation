@@ -1,4 +1,4 @@
 data/
 .DS_store
 *.zip
-
+__pycache__
