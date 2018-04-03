@@ -188,4 +188,4 @@ if __name__ == '__main__':
             outpath = op.join(pkl_dir, op.basename(json_path).replace('.json', '.pkl'))
             pickle.dump(parsed_data, open(outpath, 'wb'))
 
-    pickle.dump(parsed_data, op.join(pkl_dir, "parsed_data.pkl"))
+    pickle.dump(parsed_data, open(op.join(pkl_dir, "parsed_data.pkl"), 'wb'))
