@@ -56,7 +56,11 @@ def get_note_duration(note_dict, division=24):
     dur_dict = {'whole': division*4, 'half':  division*2, 'quarter': division, 
                 'eighth': division/2, '16th': division/4, '32nd': division/8}
 
-    note_dur = float(note_dict["duration"]["text"])
+    if "duration" not in note_dict.keys():
+        note_dur = -1
+    else:
+        note_dur = float(note_dict["duration"]["text"])
+
     if "type" in note_dict.keys():
         note_type = note_dict["type"]["text"]
         label = note_type
@@ -109,36 +113,36 @@ def get_note_duration(note_dict, division=24):
 
 def parse_note(note_dict, division=24):
     if "rest" in note_dict.keys():
-        note = NOTES_MAP["rest"]
+        pitch_class = NOTES_MAP["rest"]
         octave = -1
     elif "pitch" in note_dict.keys():
         note_string = note_dict["pitch"]["step"]["text"]
         if "alter" in note_dict["pitch"].keys():
             note_string += (lambda x: "b" if -1 else ("#" if 1 else ""))(
                                 note_dict["pitch"]["alter"]["text"])
-        note = NOTES_MAP[note_string]
+        pitch_class = NOTES_MAP[note_string]
         octave = note_dict["pitch"]["octave"]["text"]
 
     duration = get_note_duration(note_dict, division)
-    return note, octave, duration
+    return pitch_class, octave, duration
 
 def parse_measure(measure_dict, divisions=24):
     has_key = False
     if "key" in measure_dict["attributes"].keys():
         has_key = True
 
-    parsed = {"harmonies": [], "pitches": [], "octaves": [], "duration-tags": []}
+    parsed = {"harmonies": [], "pitch_classes": [], "octaves": [], "duration_tags": []}
     for harmony_dict in measure_dict["harmonies"]:
-        parsed["harmonies"].append(Harmony(harmony_dict).get_pitch_classes_binary())
+        parsed["harmonies"].append(Harmony(harmony_dict).get_simple_pitch_classes_binary())
     
     for note_dict in measure_dict["notes"]:
         if "chord" in note_dict.keys(): # want monophonic, so we'll just take the top note
             continue
         else:
-            pitch, octave, duration = parse_note(note_dict, divisions) 
-            parsed["pitches"].append(pitch)
+            pitch_class, octave, duration = parse_note(note_dict, divisions) 
+            parsed["pitch_classes"].append(pitch_class)
             parsed["octaves"].append(octave)
-            parsed["duration-tags"].append(duration)
+            parsed["duration_tags"].append(duration)
 
     return has_key, parsed
 
