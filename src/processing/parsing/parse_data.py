@@ -8,9 +8,9 @@ import pdb
 from pathlib import Path
 from harmony import Harmony
 
-NOTES_MAP = {'B#': 1, 'C': 1, 'C#': 2, 'Db': 2, 'D': 3, 'D#': 4, 'Eb': 4, 'E': 5, 
-              'Fb': 5, 'E#': 6, 'F': 6, 'F#': 7, 'Gb': 7, 'G': 8, 'G#': 9, 'Ab': 9, 
-              'A': 10, 'A#': 11, 'Bb': 11, 'B': 12, 'Cb': 12, 'rest': 0}
+NOTES_MAP = {'rest': 0, 'B#': 1, 'C': 1, 'C#': 2, 'Db': 2, 'D': 3, 'D#': 4, 'Eb': 4, 
+             'E': 5, 'Fb': 5, 'E#': 6, 'F': 6, 'F#': 7, 'Gb': 7, 'G': 8, 'G#': 9, 
+             'Ab': 9, 'A': 10, 'A#': 11, 'Bb': 11, 'B': 12, 'Cb': 12}
 
 DURATIONS_MAP = {'whole': 0, 'half': 1, 'quarter': 2, 'eighth': 3, '16th': 4, 
                  'whole-triplet': 5, 'half-triplet': 6, 'quarter-triplet': 7, 
@@ -113,38 +113,34 @@ def get_note_duration(note_dict, division=24):
 
 def parse_note(note_dict, division=24):
     if "rest" in note_dict.keys():
-        pitch_class = NOTES_MAP["rest"]
-        octave = -1
+        pitch_num = NOTES_MAP["rest"]
+        # octave = -1
     elif "pitch" in note_dict.keys():
         note_string = note_dict["pitch"]["step"]["text"]
         if "alter" in note_dict["pitch"].keys():
             note_string += (lambda x: "b" if -1 else ("#" if 1 else ""))(
                                 note_dict["pitch"]["alter"]["text"])
-        pitch_class = NOTES_MAP[note_string]
-        octave = note_dict["pitch"]["octave"]["text"]
+        octave = int(note_dict["pitch"]["octave"]["text"])
+        pitch_num = (octave + 1)*12 + NOTES_MAP[note_string]
 
     duration = get_note_duration(note_dict, division)
-    return pitch_class, octave, duration
+    return pitch_num, duration
 
 def parse_measure(measure_dict, divisions=24):
-    has_key = False
-    if "key" in measure_dict["attributes"].keys():
-        has_key = True
-
-    parsed = {"harmonies": [], "pitch_classes": [], "octaves": [], "duration_tags": []}
+    parsed = {"harmonies": [], "pitch_numbers": [], "duration_tags": []}
     for harmony_dict in measure_dict["harmonies"]:
         parsed["harmonies"].append(Harmony(harmony_dict).get_simple_pitch_classes_binary())
-    
+
     for note_dict in measure_dict["notes"]:
-        if "chord" in note_dict.keys(): # want monophonic, so we'll just take the top note
+        # want monophonic, so we'll just take the top note
+        if "chord" in note_dict.keys() or "grace" in note_dict.keys():
             continue
         else:
-            pitch_class, octave, duration = parse_note(note_dict, divisions) 
-            parsed["pitch_classes"].append(pitch_class)
-            parsed["octaves"].append(octave)
+            pitch_num, duration = parse_note(note_dict, divisions) 
+            parsed["pitch_numbers"].append(pitch_num)
             parsed["duration_tags"].append(duration)
 
-    return has_key, parsed
+    return parsed
 
 def parse_json(fpath):
     print("Parsing %s" % op.basename(fpath))
@@ -164,15 +160,27 @@ def parse_json(fpath):
     for measure in jsdict['part']['measures']:
         parsed['measures'].append(parse_measure(measure, divisions))
 
+    # try to fill in harmonies somewhat niavely
+    for i, measure in enumerate(parsed['measures']):
+        if not measure['harmonies']:
+            if i == 0:
+                for after_measure in parsed['measures'][i+1:]:
+                    if after_measure['harmonies']:
+                        measure['harmonies'].append(after_measure['harmonies'][0])
+                        break
+            else: 
+                for before_measure in parsed['measures'][i-1::-1]:
+                    if before_measure['harmonies']:
+                        measure['harmonies'].append(before_measure['harmonies'][0])
+                        break
+
     return parsed
-    
+
 
 if __name__ == '__main__':
     root_dir = str(Path(op.abspath(__file__)).parents[3])
-    print(root_dir)
     json_dir = op.join(root_dir, 'data', 'raw', 'json')
-    print(json_dir)
-    pkl_dir = op.join(root_dir, 'data', 'processed')
+    pkl_dir = op.join(root_dir, 'data', 'processed', 'pkl')
 
     if not op.exists(json_dir):
         raise Exception("Json directory not found.")
@@ -184,8 +192,9 @@ if __name__ == '__main__':
     for json_path in json_paths:
         parsed = parse_json(json_path)
         if parsed is not None:
-            parsed_data.append(parse_json(json_path))
+            pd = parse_json(json_path)
             outpath = op.join(pkl_dir, op.basename(json_path).replace('.json', '.pkl'))
-            pickle.dump(parsed_data, open(outpath, 'wb'))
+            pickle.dump(pd, open(outpath, 'wb'))
+            parsed_data.append(pd)
 
-    pickle.dump(parsed_data, open(op.join(pkl_dir, "parsed_data.pkl"), 'wb'))
+    pickle.dump(parsed_data, open(op.join(pkl_dir, "dataset.pkl"), 'wb'))
