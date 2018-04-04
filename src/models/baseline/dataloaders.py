@@ -14,8 +14,8 @@ class LeadSheetDataLoader(DataLoader):
                 dataset:  	object of the RawAudioDataset class, should be properly initialized
                 num_data_pts:	int, number of data points to be considered while loading the data
         """
-        if num_data_points is None:
-            num_data_points = len(dataset)
+        if num_songs is None:
+            num_songs = len(dataset)
 
         # check if input parameters are accurate
         assert num_songs <= len(dataset)
@@ -27,7 +27,7 @@ class LeadSheetDataLoader(DataLoader):
         next_harmonies = []
         for song in self.dataset:
             song_harmonies = [measure['harmonies'][0] for measure in song['measures']]
-            for i in range(0, len(song_harmonies) - look_back_len):
+            for i in range(0, len(song_harmonies) - seq_len):
                 harmony_seqs.append(np.ndarray(song_harmonies[i:i + seq_len]))
                 next_harmonies.append(np.ndarray(song_harmonies[i + seq_len]))
         return np.ndarray(harmony_seqs), np.ndarray(next_harmonies)
