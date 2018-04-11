@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import os.path as op
+import pdb
 import pickle
 import sys
 import torch
@@ -11,24 +12,34 @@ from torch.autograd import Variable
 from pathlib import Path
 
 from dataloaders import LeadSheetDataLoader
-from models import ChordLSTM
+from models import PitchLSTM
 
+BATCH_SIZE = 5
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, "data", "processed", "pkl")
 dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
 
-dl = LeadSheetDataLoader(dataset)
-batched_harmony_seqs, batched_next_harmonies = dl.get_batched_harmony(batch_size=5)
+lsdl = LeadSheetDataLoader(dataset)
+batched_sets = lsdl.get_batched_pitch_seqs(batch_size=BATCH_SIZE)
+batched_harmony_seqs, batched_pitch_seqs, batched_next_pitches = batched_sets
 
-input_dim = np.prod(batched_harmony_seqs[0].size()[-2:])
-net = ChordLSTM(input_dim)
+# bhs.shape = num_batches x seqs per batch x seq len x harmony size
+harmony_dim = batched_harmony_seqs.shape[-1]
+# 0 = rest, the rest are MIDI numbers
+input_dim = 128
+# arbitrary values
+embedding_dim = 20
+hidden_dim = 25
+output_dim = 128
 
+net = PitchLSTM(input_dim, harmony_dim, embedding_dim, hidden_dim, output_dim,
+                batch_size=BATCH_SIZE)
 params = net.parameters()
 optimizer = optim.Adam(params, lr=.001)
+loss_fn = nn.NLLLoss()
 
-loss_fn = nn.MSELoss(size_average=False)
-
+batch_groups = zip(batched_pitch_seqs, batched_harmony_seqs, batched_next_pitches)
 try:
     train_losses = []
     print_every = 5
@@ -37,16 +48,18 @@ try:
         batch_count = 0
         avg_loss = 0.0
         epoch_loss = 0.0
-        for i, harmony_seq_batch in enumerate(batched_harmony_seqs):
+        for i, batch_group in enumerate(batch_groups):
+            pdb.set_trace()
             # get the data, wrap it in a Variable
-            inpt = Variable(torch.FloatTensor(harmony_seq_batch))
+            pitches_inpt = Variable(torch.LongTensor(batch_group[0]))
+            harmony_inpt = Variable(torch.FloatTensor(batch_group[1]))
+            target_pitch = Variable(torch.LongTensor(batch_group[2]))
             # zero the parameter gradients
             optimizer.zero_grad()
             # forward pass
-            output = net(inpt)
+            output = net(pitches_inpt, harmony_inpt)
             # backward + optimize
-            next_harmony_batch = batched_next_harmonies[i]
-            loss = loss_fn(output, next_harmony_batch)
+            loss = loss_fn(output, target_pitch)
             loss.backward()
             optimizer.step()
             # print stats out

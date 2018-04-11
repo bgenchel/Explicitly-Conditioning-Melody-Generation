@@ -109,7 +109,7 @@ def get_note_duration(note_dict, division=24):
     else:
         print("Undefined duration %.2f. Labeling 'other'." % (note_dur/division))
         label = "other"
-    return DURATIONS_MAP[label]
+    return DURATIONS_MAP[label], note_dur
 
 def parse_note(note_dict, division=24):
     if "rest" in note_dict.keys():
@@ -123,22 +123,31 @@ def parse_note(note_dict, division=24):
         octave = int(note_dict["pitch"]["octave"]["text"])
         pitch_num = (octave + 1)*12 + NOTES_MAP[note_string]
 
-    duration = get_note_duration(note_dict, division)
-    return pitch_num, duration
+    dur_tag, dur_ticks = get_note_duration(note_dict, division)
+    return pitch_num, dur_tag, dur_ticks
 
 def parse_measure(measure_dict, divisions=24):
-    parsed = {"harmonies": [], "pitch_numbers": [], "duration_tags": []}
+    parsed = {"harmonies": [], "pitch_numbers": [], "duration_tags": [], "half_index": 0}
     for harmony_dict in measure_dict["harmonies"]:
         parsed["harmonies"].append(Harmony(harmony_dict).get_simple_pitch_classes_binary())
 
+    dur_ticks_list = []
     for note_dict in measure_dict["notes"]:
         # want monophonic, so we'll just take the top note
         if "chord" in note_dict.keys() or "grace" in note_dict.keys():
             continue
         else:
-            pitch_num, duration = parse_note(note_dict, divisions) 
+            pitch_num, dur_tag, dur_ticks = parse_note(note_dict, divisions) 
             parsed["pitch_numbers"].append(pitch_num)
-            parsed["duration_tags"].append(duration)
+            parsed["duration_tags"].append(dur_tag)
+            dur_ticks_list.append(dur_ticks)
+    # pdb.set_trace()
+    dur_ticks_list = [sum(dur_ticks_list[:i]) for i in range(len(dur_ticks_list))]
+    half_way_ticks = dur_ticks_list[-1]/2
+    for i, ticks in enumerate(dur_ticks_list):
+        if ticks > half_way_ticks:
+            parsed["half_index"] = i
+            break
 
     return parsed
 
@@ -161,6 +170,7 @@ def parse_json(fpath):
         parsed['measures'].append(parse_measure(measure, divisions))
 
     # try to fill in harmonies somewhat niavely
+    harmonies_per_measure = set()
     for i, measure in enumerate(parsed['measures']):
         if not measure['harmonies']:
             if i == 0:
@@ -173,6 +183,12 @@ def parse_json(fpath):
                     if before_measure['harmonies']:
                         measure['harmonies'].append(before_measure['harmonies'][0])
                         break
+        harmonies_per_measure.add(len(measure['harmonies']))
+
+    if max(harmonies_per_measure) == 0:
+        return None
+    elif max(harmonies_per_measure) > 2:
+        return None
 
     return parsed
 
@@ -192,9 +208,8 @@ if __name__ == '__main__':
     for json_path in json_paths:
         parsed = parse_json(json_path)
         if parsed is not None:
-            pd = parse_json(json_path)
             outpath = op.join(pkl_dir, op.basename(json_path).replace('.json', '.pkl'))
-            pickle.dump(pd, open(outpath, 'wb'))
-            parsed_data.append(pd)
+            pickle.dump(parsed, open(outpath, 'wb'))
+            parsed_data.append(parsed)
 
     pickle.dump(parsed_data, open(op.join(pkl_dir, "dataset.pkl"), 'wb'))
