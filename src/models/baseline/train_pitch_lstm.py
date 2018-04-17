@@ -15,13 +15,14 @@ from dataloaders import LeadSheetDataLoader
 from models import PitchLSTM
 
 BATCH_SIZE = 5
+SEQ_LEN = 2
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, "data", "processed", "pkl")
 dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
 
 lsdl = LeadSheetDataLoader(dataset)
-batched_sets = lsdl.get_batched_pitch_seqs(batch_size=BATCH_SIZE)
+batched_sets = lsdl.get_batched_pitch_seqs(seq_len=SEQ_LEN, batch_size=BATCH_SIZE)
 batched_harmony_seqs, batched_pitch_seqs, batched_next_pitches = batched_sets
 
 # bhs.shape = num_batches x seqs per batch x seq len x harmony size
@@ -34,10 +35,11 @@ hidden_dim = 25
 output_dim = 128
 
 net = PitchLSTM(input_dim, harmony_dim, embedding_dim, hidden_dim, output_dim,
-                batch_size=BATCH_SIZE)
+                seq_len=SEQ_LEN, batch_size=BATCH_SIZE)
 params = net.parameters()
 optimizer = optim.Adam(params, lr=.001)
-loss_fn = nn.NLLLoss()
+# loss_fn = nn.NLLLoss()
+loss_fn = nn.BCELoss()
 
 batch_groups = zip(batched_pitch_seqs, batched_harmony_seqs, batched_next_pitches)
 try:

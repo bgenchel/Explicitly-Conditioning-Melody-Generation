@@ -38,10 +38,11 @@ torch.manual_seed(1)
 
 class PitchLSTM(nn.Module):
     def __init__(self, input_dim, harmony_dim, embedding_dim, hidden_dim, 
-                 output_dim, num_layers=2, batch_size=None, **kwargs):
+                 output_dim, num_layers=2, seq_len=2, batch_size=None, **kwargs):
         super(PitchLSTM, self).__init__(**kwargs)
         self.input_dim = input_dim
         self.harmony_dim = harmony_dim
+        self.seq_len = seq_len
         self.embedding_dim = embedding_dim
         self.hidden_dim = hidden_dim
         self.output_dim = output_dim
@@ -51,7 +52,7 @@ class PitchLSTM(nn.Module):
         self.harmony_encoder = nn.Linear(harmony_dim, harmony_dim)
         self.pitch_embedding = nn.Embedding(input_dim, embedding_dim)
         self.encoder = nn.Linear(embedding_dim + harmony_dim, hidden_dim)
-        self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=num_layers, batch_first=True)
+        self.lstm = nn.LSTM(seq_len*hidden_dim, hidden_dim, num_layers=num_layers, batch_first=True)
         self.decoder = nn.Linear(hidden_dim, output_dim)
         self.softmax = nn.LogSoftmax()
 
@@ -67,18 +68,17 @@ class PitchLSTM(nn.Module):
         return
 
     def forward(self, pitches, harmonies):
-        # pdb.set_trace()
+        pdb.set_trace()
         encoded_harmonies = self.harmony_encoder(harmonies)
         embedded_pitches = self.pitch_embedding(pitches)
         inpt = torch.cat([encoded_harmonies, embedded_pitches], 2) # Concatenate along 3rd dimension
         encoded_inpt = F.relu(self.encoder(inpt))
+        encoded_inpt = encoded_inpt.view((int(np.prod(encoded_inpt.shape[:-1])), -1))
         lstm_out, self.hidden_and_cell = self.lstm(encoded_inpt, self.hidden_and_cell)
         decoded = self.decoder(lstm_out)
         num_batches, seq_len, num_feats = decoded.size()
-        output = self.softmax(decoded.view(num_batches*seq_len, num_feats))
+        output = self.softmax(decoded.view(num_batches, seq_len*num_feats))
         return output
-
-
 
 
 # class DurationNet(nn.Module):

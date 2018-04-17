@@ -60,7 +60,10 @@ class LeadSheetDataLoader(DataLoader):
             for i in range(0, len(song_pitch_harmonies) - seq_len):
                 harmony_seqs.append(np.array(song_pitch_harmonies[i:i+seq_len]))
                 pitch_seqs.append(np.array(song_pitches[i:i+seq_len]))
-                next_pitches.append(np.array(song_pitches[i+seq_len]))
+
+                next_pitch = np.zeros(128)
+                next_pitch[song_pitches[i+seq_len]] = 1
+                next_pitches.append(next_pitch)
 
         return np.array(harmony_seqs), np.array(pitch_seqs), np.array(next_pitches)
 
