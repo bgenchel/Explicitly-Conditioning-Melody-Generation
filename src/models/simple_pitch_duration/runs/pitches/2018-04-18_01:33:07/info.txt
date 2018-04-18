@@ -1,0 +1,17 @@
+run_datetime:       	 2018-04-18_01:33:07
+keep:               	 True
+input_dict_size:    	 128
+epochs:             	 2000
+show:               	 False
+title:              	 2018-04-18_01:33:07
+embedding_dim:      	 20
+batch_size:         	 2
+output_dim:         	 128
+momentum:           	 0.9
+hidden_dim:         	 25
+num_songs:          	 1
+learning_rate:      	 0.0001
+seq_len:            	 1
+interrupted:        	 False
+epochs_completed:   	 2000
+final_training_loss:	 0.0005021084776451586
