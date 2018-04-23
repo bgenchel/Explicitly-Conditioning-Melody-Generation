@@ -35,6 +35,8 @@ parser.add_argument('-id', '--input_dict_size', default=128, type=int,
                     help="range of possible input note values.")
 parser.add_argument('-ed', '--embedding_dim', default=20, type=int,
                     help="size of note embeddings.")
+parser.add_argument('-nl', '--num_layers', default=2, type=int,
+                    help="number of lstm layers to use.")
 parser.add_argument('-hd', '--hidden_dim', default=25, type=int,
                     help="size of hidden state.")
 parser.add_argument('-od', '--output_dim', default=128, type=int,
@@ -63,7 +65,7 @@ batched_pitch_seqs, batched_next_pitches = batched_sets
 # bhs.shape = num_batches x seqs per batch x seq len x harmony size
 
 net = DurationLSTM(args.input_dict_size, args.embedding_dim, args.hidden_dim,
-                   args.output_dim, batch_size=args.batch_size)
+                   args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 
@@ -137,4 +139,11 @@ if args.keep:
     json.dump(train_losses, open('train_losses.json', 'w'), indent=4)
 
     print('Saving model ...')
+    model_inputs = {'input_dict_size': args.input_dict_size, 
+                    'embedding_dim': args.embedding_dim,
+                    'hidden_dim': args.hidden_dim,
+                    'output_dim': args.output_dim,
+                    'num_layers': args.num_layers,
+                    'batch_size': args.batch_size}
+    json.dump(model_inputs, open(op.join(dirpath, 'model_inputs.json'), 'w'), indent=4)
     torch.save(net.state_dict(), op.join(dirpath, 'model_state.pt'))
