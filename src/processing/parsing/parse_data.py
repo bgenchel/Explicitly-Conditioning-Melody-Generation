@@ -160,8 +160,16 @@ def parse_json(fpath):
     if multiple is True:
         return None
 
-    parsed = {"title": jsdict["movement-title"]["text"],
-              "artist": jsdict["identification"]["creator"]["text"],
+    fname = op.basename(fpath)
+    parts = fname.split('-')
+    artist = parts[0]
+    title = '-'.join(parts[1:])
+    if "movement-title" in jsdict:
+        title = jsdict['movement-title']['text']
+    if ("identification" in jsdict) and ("creator" in jsdict["identification"]):
+        artist = jsdict["identification"]["creator"]
+    parsed = {"title": title,
+              "artist": artist,
               "key": key, # skip files with multiple keys
               "time_signature": get_time_signature(jsdict),
               "measures": []}
