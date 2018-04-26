@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import os.path as op
 import pdb
 import pickle
@@ -23,6 +24,8 @@ info_dict['run_datetime'] = run_datetime_str
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default=run_datetime_str, type=str,
                     help="custom title for run data directory")
+parser.add_argument('-cp', '--charlie_parker', action="store_true",
+                    help="use the charlie parker dataset.")
 parser.add_argument('-n', '--num_songs', default=None, type=int,
                     help="number of songs to include in training")
 parser.add_argument('-e', '--epochs', default=10, type=int,
@@ -31,9 +34,13 @@ parser.add_argument('-b', '--batch_size', default=5, type=int,
                     help="number of training epochs")
 parser.add_argument('-sl', '--seq_len', default=1, type=int,
                     help="number of previous steps to consider in prediction.")
-parser.add_argument('-id', '--input_dict_size', default=128, type=int,
+parser.add_argument('-pd', '--pitch_dict_size', default=128, type=int,
                     help="range of possible input note values.")
-parser.add_argument('-ed', '--embedding_dim', default=20, type=int,
+parser.add_argument('-dd', '--dur_dict_size', default=18, type=int,
+                    help="range of possible input duration values.")
+parser.add_argument('-ped', '--pitch_embedding_dim', default=20, type=int,
+                    help="size of note embeddings.")
+parser.add_argument('-ded', '--dur_embedding_dim', default=10, type=int,
                     help="size of note embeddings.")
 parser.add_argument('-hd', '--hidden_dim', default=25, type=int,
                     help="size of hidden state.")
@@ -54,19 +61,26 @@ info_dict.update(vars(args))
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, "data", "processed", "pkl")
-dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
+if args.charlie_parker:
+    dataset = pickle.load(open(op.join(data_dir, "charlie_parker_dataset.pkl"), "rb"))
+else:
+    dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
 
 # pdb.set_trace()
 lsdl = LeadSheetDataLoader(dataset)
-batched_sets = lsdl.get_batched_pitch_seqs(seq_len=args.seq_len, batch_size=args.batch_size)
-batched_harmony_seqs, batched_pitch_seqs, batched_next_pitches = batched_sets
+batched_pitch_seqs, batched_next_pitches = lsdl.get_batched_pitch_seqs(seq_len=args.seq_len, 
+                                                                       batch_size=args.batch_size)
+batched_dur_seqs, batched_next_durs = lsdl.get_batched_dur_seqs(seq_len=args.seq_len, 
+                                                                batch_size=args.batch_size)
+batched_harmony_seqs, batched_next_harmonies = lsdl.get_batched_harmony(seq_len=args.seq_len, 
+                                                                        batch_size=args.batch_size)
 
-# bhs.shape = num_batches x seqs per batch x seq len x harmony size
-harmony_dim = batched_harmony_seqs.shape[-1]
+# batched_harmony_seqs.shape = num_batches x seqs per batch x seq len x harmony size
 # 0 = rest, the rest are MIDI numbers
+harmony_dim = batched_harmony_seqs.shape[-1]
 
 net = PitchLSTM(args.input_dict_size, harmony_dim, args.embedding_dim, args.hidden_dim,
-                args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
+                      args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 
@@ -75,39 +89,38 @@ loss_fn = nn.NLLLoss()
 # loss_fn = nn.MSELoss()
 # loss_fn = nn.CrossEntropyLoss()
 
-batch_groups = [tup for tup in zip(batched_pitch_seqs, 
-                                batched_harmony_seqs,
-                                batched_next_pitches)]
-# pdb.set_trace()
+batch_groups = [tup for tup in zip(batched_harmony_seqs, batched_pitch_seqs, 
+                                   batched_next_pitches)]
 try:
+    interrupted = False
     train_losses = []
     print_every = 5
     print("Beginning Training")
     print("Cuda available: ", torch.cuda.is_available())
-    for epoch in range(10): # 10 epochs to start
+    for epoch in range(args.epochs): # 10 epochs to start
         batch_count = 0
         avg_loss = 0.0
         epoch_loss = 0.0
         for i, batch_group in enumerate(batch_groups):
             # pdb.set_trace()
             # get the data, wrap it in a Variable
-            pitches_inpt = Variable(torch.LongTensor(batch_group[0]))
-            harmony_inpt = Variable(torch.FloatTensor(batch_group[1]))
-            target_pitch = Variable(torch.FloatTensor(batch_group[2]))
+            harmony_inpt = Variable(torch.FloatTensor(batch_group[0]))
+            pitches_inpt = Variable(torch.LongTensor(batch_group[1]))
+            target_pitch = Variable(torch.LongTensor(batch_group[2]))
             if torch.cuda.is_available():
-                pitches_inpt = pitches_inpt.cuda()
                 harmony_inpt = harmony_inpt.cuda()
+                pitches_inpt = pitches_inpt.cuda()
                 target_pitch = target_pitch.cuda()
             # detach hidden state
-            # net.repackage_hidden_and_cell()
+            net.repackage_hidden_and_cell()
             # zero the parameter gradients
             optimizer.zero_grad()
             # forward pass
             output = net(pitches_inpt, harmony_inpt)[:, -1, :]
             # backward + optimize
             loss = loss_fn(output, target_pitch)
-            # loss.backward()
-            loss.backward(retain_graph=True)
+            loss.backward()
+            # loss.backward(retain_graph=True)
             optimizer.step()
             # print stats out
             avg_loss += loss.data[0]
@@ -131,7 +144,7 @@ info_dict['final_training_loss'] = train_losses[-1]
 if args.keep:
     dirpath = op.join(os.getcwd(), "runs", "pitches", args.title)
     if not op.exists(dirpath):
-        os.mkdir(dirpath)
+        os.makedirs(dirpath)
 
     print('Writing run info file ...')
     with open(op.join(dirpath, 'info.txt'), 'w') as fp:
@@ -142,11 +155,13 @@ if args.keep:
         fp.close()
 
     print('Writing training losses ...') 
-    json.dump(train_losses, open('train_losses.json', 'w'), indent=4)
+    json.dump(train_losses, open(op.join(dirpath, 'train_losses.json'), 'w'), indent=4)
 
     print('Saving model ...')
-    model_inputs = {'input_dict_size': args.input_dict_size, 
-                    'embedding_dim': args.embedding_dim,
+    model_inputs = {'pitch_dict_size': args.input_dict_size, 
+                    'dur_dict_size': args.dur_dict_size,
+                    'pitch_embedding_dim': args.pitch_embedding_dim,
+                    'dur_embedding_dim': args.dur_embedding_dim,
                     'hidden_dim': args.hidden_dim,
                     'output_dim': args.output_dim,
                     'num_layers': args.num_layers,

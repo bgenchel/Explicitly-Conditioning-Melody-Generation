@@ -2,11 +2,11 @@ import argparse
 import json
 import os
 import os.path as op
-import pdb
+# import pdb
 import pickle
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+# import torch.nn.functional as F
 import torch.optim as optim
 from collections import OrderedDict
 from datetime import datetime
@@ -14,8 +14,7 @@ from pathlib import Path
 from torch.autograd import Variable
 
 from dataloaders import LeadSheetDataLoader
-from models import PitchLSTM
-
+from models import DurationLSTM
 
 run_datetime_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 info_dict = OrderedDict()
@@ -38,20 +37,20 @@ parser.add_argument('-id', '--input_dict_size', default=128, type=int,
                     help="range of possible input note values.")
 parser.add_argument('-ed', '--embedding_dim', default=20, type=int,
                     help="size of note embeddings.")
+parser.add_argument('-nl', '--num_layers', default=2, type=int,
+                    help="number of lstm layers to use.")
 parser.add_argument('-hd', '--hidden_dim', default=25, type=int,
                     help="size of hidden state.")
 parser.add_argument('-od', '--output_dim', default=128, type=int,
                     help="size of output softmax.")
-parser.add_argument('-nl', '--num_layers', default=2, type=int,
-                    help="number of lstm layers to use.")
 parser.add_argument('-lr', '--learning_rate', default=1e-3, type=float,
                     help="learning rate for sgd")
-# parser.add_argument('-m', '--momentum', default=0.9, type=float,
-#                     help="momentum for sgd.")
+parser.add_argument('-m', '--momentum', default=0.9, type=float,
+                    help="momentum for sgd.")
 parser.add_argument('-k', '--keep', action='store_true',
                     help="save information about this run")
-# parser.add_argument('-s', '--show', action='store_true',
-#                     help="show figures as they are generated")
+parser.add_argument('-s', '--show', action='store_true',
+                    help="show figures as they are generated")
 args = parser.parse_args()
 info_dict.update(vars(args))
 
@@ -62,19 +61,13 @@ if args.charlie_parker:
 else:
     dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
 
-# pdb.set_trace()
-lsdl = LeadSheetDataLoader(dataset)
-batched_pitch_seqs, batched_next_pitches = lsdl.get_batched_pitch_seqs(seq_len=args.seq_len, 
-                                                                       batch_size=args.batch_size)
-batched_harmony_seqs, batched_next_harmonies = lsdl.get_batched_harmony(seq_len=args.seq_len, 
-                                                                        batch_size=args.batch_size)
+lsdl = LeadSheetDataLoader(dataset, args.num_songs)
+batched_sets = lsdl.get_batched_dur_seqs(seq_len=args.seq_len, batch_size=args.batch_size, 
+                                         target_as_vector=False)
+batched_dur_seqs, batched_next_durs = batched_sets
 
-# batched_harmony_seqs.shape = num_batches x seqs per batch x seq len x harmony size
-# 0 = rest, the rest are MIDI numbers
-harmony_dim = batched_harmony_seqs.shape[-1]
-
-net = PitchLSTM(args.input_dict_size, harmony_dim, args.embedding_dim, args.hidden_dim,
-                      args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
+net = DurationLSTM(args.input_dict_size, args.embedding_dim, args.hidden_dim,
+                   args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 
@@ -83,10 +76,9 @@ loss_fn = nn.NLLLoss()
 # loss_fn = nn.MSELoss()
 # loss_fn = nn.CrossEntropyLoss()
 
-batch_groups = [tup for tup in zip(batched_harmony_seqs, batched_pitch_seqs, 
-                                   batched_next_pitches)]
+batch_groups = [tup for tup in zip(batched_dur_seqs, batched_next_durs)]
+interrupted = False
 try:
-    interrupted = False
     train_losses = []
     print_every = 5
     print("Beginning Training")
@@ -98,23 +90,20 @@ try:
         for i, batch_group in enumerate(batch_groups):
             # pdb.set_trace()
             # get the data, wrap it in a Variable
-            harmony_inpt = Variable(torch.FloatTensor(batch_group[0]))
-            pitches_inpt = Variable(torch.LongTensor(batch_group[1]))
-            target_pitch = Variable(torch.LongTensor(batch_group[2]))
+            dur_inpt = Variable(torch.LongTensor(batch_group[0]))
+            target_durs = Variable(torch.LongTensor(batch_group[1]))
             if torch.cuda.is_available():
-                harmony_inpt = harmony_inpt.cuda()
-                pitches_inpt = pitches_inpt.cuda()
-                target_pitch = target_pitch.cuda()
+                pitches_inpt = dur_inpt.cuda()
+                target_pitch = target_durs.cuda()
             # detach hidden state
             net.repackage_hidden_and_cell()
             # zero the parameter gradients
             optimizer.zero_grad()
             # forward pass
-            output = net(pitches_inpt, harmony_inpt)[:, -1, :]
+            output = net(dur_inpt)[:, -1, :]
             # backward + optimize
-            loss = loss_fn(output, target_pitch)
+            loss = loss_fn(output, target_durs)
             loss.backward()
-            # loss.backward(retain_graph=True)
             optimizer.step()
             # print stats out
             avg_loss += loss.data[0]
@@ -136,9 +125,9 @@ info_dict['epochs_completed'] = len(train_losses)
 info_dict['final_training_loss'] = train_losses[-1]
 
 if args.keep:
-    dirpath = op.join(os.getcwd(), "runs", "pitches", args.title)
+    dirpath = op.join(os.getcwd(), "runs", "durations", args.title)
     if not op.exists(dirpath):
-        os.makedirs(dirpath)
+        os.mkdir(dirpath)
 
     print('Writing run info file ...')
     with open(op.join(dirpath, 'info.txt'), 'w') as fp:
@@ -149,7 +138,7 @@ if args.keep:
         fp.close()
 
     print('Writing training losses ...') 
-    json.dump(train_losses, open(op.join(dirpath, 'train_losses.json'), 'w'), indent=4)
+    json.dump(train_losses, open('train_losses.json', 'w'), indent=4)
 
     print('Saving model ...')
     model_inputs = {'input_dict_size': args.input_dict_size, 

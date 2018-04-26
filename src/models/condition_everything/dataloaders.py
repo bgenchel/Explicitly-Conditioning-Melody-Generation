@@ -76,12 +76,12 @@ class LeadSheetDataLoader(DataLoader):
         return np.array(thing_seqs), np.array(next_things)
 
     def _get_batched(self, seqs_getter, seq_len=2, batch_size=1, target_as_vector=False):
-        thing_seqs, next_things = seqs_getter(seq_len, target_as_vector)
+        thing_seqs, next_things = seqs_getter(seq_len=seq_len, target_as_vector=target_as_vector)
         assert batch_size <= len(thing_seqs)
         num_batches = int(np.floor(len(thing_seqs) / batch_size))
         batched_thing_seqs = np.split(thing_seqs[:num_batches*batch_size], num_batches, axis=0)
         batched_next_things = np.split(next_things[:num_batches*batch_size], num_batches, axis=0)
-        return batched_thing_seqs, batched_next_things
+        return np.array(batched_thing_seqs), np.array(batched_next_things)
 
     def get_harmony(self, seq_len=2, **kwargs):
         harmony_seqs = []
@@ -102,8 +102,8 @@ class LeadSheetDataLoader(DataLoader):
         return np.array(harmony_seqs), np.array(next_harmonies)
 
     def get_batched_harmony(self, seq_len=2, batch_size=1):
-        batched_harmony_seq, batched_next_harmonie = self._get_batched(self.get_harmony, seq_len, batch_size)
-        return batched_harmony_seqs, batched_next_harmonies
+        batched_harmony_seqs, batched_next_harmonies = self._get_batched(self.get_harmony, seq_len, batch_size)
+        return np.array(batched_harmony_seqs), np.array(batched_next_harmonies)
 
     def get_pitch_seqs(self, seq_len=2, target_as_vector=False):
         pitch_seqs, next_pitches = self._get_seqs("pitch_numbers", seq_len, 
@@ -117,7 +117,7 @@ class LeadSheetDataLoader(DataLoader):
         return batched_pitch_seqs, batched_next_pitches
 
     def get_dur_seqs(self, seq_len=2, target_as_vector=False):
-        dur_seqs, next_durs = self._get_seqs("dur_tags", seq_len, 
+        dur_seqs, next_durs = self._get_seqs("duration_tags", seq_len, 
                                              target_as_vector, 18)
         return dur_seqs, next_durs
 

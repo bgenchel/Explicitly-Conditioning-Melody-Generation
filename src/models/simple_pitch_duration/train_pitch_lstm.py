@@ -23,6 +23,8 @@ info_dict['run_datetime'] = run_datetime_str
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default=run_datetime_str, type=str,
                     help="custom title for run data directory")
+parser.add_argument('-cp', '--charlie_parker', action="store_true",
+                    help="use the charlie parker data subset")
 parser.add_argument('-n', '--num_songs', default=None, type=int,
                     help="number of songs to include in training")
 parser.add_argument('-e', '--epochs', default=10, type=int,
@@ -54,7 +56,10 @@ info_dict.update(vars(args))
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, "data", "processed", "pkl")
-dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
+if args.charlie_parker:
+    dataset = pickle.load(open(op.join(data_dir, "charlie_parker_dataset.pkl"), "rb"))
+else:
+    dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
 
 # pdb.set_trace()
 lsdl = LeadSheetDataLoader(dataset, args.num_songs)
@@ -137,7 +142,7 @@ if args.keep:
         fp.close()
 
     print('Writing training losses ...') 
-    json.dump(train_losses, open('train_losses.json', 'w'), indent=4)
+    json.dump(train_losses, open(op.join(dirpath, 'train_losses.json'), 'w'), indent=4)
 
     print('Saving model ...')
     model_inputs = {'input_dict_size': args.input_dict_size, 
