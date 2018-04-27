@@ -16,6 +16,7 @@ from torch.autograd import Variable
 from dataloaders import LeadSheetDataLoader
 from models import PitchLSTM
 
+torch.cuda.set_device(0)
 
 run_datetime_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 info_dict = OrderedDict()
@@ -75,6 +76,8 @@ harmony_dim = batched_harmony_seqs.shape[-1]
 
 net = PitchLSTM(args.input_dict_size, harmony_dim, args.embedding_dim, args.hidden_dim,
                       args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
+net.cuda()
+
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 

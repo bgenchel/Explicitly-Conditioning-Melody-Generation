@@ -1,10 +1,10 @@
 from __future__ import print_function
+import copy
 import json
-import numpy as np
 import os
 import os.path as op
 import pickle
-import pdb
+import random
 from pathlib import Path
 from harmony import Harmony
 
@@ -22,6 +22,9 @@ KEYS_DICT = {"major": {'0': 'C', '1': 'G', '2': 'D', '3': 'A', '4': 'E', '5': 'B
                   '-1': 'F', '-2': 'Bb', '-3': 'Eb', '-4': 'Ab', '-5': 'Db', '-6': 'Gb'},
             "minor": {'0': 'A', '1': 'E', '2': 'B', '3': 'F#', '4': 'C#', '5': 'G#', '6': 'D#', 
                   '-1': 'D', '-2': 'G', '-3': 'C', '-4': 'F', '-5': 'Bb', '-6': 'Eb'}}
+
+def rotate(l, x):
+    return l[-x:] + l[:-x]
 
 def get_key(jsdict):
     """
@@ -204,20 +207,44 @@ def parse_json(fpath):
 if __name__ == '__main__':
     root_dir = str(Path(op.abspath(__file__)).parents[3])
     json_dir = op.join(root_dir, 'data', 'raw', 'json')
-    pkl_dir = op.join(root_dir, 'data', 'processed', 'pkl')
+    song_dir = op.join(root_dir, 'data', 'processed', 'songs')
+    dataset_dir = op.join(root_dir, 'data', 'processed', 'datasets')
 
     if not op.exists(json_dir):
         raise Exception("Json directory not found.")
-    if not op.exists(pkl_dir):
-        os.makedirs(pkl_dir)
+    if not op.exists(song_dir):
+        os.makedirs(song_dir)
+    if not op.exists(dataset_dir):
+        os.makedirs(dataset_dir)
 
     json_paths = [op.join(json_dir, fname) for fname in os.listdir(json_dir)]
     parsed_data = []
+    charlie_parker_data = []
     for json_path in json_paths:
         parsed = parse_json(json_path)
         if parsed is not None:
-            outpath = op.join(pkl_dir, op.basename(json_path).replace('.json', '.pkl'))
-            pickle.dump(parsed, open(outpath, 'wb'))
-            parsed_data.append(parsed)
+            for shift in range(-6, 6):
+                transposed = copy.deepcopy(parsed)
+                transposed['transposition'] = shift
+                print("transposing by %i" % shift)
+                for i, measure in enumerate(transposed['measures']):
+                    measure['pitch_numbers'] = [pn + shift for pn in measure['pitch_numbers']]
+                    measure['harmonies'] = [rotate(h, shift) for h in measure['harmonies']]
+                    transposed['measures'][i] = measure
+                outname = op.basename(json_path).replace('.json', '')
+                outpath = op.join(song_dir, '_'.join([outname, str(shift)])) + '.pkl'
+                pickle.dump(transposed, open(outpath, 'wb'))
 
-    pickle.dump(parsed_data, open(op.join(pkl_dir, "dataset.pkl"), 'wb'))
+                parsed_data.append(transposed)
+                if 'charlie_parker' in op.basename(outpath):
+                    charlie_parker_data.append(parsed)
+
+    random.shuffle(parsed_data)
+    parsed_data_dict = {'train': parsed_data[:int(0.9*len(parsed_data))],
+                        'valid': parsed_data[int(0.9*len(parsed_data)):]}
+    pickle.dump(parsed_data_dict, open(op.join(dataset_dir, "dataset.pkl"), 'wb'))
+
+    random.shuffle(charlie_parker_data)
+    charlie_parker_dict = {'train': charlie_parker_data[:int(0.9*len(charlie_parker_data))],
+                           'valid': charlie_parker_data[int(0.9*len(charlie_parker_data)):]}
+    pickle.dump(charlie_parker_dict, open(op.join(dataset_dir, "charlie_parker_dataset.pkl"), 'wb'))
