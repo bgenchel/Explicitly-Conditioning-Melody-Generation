@@ -14,7 +14,7 @@ def compute_avg_loss(net, loss_fn, batched_seqs, batched_targets):
             inpt = inpt.cuda()
             target = target.cuda()
         
-        output = net(inpt)
+        output = net(inpt)[:, -1, :]
         loss = loss_fn(output, target)
         total_loss += loss.data[0]
     avg_loss = total_loss/len(batched_seqs)

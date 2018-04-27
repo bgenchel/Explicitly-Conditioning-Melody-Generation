@@ -79,6 +79,20 @@ class LeadSheetDataLoader(DataLoader):
                 else:
                     train_next_durs.append(song_durs[i+seq_len])
 
+        for song in self.valid:
+            song_durs = []
+            for measure in song['measures']:
+                for i, dur in enumerate(measure['duration_tags']):
+                    song_durs.append(dur)
+            for i in range(0, len(song_durs) - seq_len):
+                valid_dur_seqs.append(np.array(song_durs[i:i+seq_len]))
+                if target_as_vector:
+                    next_dur = np.zeros(128)
+                    next_dur[song_durs[i+seq_len]] = 1
+                    valid_next_durs.append(next_dur)
+                else:
+                    valid_next_durs.append(song_durs[i+seq_len])
+
         return (np.array(train_dur_seqs), np.array(train_next_durs),
                 np.array(valid_dur_seqs), np.array(valid_next_durs))
 

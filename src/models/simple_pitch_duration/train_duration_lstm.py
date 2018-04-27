@@ -63,12 +63,10 @@ else:
     dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
 
 lsdl = LeadSheetDataLoader(dataset, args.num_songs)
-batched_sets = lsdl.get_batched_dur_seqs(seq_len=args.seq_len,
-                                           batch_size=args.batch_size, 
-                                           target_as_vector=False)
-batched_train_seqs, batched_train_targets, batched_valid_seqs, batched_valid_targets = batched_sets
+(batched_train_seqs, batched_train_targets,
+ batched_valid_seqs, batched_valid_targets) = lsdl.get_batched_dur_seqs(
+         seq_len=args.seq_len, batch_size=args.batch_size, target_as_vector=False)
 
-# bhs.shape = num_batches x seqs per batch x seq len x harmony size
 net = DurationLSTM(args.input_dict_size, args.embedding_dim, args.hidden_dim,
                    args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
 if torch.cuda.is_available():
@@ -83,51 +81,6 @@ loss_fn = nn.NLLLoss()
 net, interrupted, train_losses, valid_losses = train_net(
         net, loss_fn, optimizer, args.epochs, batched_train_seqs, batched_train_targets,
         batched_valid_seqs, batched_valid_targets)
-# interrupted = False
-# train_losses = []
-# valid_losses = []
-# print_every = 5
-# print("Beginning Training")
-# print("Cuda available: ", torch.cuda.is_available())
-# try:
-#     for epoch in range(args.epochs): # 10 epochs to start
-#         batch_count = 0
-#         avg_loss = 0.0
-#         epoch_loss = 0.0
-#         for seq_batch, target_batch in zip(batched_train_seqs, batched_train_targets):
-#             # get the data, wrap it in a Variable
-#             seq_batch_var = Variable(torch.LongTensor(seq_batch))
-#             target_batch_var = Variable(torch.LongTensor(target_batch))
-#             if torch.cuda.is_available():
-#                 seq_batch_var = seq_batch_var.cuda()
-#                 target_batch_var = target_batch_var.cuda()
-#             # detach hidden state
-#             net.repackage_hidden_and_cell()
-#             # zero the parameter gradients
-#             optimizer.zero_grad()
-#             # forward pass
-#             output = net(seq_batch_var)[:, -1, :]
-#             # backward + optimize
-#             loss = loss_fn(output, target_batch_var)
-#             loss.backward()
-#             optimizer.step()
-#             # print stats out
-#             avg_loss += loss.data[0]
-#             epoch_loss += loss.data[0]
-#             if batch_count % print_every == print_every - 1:
-#                 print('epoch: %d, batch_count: %d, loss: %.5f'%(
-#                     epoch + 1, batch_count + 1, avg_loss / print_every))
-#                 avg_loss = 0.0
-#             batch_count += 1
-#         print('Average Epoch Loss: %f'%(epoch_loss/batch_count))
-#         train_losses.append(epoch_loss/batch_count)
-#         valid_loss = compute_avg_loss(net, loss_fn, batched_valid_seqs,
-#                                       batched_valid_targets)
-#         valid_losses.append(valid_loss)
-#     print('Finished Training')
-# except KeyboardInterrupt:
-#     print('Training Interrupted')
-#     interrupted = True
 
 info_dict['interrupted'] = interrupted
 info_dict['epochs_completed'] = len(train_losses)
