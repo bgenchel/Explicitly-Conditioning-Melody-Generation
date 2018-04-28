@@ -11,7 +11,6 @@ class LeadSheetDataLoader(DataLoader):
     """
 
     def __init__(self, dataset, num_songs=None, **kwargs):
-        super(LeadSheetDataLoader, self).__init__(**kwargs)
         """
         Initializes the class, defines the number of batches and other parameters
         Args:
@@ -82,10 +81,14 @@ class LeadSheetDataLoader(DataLoader):
                 valid_seqs[:num_valid_batches*batch_size], num_valid_batches, axis=0)
         batched_valid_targets = np.split(
                 valid_targets[:num_valid_batches*batch_size], num_valid_batches, axis=0)
-        return (np.array(batched_train_seqs), np.array(batched_train_targets),
-                np.array(batched_valid_seqs), np.array(batched_valid_targets))
+        
+        data = {'batched_train_seqs': np.array(batched_train_seqs),
+                'batched_train_targets': np.array(batched_train_targets),
+                'batched_valid_seqs': np.array(batched_valid_seqs),
+                'batched_valid_targets': np.array(batched_valid_targets)}
+        return data
 
-    def get_harmony(self, seq_len=2):
+    def get_harmony(self, seq_len=2, **kwargs):
         train_seqs = []
         train_targets = []
         valid_seqs = []
@@ -116,15 +119,13 @@ class LeadSheetDataLoader(DataLoader):
                 valid_seqs.append(np.array(song_pitch_harmonies[i:i+seq_len]))
                 valid_targets.append(np.array(song_pitch_harmonies[i+seq_len]))
 
+        # pdb.set_trace()
         return (np.array(train_seqs), np.array(train_targets),
                 np.array(valid_seqs), np.array(valid_targets))
 
 
     def get_batched_harmony(self, seq_len=2, batch_size=1):
-        (batched_train_seqs, batched_train_targets,
-         batched_valid_seqs, batched_valid_targets) = self._get_batched(self.get_harmony, seq_len, batch_size)
-        return (np.array(batched_train_seqs), np.array(batched_train_targets),
-                np.array(batched_valid_seqs), np.array(batched_valid_targets))
+        return self._get_batched(self.get_harmony, seq_len, batch_size)
 
     def get_pitch_seqs(self, seq_len=2, target_as_vector=False):
         train_seqs, train_targets, valid_seqs, valid_targets = self._get_seqs(
@@ -132,11 +133,7 @@ class LeadSheetDataLoader(DataLoader):
         return (train_seqs, train_targets, valid_seqs, valid_targets)
 
     def get_batched_pitch_seqs(self, seq_len=2, batch_size=1, target_as_vector=False):
-        (batched_train_seqs, batched_train_targets,
-         batched_valid_seqs, batched_valid_targets) = self._get_batched(
-                self.get_pitch_seqs, seq_len, batch_size, target_as_vector)
-        return (batched_train_seqs, batched_train_targets, 
-                batched_valid_seqs, batched_valid_targets)
+        return self._get_batched(self.get_pitch_seqs, seq_len, batch_size, target_as_vector)
 
     def get_dur_seqs(self, seq_len=2, target_as_vector=False):
         train_seqs, train_targets, valid_seqs, valid_targets = self._get_seqs(
@@ -144,8 +141,4 @@ class LeadSheetDataLoader(DataLoader):
         return (train_seqs, train_targets, valid_seqs, valid_targets)
 
     def get_batched_dur_seqs(self, seq_len=2, batch_size=1, target_as_vector=False):
-        (batched_train_seqs, batched_train_targets,
-         batched_valid_seqs, batched_valid_targets) = self._get_batched(
-                self.get_dur_seqs, seq_len, batch_size, target_as_vector)
-        return (batched_train_seqs, batched_train_targets, 
-                batched_valid_seqs, batched_valid_targets)
+        return self._get_batched(self.get_dur_seqs, seq_len, batch_size, target_as_vector)

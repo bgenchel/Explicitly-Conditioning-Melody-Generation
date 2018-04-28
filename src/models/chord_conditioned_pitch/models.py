@@ -47,7 +47,7 @@ class PitchLSTM(nn.Module):
         self.hidden_and_cell = (new_hidden, new_cell)
         return
 
-    def forward(self, pitches, harmonies):
+    def forward(self, harmonies, pitches):
         # pdb.set_trace()
         encoded_harmonies = self.harmony_fc2(F.relu(self.harmony_fc1(harmonies)))
         embedded_pitches = self.pitch_embedding(pitches)
