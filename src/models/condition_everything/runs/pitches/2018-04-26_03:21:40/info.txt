@@ -1,0 +1,17 @@
+run_datetime:       	 2018-04-26_03:21:40
+output_dim:         	 128
+batch_size:         	 5
+input_dict_size:    	 128
+num_songs:          	 None
+epochs:             	 450
+keep:               	 True
+embedding_dim:      	 20
+seq_len:            	 3
+title:              	 2018-04-26_03:21:40
+learning_rate:      	 0.01
+charlie_parker:     	 True
+hidden_dim:         	 25
+num_layers:         	 2
+interrupted:        	 True
+epochs_completed:   	 55
+final_training_loss:	 2.4131918486623047
