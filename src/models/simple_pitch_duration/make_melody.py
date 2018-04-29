@@ -67,9 +67,9 @@ dur_net = DurationLSTM(**dur_model_inputs)
 dur_net.load_state_dict(dur_model_state)
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
-data_dir = op.join(root_dir, 'data', 'processed', 'pkl')
-dataset = pickle.load(open(op.join(data_dir, 'dataset.pkl'), 'rb'))
-seed_song = dataset[0]
+data_dir = op.join(root_dir, 'data', 'processed', 'songs')
+songs = os.listdir(data_dir)
+seed_song = pickle.load(open(op.join(data_dir, random.choice(songs)), 'rb'))
 seed_song_pitches = []
 seed_song_durs = []
 for measure in seed_song['measures']:
