@@ -56,7 +56,7 @@ class PitchLSTM(nn.Module):
         embedded_pitches = self.pitch_embedding(pitches)
         embedded_durs = self.dur_embedding(durs)
         inpt = torch.cat([encoded_harmonies, embedded_durs, embedded_pitches], 2) # Concatenate along 3rd dimension
-        encoded_inpt = F.relu(self.encoder(inpt)
+        encoded_inpt = F.relu(self.encoder(inpt))
         lstm_out, self.hidden_and_cell = self.lstm(encoded_inpt, self.hidden_and_cell)
         decoded = self.decoder(lstm_out)
         output = self.softmax(decoded)
