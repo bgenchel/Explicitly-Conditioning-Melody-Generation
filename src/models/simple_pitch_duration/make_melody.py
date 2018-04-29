@@ -18,7 +18,9 @@ parser.add_argument('-pn', '--pitch_run_name', type=str,
                     help="select which pitch run to use")
 parser.add_argument('-dn', '--dur_run_name', type=str,
                     help="select which dur run to use")
-parser.add_argument('-l', '--seq_len', default=40, type=int,
+parser.add_argument('-sm', '--seed_measures', type=1,
+                    help="number of measures to use as seeds to the network")
+parser.add_argument('-ol', '--output_len', default=40, type=int,
                     help="how many notes/durs to generate")
 args = parser.parse_args()
 
@@ -35,8 +37,8 @@ TAG_TO_TICKS = {'whole': 96, 'half': 48, 'quarter': 24, 'eighth': 12, '16th': 6,
                  'quarter-dot': 36, 'eighth-dot': 18, '16th-dot': 9, '32nd': 3, 
                  '32nd-triplet': 2, '32nd-dot': 5, 'other': -1}
 
-def convert_to_piano_roll_mat(pitches, dur_nums):
-    print(dur_nums)
+def convert_melody_to_piano_roll_mat(pitches, dur_nums):
+    # print(dur_nums)
     dur_ticks = [TAG_TO_TICKS[NUM_TO_TAG[dur]] for dur in dur_nums]
     onsets = np.array([np.sum(dur_ticks[:i]) for i in range(len(dur_ticks))])
     total_ticks = sum(dur_ticks)
@@ -49,6 +51,22 @@ def convert_to_piano_roll_mat(pitches, dur_nums):
             output_mat[int(pitches[i]), int(onsets[i]):int(onsets[i+1])] = 1.0
     # pdb.set_trace()
     output_mat[int(pitches[-1]), int(onsets[-1]):] = 1.0
+    return output_mat
+
+def convert_chords_to_piano_roll_mat(note_chords, dur_nums):
+    dur_ticks = [TAG_TO_TICKS[NUM_TO_TAG[dur]] for dur in dur_nums]
+    onsets = np.array([np.sum(dur_ticks[:i]) for i in range(len(dur_ticks))])
+    total_ticks = sum(dur_ticks)
+    output_mat = np.zeros([128, int(total_ticks)])
+    for i in range(len(onsets) - 1):
+        for j in range(len(note_chords[i])):
+            if j == 1:
+                chord_tone = j + CHORD_OFFSET
+                output_mat[chord_tone, int(onsets[i]):int(onsets[i+1])] = 1.0
+    for j in range(len(note_chords[-1])):
+        if j == 1:
+            chord_tone = j + CHORD_OFFSET
+            output_mat[chord_tone, int(onsets[-1]):] = 1.0
     return output_mat
 
 pitch_dir = op.join(os.getcwd(), 'runs', 'pitches', args.pitch_run_name)
@@ -70,30 +88,66 @@ root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, 'data', 'processed', 'songs')
 songs = os.listdir(data_dir)
 seed_song = pickle.load(open(op.join(data_dir, random.choice(songs)), 'rb'))
-seed_song_pitches = []
-seed_song_durs = []
-for measure in seed_song['measures']:
-    seed_song_pitches.extend(measure['pitch_numbers'])
-    seed_song_durs.extend(measure['duration_tags'])
 
-seed_pitches = [random.choice(seed_song_pitches) for _ in range(2)]
+seed_song_chords = []
+for measure in seed_song['measures'][args.seed_measures:]:
+    seed_song_chords.append(measure['harmonies'])
+
+seed_pitches = []
+seed_durs = []
+seed_note_chords = []
+for i in seed_song['measures'][:args.seed_measures]:
+    measure = seed_song['measures'][i]
+    measure_pitches = measure['pitch_numbers']
+    measure_durs = measure['duration_tags']
+    measure_note_chords = []
+    harmony_index = 0
+    for j in range(len(measure_pitches)):
+        measure_note_chords.append(measure['harmonies'][harmony_index])
+        if (j == measure['half_index']) and (len(measure['harmonies']) > 1):
+            harmony_index += 1
+    seed_pitches.extend(measure_pitches)
+    seed_durs.extend(measure_durs)
+    seed_note_chords.extend(measure_note_chords)
+
+seed_len = len(seed_pitches)
+
 pitch_inpt = Variable(torch.LongTensor(seed_pitches)).view(1, -1)
-seed_durs = [random.choice(seed_song_durs) for _ in range(2)]
 dur_inpt = Variable(torch.LongTensor(seed_durs)).view(1, -1)
 
+note_chord_seq = seed_note_chords
 pitch_seq = seed_pitches
 dur_seq = seed_durs
-for _ in range(args.seq_len):
-    pitch_out = pitch_net(pitch_inpt)
-    pitch_seq.append(np.argmax(pitch_out.data[:, -1, :]))
-    pitch_inpt = Variable(torch.LongTensor(pitch_seq[-2:]).view(1, -1))
+for i, measure_chords in enumerate(seed_song_chords):
+    tick_lim = TAG_TO_TICKS["whole"]
+    if len(measure_chords) > 1:
+        tick_lim = TAG_TO_TICKS["half"]
+    
+    for chord in measure_chords:
+        total_ticks = 0
+        while total_ticks < tick_lim:
+            pitch_out = pitch_net(pitch_inpt)
+            pitch_seq.append(np.argmax(pitch_out.data[:, -1, :]))
+            pitch_inpt = Variable(torch.LongTensor(pitch_seq[-seed_len:]).view(1, -1))
 
-    dur_out = dur_net(dur_inpt)
-    dur_seq.append(np.argmax(dur_out.data[:, -1, :]))
-    dur_inpt = Variable(torch.LongTensor(dur_seq[-2:]).view(1, -1))
+            dur_out = dur_net(dur_inpt)
+            dur_tag = np.argmax(dur_out.data[:, -1, :])
+            dur_seq.append(dur_tag)
+            total_ticks += TAG_TO_TICKS[NUM_TO_TAG[dur_tag]]
+            dur_inpt = Variable(torch.LongTensor(dur_seq[-seed_len:]).view(1, -1))
 
-pr_mat = convert_to_piano_roll_mat(pitch_seq, dur_seq)
-pm = piano_roll_to_pretty_midi(pr_mat, fs=30)
-outpath = op.join(os.getcwd(), 'midi', '%s.mid' % args.title)
-print('Writing output midi file %s ...' % outpath)
-pm.write(outpath)
+            note_chord_seq.append(chord)
+
+melody_pr_mat = convert_melody_to_piano_roll_mat(pitch_seq, dur_seq)
+chords_pr_mat = convert_chords_to_piano_roll_mat(note_chord_seq, dur_seq)
+melody_pm = piano_roll_to_pretty_midi(melody_pr_mat, fs=30)
+chords_pm = piano_roll_to_pretty_midi(chords_pr_mat, fs=30)
+outdir = op.join(os.getcwd(), 'midi', args.title)
+if not op.exists(outdir):
+    os.makedirs(outdir)
+melody_path = op.join(outdir, '%s_melody.mid' % args.title)
+chords_path = op.join(outdir, '%s_chords.mid' % args.title)
+print('Writing melody midi file %s ...' % melody_path)
+melody_pm.write(melody_path)
+print('Writing chords midi file %s ...' % melody_path)
+chords_pm.write(chords_path)
