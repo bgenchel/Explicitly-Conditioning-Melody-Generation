@@ -13,10 +13,9 @@ def compute_avg_loss(net, loss_fn, batched_seqs, batched_targets):
         if torch.cuda.is_available():
             inpt = inpt.cuda()
             target = target.cuda()
-        
         output = net(inpt)[:, -1, :]
         loss = loss_fn(output, target)
-        total_loss += loss.data[0]
+        total_loss += float(loss.item())
     avg_loss = total_loss/len(batched_seqs)
     return avg_loss
 
@@ -35,10 +34,9 @@ def compute_harmony_conditioned_avg_loss(net, loss_fn, batched_chords,
             chord_inpt = chord_inpt.cuda()
             seq_inpt = seq_inpt.cuda()
             target = target.cuda()
-        
         output = net(chord_inpt, seq_inpt)[:, -1, :]
         loss = loss_fn(output, target)
-        total_loss += loss.data[0]
+        total_loss += float(loss.item())
     avg_loss = total_loss/len(batched_seqs)
     return avg_loss
 
@@ -56,12 +54,12 @@ def compute_harmony_plus_conditioned_avg_loss(net, loss_fn, batched_chords,
         target = Variable(torch.LongTensor(target_batch))
         if torch.cuda.is_available():
             chord_inpt = chord_inpt.cuda()
+            cond_inpt = cond_inpt.cuda()
             seq_inpt = seq_inpt.cuda()
             target = target.cuda()
-        
         output = net(chord_inpt, cond_inpt, seq_inpt)[:, -1, :]
         loss = loss_fn(output, target)
-        total_loss += loss.data[0]
+        total_loss += float(loss.item())
     avg_loss = total_loss/len(batched_seqs)
     return avg_loss
 
@@ -95,8 +93,8 @@ def train_net(net, loss_fn, optimizer, epochs, batched_train_seqs, batched_train
                 loss.backward()
                 optimizer.step()
                 # print stats out
-                avg_loss += loss.data[0]
-                epoch_loss += loss.data[0]
+                avg_loss += float(loss.item())
+                epoch_loss += float(loss.item())
                 if batch_count % print_every == print_every - 1:
                     print('epoch: %d, batch_count: %d, loss: %.5f'%(
                         epoch + 1, batch_count + 1, avg_loss / print_every))
@@ -150,8 +148,8 @@ def train_harmony_conditioned_net(net, loss_fn, optimizer, epochs,
                 loss.backward()
                 optimizer.step()
                 # print stats out
-                avg_loss += loss.data[0]
-                epoch_loss += loss.data[0]
+                avg_loss += float(loss.item())
+                epoch_loss += float(loss.item())
                 if batch_count % print_every == print_every - 1:
                     print('epoch: %d, batch_count: %d, loss: %.5f'%(
                         epoch + 1, batch_count + 1, avg_loss / print_every))
@@ -211,8 +209,8 @@ def train_harmony_plus_conditioned_net(net, loss_fn, optimizer, epochs,
                 loss.backward()
                 optimizer.step()
                 # print stats out
-                avg_loss += loss.data[0]
-                epoch_loss += loss.data[0]
+                avg_loss += float(loss.item())
+                epoch_loss += float(loss.item())
                 if batch_count % print_every == print_every - 1:
                     print('epoch: %d, batch_count: %d, loss: %.5f'%(
                         epoch + 1, batch_count + 1, avg_loss / print_every))

@@ -149,6 +149,7 @@ net, interrupted, train_losses, valid_losses = train_harmony_conditioned_net(
 info_dict['interrupted'] = interrupted
 info_dict['epochs_completed'] = len(train_losses)
 info_dict['final_training_loss'] = train_losses[-1]
+info_dict['final_valid_loss'] = valid_losses[-1]
 
 model_inputs = {'input_dict_size': args.input_dict_size, 
                 'embedding_dim': args.embedding_dim,
