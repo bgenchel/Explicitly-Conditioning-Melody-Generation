@@ -46,12 +46,8 @@ parser.add_argument('-nl', '--num_layers', default=2, type=int,
                     help="number of lstm layers to use.")
 parser.add_argument('-lr', '--learning_rate', default=1e-3, type=float,
                     help="learning rate for sgd")
-parser.add_argument('-m', '--momentum', default=0.9, type=float,
-                    help="momentum for sgd.")
 parser.add_argument('-k', '--keep', action='store_true',
                     help="save information about this run")
-parser.add_argument('-s', '--show', action='store_true',
-                    help="show figures as they are generated")
 args = parser.parse_args()
 info_dict.update(vars(args))
 
