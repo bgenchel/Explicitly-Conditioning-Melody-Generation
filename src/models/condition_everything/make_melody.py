@@ -23,7 +23,7 @@ parser.add_argument('-dn', '--dur_run_name', type=str,
                     help="select which dur run to use")
 parser.add_argument('-ss', '--seed_song', type=str, default=None,
                     help="number of measures to use as seeds to the network")
-parser.add_argument('-sm', '--seed_measures', type=int, default=2,
+parser.add_argument('-sm', '--seed_measures', type=int, default=1,
                     help="number of measures to use as seeds to the network")
 args = parser.parse_args()
 

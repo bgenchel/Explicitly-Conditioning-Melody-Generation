@@ -63,7 +63,7 @@ class PitchLSTM(nn.Module):
 
 class DurationLSTM(nn.Module):
     def __init__(self, input_dict_size, embedding_dim, hidden_dim, 
-                 output_dim, num_layers=2, batch_size=None, test=False,  **kwargs):
+                 output_dim, num_layers=2, batch_size=None, test=False, **kwargs):
         super(DurationLSTM, self).__init__(**kwargs)
         self.input_dict_size = input_dict_size
         self.embedding_dim = embedding_dim

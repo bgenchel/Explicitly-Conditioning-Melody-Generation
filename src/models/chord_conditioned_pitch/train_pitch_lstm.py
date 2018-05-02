@@ -156,7 +156,8 @@ model_inputs = {'input_dict_size': args.input_dict_size,
                 'hidden_dim': args.hidden_dim,
                 'output_dim': args.output_dim,
                 'num_layers': args.num_layers,
-                'batch_size': args.batch_size}
+                'batch_size': args.batch_size, 
+                'harmony_dim': harmony_dim}
 
 dirpath = op.join(os.getcwd(), "runs", "pitches", args.title)
 
