@@ -112,6 +112,7 @@ info_dict['final_training_loss'] = train_losses[-1]
 
 model_inputs = {'pitch_input_dict_size': args.pitch_input_dict_size, 
                 'dur_input_dict_size': args.dur_input_dict_size,
+                'harmony_dim': harmony_dim,
                 'pitch_embedding_dim': args.pitch_embedding_dim,
                 'dur_embedding_dim': args.dur_embedding_dim,
                 'hidden_dim': args.hidden_dim,

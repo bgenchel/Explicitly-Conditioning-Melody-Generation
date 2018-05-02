@@ -9,12 +9,13 @@ torch.manual_seed(1)
 class PitchLSTM(nn.Module):
     def __init__(self, pitch_input_dict_size, dur_input_dict_size, harmony_dim, 
                  pitch_embedding_dim, dur_embedding_dim, hidden_dim, output_dim, 
-                 num_lstm_layers=2, batch_size=None, **kwargs):
+                 num_lstm_layers=2, batch_size=None, test=False, **kwargs):
         super(PitchLSTM, self).__init__(**kwargs)
         self.pitch_input_dict_size = pitch_input_dict_size
         self.dur_input_dict_size = dur_input_dict_size
         self.hidden_dim = hidden_dim
         self.num_layers = num_lstm_layers
+        self.test = test
 
         harmony_encoding_dim = (3*harmony_dim)//4
 
@@ -35,7 +36,7 @@ class PitchLSTM(nn.Module):
     def init_hidden_and_cell(self, batch_size):
         hidden = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
         cell = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not self.test):
             hidden = hidden.cuda()
             cell = cell.cuda()
         self.hidden_and_cell = (hidden, cell)
@@ -44,14 +45,13 @@ class PitchLSTM(nn.Module):
     def repackage_hidden_and_cell(self):
         new_hidden = Variable(self.hidden_and_cell[0].data)
         new_cell = Variable(self.hidden_and_cell[1].data)
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not self.test):
             new_hidden = new_hidden.cuda()
             new_cell = new_cell.cuda()
         self.hidden_and_cell = (new_hidden, new_cell)
         return
 
     def forward(self, harmonies, durs, pitches):
-        # pdb.set_trace()
         encoded_harmonies = self.harmony_fc2(F.relu(self.harmony_fc1(harmonies)))
         embedded_pitches = self.pitch_embedding(pitches)
         embedded_durs = self.dur_embedding(durs)
@@ -66,12 +66,13 @@ class PitchLSTM(nn.Module):
 class DurationLSTM(nn.Module):
     def __init__(self, dur_input_dict_size, pitch_input_dict_size, harmony_dim, 
                  dur_embedding_dim, pitch_embedding_dim, hidden_dim, output_dim, 
-                 num_lstm_layers=2, batch_size=None, **kwargs):
+                 num_lstm_layers=2, batch_size=None, test=False, **kwargs):
         super(DurationLSTM, self).__init__(**kwargs)
         self.dur_input_dict_size = dur_input_dict_size
         self.pitch_input_dict_size = pitch_input_dict_size
         self.hidden_dim = hidden_dim
         self.num_layers = num_lstm_layers
+        self.test = test
 
         harmony_encoding_dim = (3*harmony_dim)//4
 
@@ -92,7 +93,7 @@ class DurationLSTM(nn.Module):
     def init_hidden_and_cell(self, batch_size):
         hidden = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
         cell = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not self.test):
             hidden = hidden.cuda()
             cell = cell.cuda()
         self.hidden_and_cell = (hidden, cell)
@@ -101,7 +102,7 @@ class DurationLSTM(nn.Module):
     def repackage_hidden_and_cell(self):
         new_hidden = Variable(self.hidden_and_cell[0].data)
         new_cell = Variable(self.hidden_and_cell[1].data)
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not self.test):
             new_hidden = new_hidden.cuda()
             new_cell = new_cell.cuda()
         self.hidden_and_cell = (new_hidden, new_cell)

@@ -8,11 +8,12 @@ torch.manual_seed(1)
 
 class PitchLSTM(nn.Module):
     def __init__(self, input_dict_size, harmony_dim, embedding_dim, hidden_dim, 
-                 output_dim, num_layers=2, batch_size=None, **kwargs):
+                 output_dim, num_layers=2, batch_size=None, test=False, **kwargs):
         super(PitchLSTM, self).__init__(**kwargs)
         self.input_dict_size = input_dict_size
         self.hidden_dim = hidden_dim
         self.num_layers = num_layers
+        self.test = test
 
         harmony_encoding_dim = (3*harmony_dim)//4
 
@@ -32,7 +33,7 @@ class PitchLSTM(nn.Module):
     def init_hidden_and_cell(self, batch_size):
         hidden = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
         cell = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not self.test):
             hidden = hidden.cuda()
             cell = cell.cuda()
         self.hidden_and_cell = (hidden, cell)
@@ -41,7 +42,7 @@ class PitchLSTM(nn.Module):
     def repackage_hidden_and_cell(self):
         new_hidden = Variable(self.hidden_and_cell[0].data)
         new_cell = Variable(self.hidden_and_cell[1].data)
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not self.test):
             new_hidden = new_hidden.cuda()
             new_cell = new_cell.cuda()
         self.hidden_and_cell = (new_hidden, new_cell)
@@ -62,13 +63,14 @@ class PitchLSTM(nn.Module):
 
 class DurationLSTM(nn.Module):
     def __init__(self, input_dict_size, embedding_dim, hidden_dim, 
-                 output_dim, num_layers=2, batch_size=None, **kwargs):
+                 output_dim, num_layers=2, batch_size=None, test=False,  **kwargs):
         super(DurationLSTM, self).__init__(**kwargs)
         self.input_dict_size = input_dict_size
         self.embedding_dim = embedding_dim
         self.hidden_dim = hidden_dim
         self.output_dim = output_dim
         self.num_layers = num_layers
+        self.test = test
 
         self.dur_embedding = nn.Embedding(input_dict_size, embedding_dim)
         self.lstm = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_layers, batch_first=True)
@@ -83,7 +85,7 @@ class DurationLSTM(nn.Module):
     def init_hidden_and_cell(self, batch_size):
         hidden = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
         cell = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not self.test):
             hidden = hidden.cuda()
             cell = cell.cuda()
         self.hidden_and_cell = (hidden, cell)
@@ -92,7 +94,7 @@ class DurationLSTM(nn.Module):
     def repackage_hidden_and_cell(self):
         new_hidden = Variable(self.hidden_and_cell[0].data)
         new_cell = Variable(self.hidden_and_cell[1].data)
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not self.test):
             new_hidden = new_hidden.cuda()
             new_cell = new_cell.cuda()
         self.hidden_and_cell = (new_hidden, new_cell)

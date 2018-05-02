@@ -76,13 +76,13 @@ dur_dir = op.join(os.getcwd(), 'runs', 'durations', args.dur_run_name)
 pitch_model_inputs = json.load(open(op.join(pitch_dir, 'model_inputs.json'), 'r'))
 pitch_model_inputs['batch_size'] = 1
 pitch_model_state = torch.load(op.join(pitch_dir, 'model_state.pt'))
-pitch_net = PitchLSTM(**pitch_model_inputs)
+pitch_net = PitchLSTM(**pitch_model_inputs, test=True)
 pitch_net.load_state_dict(pitch_model_state)
 
 dur_model_inputs = json.load(open(op.join(dur_dir, 'model_inputs.json'), 'r'))
 dur_model_inputs['batch_size'] = 1
 dur_model_state = torch.load(op.join(dur_dir, 'model_state.pt'))
-dur_net = DurationLSTM(**dur_model_inputs)
+dur_net = DurationLSTM(**dur_model_inputs, test=True)
 dur_net.load_state_dict(dur_model_state)
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
