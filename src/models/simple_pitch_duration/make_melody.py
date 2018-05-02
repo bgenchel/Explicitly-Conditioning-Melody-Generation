@@ -24,8 +24,6 @@ except AttributeError:
     torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
 ##### 
 
-CHORD_OFFSET = 48 # chords are in octave 2
-
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default=None, type=str,
                     help="what to name the output")
@@ -46,7 +44,6 @@ if args.title is None:
 else:
     title = args.title
 
-
 # just use indices instead of making a dict with number keys
 NUM_TO_TAG = ['whole', 'half', 'quarter', 'eighth', '16th', 'whole-triplet', 
               'half-triplet', 'quarter-triplet', 'eighth-triplet', '16th-triplet', 
@@ -59,6 +56,8 @@ TAG_TO_TICKS = {'whole': 96, 'half': 48, 'quarter': 24, 'eighth': 12, '16th': 6,
                  'eighth-triplet': 8, '16th-triplet': 4, 'whole-dot': 144, 'half-dot': 72, 
                  'quarter-dot': 36, 'eighth-dot': 18, '16th-dot': 9, '32nd': 3, 
                  '32nd-triplet': 2, '32nd-dot': 5, 'other': -1}
+
+CHORD_OFFSET = 48 # chords are in octave 2
 
 def convert_melody_to_piano_roll_mat(pitches, dur_nums):
     # print(dur_nums)

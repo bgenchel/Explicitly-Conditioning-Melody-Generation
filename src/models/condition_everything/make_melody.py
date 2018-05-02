@@ -12,7 +12,18 @@ from models import PitchLSTM, DurationLSTM
 from pathlib import Path
 from reverse_pianoroll import piano_roll_to_pretty_midi
 
-DEFAULT_SEED_SONG = "charlie_parker-au_private_0.pkl"
+##### MONKEY PATCH
+import torch._utils
+try:
+    torch._utils._rebuild_tensor_v2
+except AttributeError:
+    def _rebuild_tensor_v2(storage, storage_offset, size, stride, requires_grad, backward_hooks):
+        tensor = torch._utils._rebuild_tensor(storage, storage_offset, size, stride)
+        tensor.requires_grad = requires_grad
+        tensor._backward_hooks = backward_hooks
+        return tensor
+    torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
+##### 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default="generated", type=str,
@@ -63,7 +74,7 @@ def convert_chords_to_piano_roll_mat(note_chords, dur_nums):
     output_mat = np.zeros([128, int(total_ticks)])
     for i in range(len(onsets) - 1):
         for j in range(len(note_chords[i])):
-            if j == 1:
+            if note_chords[i][j] == 1:
                 chord_tone = j + CHORD_OFFSET
                 output_mat[chord_tone, int(onsets[i]):int(onsets[i+1])] = 1.0
     for j in range(len(note_chords[-1])):
