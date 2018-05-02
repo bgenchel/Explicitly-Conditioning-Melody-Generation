@@ -11,18 +11,28 @@ from models import PitchLSTM, DurationLSTM
 from pathlib import Path
 from reverse_pianoroll import piano_roll_to_pretty_midi
 
+CHORD_OFFSET = 48 # chords are in octave 2
+
 parser = argparse.ArgumentParser()
-parser.add_argument('-t', '--title', default="melody.mid", type=str,
+parser.add_argument('-t', '--title', default=None, type=str,
                     help="what to name the output")
 parser.add_argument('-pn', '--pitch_run_name', type=str,
                     help="select which pitch run to use")
 parser.add_argument('-dn', '--dur_run_name', type=str,
                     help="select which dur run to use")
-parser.add_argument('-sm', '--seed_measures', type=1,
+parser.add_argument('-ss', '--seed_song', type=str, default=None,
+                    help="number of measures to use as seeds to the network")
+parser.add_argument('-sm', '--seed_measures', type=int, default=1,
                     help="number of measures to use as seeds to the network")
 parser.add_argument('-ol', '--output_len', default=40, type=int,
                     help="how many notes/durs to generate")
 args = parser.parse_args()
+
+if args.title is None:
+    title = args.seed_song.split('.')[0]
+else:
+    title = args.title
+
 
 # just use indices instead of making a dict with number keys
 NUM_TO_TAG = ['whole', 'half', 'quarter', 'eighth', '16th', 'whole-triplet', 
@@ -75,19 +85,22 @@ dur_dir = op.join(os.getcwd(), 'runs', 'durations', args.dur_run_name)
 pitch_model_inputs = json.load(open(op.join(pitch_dir, 'model_inputs.json'), 'r'))
 pitch_model_inputs['batch_size'] = 1
 pitch_model_state = torch.load(op.join(pitch_dir, 'model_state.pt'))
-pitch_net = PitchLSTM(**pitch_model_inputs)
+pitch_net = PitchLSTM(**pitch_model_inputs, test=True)
 pitch_net.load_state_dict(pitch_model_state)
 
 dur_model_inputs = json.load(open(op.join(dur_dir, 'model_inputs.json'), 'r'))
 dur_model_inputs['batch_size'] = 1
 dur_model_state = torch.load(op.join(dur_dir, 'model_state.pt'))
-dur_net = DurationLSTM(**dur_model_inputs)
+dur_net = DurationLSTM(**dur_model_inputs, test=True)
 dur_net.load_state_dict(dur_model_state)
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, 'data', 'processed', 'songs')
 songs = os.listdir(data_dir)
-seed_song = pickle.load(open(op.join(data_dir, random.choice(songs)), 'rb'))
+if args.seed_song is None:
+    seed_song = pickle.load(open(op.join(data_dir, random.choice(songs)), 'rb'))
+else:
+    seed_song = pickle.load(open(op.join(data_dir, args.seed_song), 'rb'))
 
 seed_song_chords = []
 for measure in seed_song['measures'][args.seed_measures:]:
@@ -97,7 +110,6 @@ seed_pitches = []
 seed_durs = []
 seed_note_chords = []
 for i in seed_song['measures'][:args.seed_measures]:
-    measure = seed_song['measures'][i]
     measure_pitches = measure['pitch_numbers']
     measure_durs = measure['duration_tags']
     measure_note_chords = []

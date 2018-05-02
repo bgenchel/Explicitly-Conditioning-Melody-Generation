@@ -1,6 +1,5 @@
 import argparse
 import json
-import numpy as np
 import os
 import os.path as op
 import pickle
@@ -11,6 +10,8 @@ from models import PitchLSTM, DurationLSTM
 from pathlib import Path
 from reverse_pianoroll import piano_roll_to_pretty_midi
 
+DEFAULT_SEED_SONG = "charlie_parker-au_private_0.pkl"
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default="generated", type=str,
                     help="what to name the output")
@@ -18,7 +19,9 @@ parser.add_argument('-pn', '--pitch_run_name', type=str,
                     help="select which pitch run to use")
 parser.add_argument('-dn', '--dur_run_name', type=str,
                     help="select which dur run to use")
-parser.add_argument('-sm', '--seed_measures', type=1,
+parser.add_argument('-ss', '--seed_song', type=str, default=None,
+                    help="number of measures to use as seeds to the network")
+parser.add_argument('-sm', '--seed_measures', type=int, default=2,
                     help="number of measures to use as seeds to the network")
 parser.add_argument('-ol', '--output_len', default=40, type=int,
                     help="how many notes/durs to generate")
@@ -88,8 +91,11 @@ dur_net.load_state_dict(dur_model_state)
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, 'data', 'processed', 'songs')
-songs = os.listdir(data_dir)
-seed_song = pickle.load(open(op.join(data_dir, random.choice(songs)), 'rb'))
+if args.seed_song is None:
+    songs = os.listdir(data_dir)
+    seed_song = pickle.load(open(op.join(data_dir, random.choice(songs)), 'rb'))
+else:
+    seed_song = pickle.load(open(op.join(data_dir, args.seed_song), 'rb'))
 
 seed_song_chords = []
 for measure in seed_song['measures'][args.seed_measures:]:
