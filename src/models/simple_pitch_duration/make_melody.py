@@ -11,6 +11,19 @@ from models import PitchLSTM, DurationLSTM
 from pathlib import Path
 from reverse_pianoroll import piano_roll_to_pretty_midi
 
+##### MONKEY PATCH
+import torch._utils
+try:
+    torch._utils._rebuild_tensor_v2
+except AttributeError:
+    def _rebuild_tensor_v2(storage, storage_offset, size, stride, requires_grad, backward_hooks):
+        tensor = torch._utils._rebuild_tensor(storage, storage_offset, size, stride)
+        tensor.requires_grad = requires_grad
+        tensor._backward_hooks = backward_hooks
+        return tensor
+    torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
+##### 
+
 CHORD_OFFSET = 48 # chords are in octave 2
 
 parser = argparse.ArgumentParser()
@@ -68,9 +81,11 @@ def convert_chords_to_piano_roll_mat(note_chords, dur_nums):
     onsets = np.array([np.sum(dur_ticks[:i]) for i in range(len(dur_ticks))])
     total_ticks = sum(dur_ticks)
     output_mat = np.zeros([128, int(total_ticks)])
+    # import pdb
+    # pdb.set_trace()
     for i in range(len(onsets) - 1):
         for j in range(len(note_chords[i])):
-            if j == 1:
+            if note_chords[i][j] == 1:
                 chord_tone = j + CHORD_OFFSET
                 output_mat[chord_tone, int(onsets[i]):int(onsets[i+1])] = 1.0
     for j in range(len(note_chords[-1])):
@@ -84,13 +99,13 @@ dur_dir = op.join(os.getcwd(), 'runs', 'durations', args.dur_run_name)
 
 pitch_model_inputs = json.load(open(op.join(pitch_dir, 'model_inputs.json'), 'r'))
 pitch_model_inputs['batch_size'] = 1
-pitch_model_state = torch.load(op.join(pitch_dir, 'model_state.pt'))
+pitch_model_state = torch.load(op.join(pitch_dir, 'model_state.pt'), map_location="cpu")
 pitch_net = PitchLSTM(**pitch_model_inputs, test=True)
 pitch_net.load_state_dict(pitch_model_state)
 
 dur_model_inputs = json.load(open(op.join(dur_dir, 'model_inputs.json'), 'r'))
 dur_model_inputs['batch_size'] = 1
-dur_model_state = torch.load(op.join(dur_dir, 'model_state.pt'))
+dur_model_state = torch.load(op.join(dur_dir, 'model_state.pt'), map_location="cpu")
 dur_net = DurationLSTM(**dur_model_inputs, test=True)
 dur_net.load_state_dict(dur_model_state)
 
