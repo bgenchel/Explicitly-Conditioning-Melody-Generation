@@ -2,11 +2,10 @@ import argparse
 import json
 import os
 import os.path as op
-# import pdb
+import pdb
 import pickle
 import torch
 import torch.nn as nn
-# import torch.nn.functional as F
 import torch.optim as optim
 from collections import OrderedDict
 from datetime import datetime
@@ -74,7 +73,6 @@ loss_fn = nn.NLLLoss()
 # loss_fn = nn.BCELoss()
 # loss_fn = nn.MSELoss()
 # loss_fn = nn.CrossEntropyLoss()
-
 
 net, interrupted, train_losses, valid_losses = train_net(
         net, loss_fn, optimizer, args.epochs, batched_train_seqs, batched_train_targets,
