@@ -1,8 +1,8 @@
 import argparse
 import os
 import os.path as op
-import pdb
 import pickle
+import sys
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -10,9 +10,10 @@ from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
 
-from dataloaders import LeadSheetDataLoader
-from models import DurationLSTM
-from utils import train_harmony_plus_conditioned_net, save_run
+from .models import DurationLSTM
+sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
+from utils.dataloaders import LeadSheetDataLoader
+from utils.training import train_harmony_plus_conditioned_net, save_run
 
 torch.cuda.device(0)
 
@@ -94,11 +95,7 @@ if torch.cuda.is_available():
     net.cuda()
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
-
 loss_fn = nn.NLLLoss()
-# loss_fn = nn.BCELoss()
-# loss_fn = nn.MSELoss()
-# loss_fn = nn.CrossEntropyLoss()
 
 net, interrupted, train_losses, valid_losses = train_harmony_plus_conditioned_net(
         net, loss_fn, optimizer, args.epochs, batched_train_chord_seqs, batched_train_pitch_seqs, 

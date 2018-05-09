@@ -1,21 +1,19 @@
 import argparse
-import json
 import os
 import os.path as op
-# import pdb
 import pickle
+import sys
 import torch
 import torch.nn as nn
-# import torch.nn.functional as F
 import torch.optim as optim
 from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
-# from torch.autograd import Variable
 
-from dataloaders import LeadSheetDataLoader
-from models import DurationLSTM
-from utils import train_net, save_run
+from .models import DurationLSTM
+sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
+from utils.dataloaders import LeadSheetDataLoader
+from utils.training import train_net, save_run
 
 run_datetime_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 info_dict = OrderedDict()
@@ -63,9 +61,11 @@ else:
     dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
 
 lsdl = LeadSheetDataLoader(dataset, args.num_songs)
-(batched_train_seqs, batched_train_targets,
- batched_valid_seqs, batched_valid_targets) = lsdl.get_batched_dur_seqs(
-         seq_len=args.seq_len, batch_size=args.batch_size, target_as_vector=False)
+batch_dict = lsdl.get_batched_dur_seqs(seq_len=args.seq_len, batch_size=args.batch_size)
+batched_train_seqs = batch_dict['batched_train_seqs']
+batched_train_targets = batch_dict['batched_train_targets']
+batched_valid_seqs = batch_dict['batched_valid_seqs']
+batched_valid_targets = batch_dict['batched_valid_targets']
 
 net = DurationLSTM(args.input_dict_size, args.embedding_dim, args.hidden_dim,
                    args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
@@ -74,9 +74,6 @@ if torch.cuda.is_available():
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 loss_fn = nn.NLLLoss()
-# loss_fn = nn.BCELoss()
-# loss_fn = nn.MSELoss()
-# loss_fn = nn.CrossEntropyLoss()
 
 net, interrupted, train_losses, valid_losses = train_net(
         net, loss_fn, optimizer, args.epochs, batched_train_seqs, batched_train_targets,
