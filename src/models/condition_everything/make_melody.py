@@ -60,11 +60,12 @@ def convert_melody_to_piano_roll_mat(pitches, dur_nums):
     total_ticks = sum(dur_ticks)
     output_mat = np.zeros([128, int(total_ticks)])
     for i in range(len(pitches) - 1):
-        if pitches[i] == 0:
+        if pitches[i - 1] == 0:
             continue
         else:
-            output_mat[int(pitches[i]), int(onsets[i]):int(onsets[i+1])] = 1.0
-    output_mat[int(pitches[-1]), int(onsets[-1]):] = 1.0
+            # include the -1 for now because stuff is out of key
+            output_mat[int(pitches[i - 1]), int(onsets[i]):int(onsets[i+1])] = 1.0
+    output_mat[int(pitches[-1] - 1), int(onsets[-1]):] = 1.0
     return output_mat
 
 def convert_chords_to_piano_roll_mat(note_chords, dur_nums):

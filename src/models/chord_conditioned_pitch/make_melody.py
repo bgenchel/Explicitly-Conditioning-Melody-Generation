@@ -12,6 +12,18 @@ from models import PitchLSTM, DurationLSTM
 from pathlib import Path
 from reverse_pianoroll import piano_roll_to_pretty_midi
 
+##### MONKEY PATCH
+import torch._utils
+try:
+    torch._utils._rebuild_tensor_v2
+except AttributeError:
+    def _rebuild_tensor_v2(storage, storage_offset, size, stride, requires_grad, backward_hooks):
+        tensor = torch._utils._rebuild_tensor(storage, storage_offset, size, stride)
+        tensor.requires_grad = requires_grad
+        tensor._backward_hooks = backward_hooks
+        return tensor
+    torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
+##### 
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default="generated", type=str,
