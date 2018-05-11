@@ -10,7 +10,7 @@ from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
 
-from models import PitchLSTM
+from model_classes import PitchLSTM
 sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
 from utils.dataloaders import LeadSheetDataLoader
 from utils.training import train_harmony_plus_conditioned_net, save_run
