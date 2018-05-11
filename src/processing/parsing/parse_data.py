@@ -8,9 +8,9 @@ import random
 from pathlib import Path
 from harmony import Harmony
 
-NOTES_MAP = {'rest': 0, 'B#': 1, 'C': 1, 'C#': 2, 'Db': 2, 'D': 3, 'D#': 4, 'Eb': 4, 
-             'E': 5, 'Fb': 5, 'E#': 6, 'F': 6, 'F#': 7, 'Gb': 7, 'G': 8, 'G#': 9, 
-             'Ab': 9, 'A': 10, 'A#': 11, 'Bb': 11, 'B': 12, 'Cb': 12}
+NOTES_MAP = {'rest': 127, 'B#': 0, 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 
+             'E': 4, 'Fb': 4, 'E#': 5, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 
+             'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11, 'Cb': 11}
 
 DURATIONS_MAP = {'whole': 0, 'half': 1, 'quarter': 2, 'eighth': 3, '16th': 4, 
                  'whole-triplet': 5, 'half-triplet': 6, 'quarter-triplet': 7, 
@@ -117,7 +117,6 @@ def get_note_duration(note_dict, division=24):
 def parse_note(note_dict, division=24):
     if "rest" in note_dict.keys():
         pitch_num = NOTES_MAP["rest"]
-        # octave = -1
     elif "pitch" in note_dict.keys():
         note_string = note_dict["pitch"]["step"]["text"]
         if "alter" in note_dict["pitch"].keys():
@@ -228,7 +227,9 @@ if __name__ == '__main__':
                 transposed['transposition'] = shift
                 print("transposing by %i" % shift)
                 for i, measure in enumerate(transposed['measures']):
-                    measure['pitch_numbers'] = [pn + shift for pn in measure['pitch_numbers']]
+                    measure['pitch_numbers'] = [
+                            (lambda n: n + shift if n != NOTES_MAP["rest"] else n)(pn) 
+                            for pn in measure['pitch_numbers']]
                     measure['harmonies'] = [rotate(h, shift) for h in measure['harmonies']]
                     transposed['measures'][i] = measure
                 outname = op.basename(json_path).replace('.json', '')

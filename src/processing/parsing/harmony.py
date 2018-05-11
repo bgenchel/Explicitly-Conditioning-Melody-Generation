@@ -1,4 +1,5 @@
 import copy
+import numpy as np
 from chord_labels import parse_chord
 
 CHORD_DICT = {"major": {"label": "maj", 
@@ -176,9 +177,9 @@ CHORD_DICT = {"major": {"label": "maj",
                                     "simple_label": "sus4",
                                     "simple_components": {4: 0, 5: 0}}
 }
-                
 
 class Harmony(object):
+    _chord_root = None
     _chord_symbol = None
     _harte_notation = None
     _pitch_classes = None
@@ -256,14 +257,6 @@ class Harmony(object):
                 print("Unknown chord kind: %s, igoring." %
                         str(self.harmony_dict["kind"]["text"]))
 
-            # if self.harmony_dict["degrees"]:
-            #     degree_labels = []
-            #     for degree in self.harmony_dict["degrees"]:
-            #         degree_labels.append(self._get_degree_label(degree))
-            #     degree_labels.sort(key=lambda tup: tup[0])
-            #     degree_labels = [str(dl_tup[1]) + dl_tup[0] for dl_tup in degree_labels]
-            #     self._chord_symbol += "(%s)" % ",".join(degree_labels)
-
         return self._triad_chord_symbol
 
     def get_simple_chord_symbol(self):
@@ -275,14 +268,6 @@ class Harmony(object):
             else:
                 print("Unknown chord kind: %s, igoring." %
                         str(self.harmony_dict["kind"]["text"]))
-
-            # if self.harmony_dict["degrees"]:
-            #     degree_labels = []
-            #     for degree in self.harmony_dict["degrees"]:
-            #         degree_labels.append(self._get_degree_label(degree))
-            #     degree_labels.sort(key=lambda tup: tup[0])
-            #     degree_labels = [str(dl_tup[1]) + dl_tup[0] for dl_tup in degree_labels]
-            #     self._chord_symbol += "(%s)" % ",".join(degree_labels)
 
         return self._simple_chord_symbol
 
@@ -329,18 +314,6 @@ class Harmony(object):
                 print("Unknown chord kind: %s, using \"major\"." %
                         str(self.harmony_dict["kind"]["text"]))
 
-            # if self.harmony_dict["degrees"]:
-            #     for degree in self.harmony_dict["degrees"]:
-            #         value = int(degree["degree-value"]["text"])
-            #         if value not in (5, 7):
-            #             continue
-
-            #         if "degree-alter" in degree.keys():
-            #             alter = int(degree["degree-alter"]["text"])
-            #             components[value] = alter
-            #         else:
-            #             components[alter] = 0
-
             component_strings = []
             for i in range(2, 14):
                 if i in components.keys():
@@ -360,18 +333,6 @@ class Harmony(object):
                 components = copy.deepcopy(CHORD_DICT["major"]["simple_components"])
                 print("Unknown chord kind: %s, using \"major\"." %
                         str(self.harmony_dict["kind"]["text"]))
-
-            # if self.harmony_dict["degrees"]:
-            #     for degree in self.harmony_dict["degrees"]:
-            #         value = int(degree["degree-value"]["text"])
-            #         if value not in (5, 7):
-            #             continue
-
-            #         if "degree-alter" in degree.keys():
-            #             alter = int(degree["degree-alter"]["text"])
-            #             components[value] = alter
-            #         else:
-            #             components[alter] = 0
 
             component_strings = []
             for i in range(2, 14):

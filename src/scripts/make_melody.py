@@ -8,9 +8,10 @@ import random
 import sys
 import torch
 from torch.autograd import Variable
-# from models import PitchLSTM, DurationLSTM
 from pathlib import Path
-from reverse_pianoroll import piano_roll_to_pretty_midi
+
+sys.path.append(Path(op.abspath(__file__)).parents[1])
+from utils.reverse_pianoroll import piano_roll_to_pretty_midi
 
 ##### MONKEY PATCH #####
 import torch._utils
@@ -41,6 +42,8 @@ parser.add_argument('-sm', '--seed_measures', type=int, default=1,
                     help="number of measures to use as seeds to the network")
 args = parser.parse_args()
 
+REST_NUM = 127
+
 # just use indices instead of making a dict with number keys
 NUM_TO_TAG = ['whole', 'half', 'quarter', 'eighth', '16th', 'whole-triplet', 
               'half-triplet', 'quarter-triplet', 'eighth-triplet', '16th-triplet', 
@@ -57,13 +60,12 @@ TAG_TO_TICKS = {'whole': 96, 'half': 48, 'quarter': 24, 'eighth': 12, '16th': 6,
 CHORD_OFFSET = 60 # chords will be in octave 4
 
 def convert_melody_to_piano_roll_mat(pitches, dur_nums):
-    # print(dur_nums)
     dur_ticks = [TAG_TO_TICKS[NUM_TO_TAG[dur]] for dur in dur_nums]
     onsets = np.array([np.sum(dur_ticks[:i]) for i in range(len(dur_ticks))])
     total_ticks = sum(dur_ticks)
     output_mat = np.zeros([128, int(total_ticks)])
     for i in range(len(pitches) - 1):
-        if pitches[i - 1] == 0:
+        if pitches[i - 1] == REST_NUM:
             continue
         else:
             # include the -1 for now because stuff is out of key
