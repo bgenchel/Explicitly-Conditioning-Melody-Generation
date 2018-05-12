@@ -1,0 +1,11 @@
+{
+    "hidden_dim": 25,
+    "num_lstm_layers": 2,
+    "dur_embedding_dim": 9,
+    "dur_input_dict_size": 18,
+    "harmony_dim": 12,
+    "pitch_input_dict_size": 128,
+    "output_dim": 128,
+    "batch_size": 16,
+    "pitch_embedding_dim": 20
+}
