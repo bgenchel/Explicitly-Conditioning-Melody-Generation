@@ -30,8 +30,8 @@ class PitchLSTM(nn.Module):
         return 
 
     def init_hidden_and_cell(self, batch_size):
-        hidden = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
-        cell = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
+        hidden = Variable(torch.FloatTensor(np.zeros([self.num_layers, batch_size, self.hidden_dim])))
+        cell = Variable(torch.FloatTensor(np.zeros([self.num_layers, batch_size,self.hidden_dim])))
         if torch.cuda.is_available() and (not self.test):
             hidden = hidden.cuda()
             cell = cell.cuda()
@@ -77,8 +77,8 @@ class DurationLSTM(nn.Module):
         return 
 
     def init_hidden_and_cell(self, batch_size):
-        hidden = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
-        cell = Variable(torch.FloatTensor(self.num_layers, batch_size, self.hidden_dim).normal_())
+        hidden = Variable(torch.FloatTensor(np.zeros([self.num_layers, batch_size, self.hidden_dim])))
+        cell = Variable(torch.FloatTensor(np.zeros([self.num_layers, batch_size,self.hidden_dim])))
         if torch.cuda.is_available() and (not self.test):
             hidden = hidden.cuda()
             cell = cell.cuda()
