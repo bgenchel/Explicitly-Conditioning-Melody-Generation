@@ -37,15 +37,20 @@ class LeadSheetDataLoader(DataLoader):
                 for i, thing in enumerate(measure[seq_key]):
                     song_seq.append(thing)
 
+            song_seqs = []
+            song_seqs_targets = []
             for i in range(0, len(song_seq) - seq_len):
-                train_seqs.append(np.array(song_seq[i:i+seq_len]))
+                song_seqs.append(np.array(song_seq[i:i+seq_len]))
 
                 if target_as_vector:
                     target = np.zeros(target_vector_size)
                     target[song_seq[i + seq_len]] = 1
-                    train_targets.append(target)
+                    song_seqs_targets.append(target)
                 else:
-                    train_targets.append(song_seq[i+seq_len])
+                    song_seqs_targets.append(song_seq[i+seq_len])
+            
+            train_seqs.append(np.array(song_seqs))
+            train_targets.append(np.array(song_seqs_targets))
                 
         for song in self.valid:
             song_seq = []
@@ -53,46 +58,65 @@ class LeadSheetDataLoader(DataLoader):
                 for i, thing in enumerate(measure[seq_key]):
                     song_seq.append(thing)
 
+            song_seqs = []
+            song_seqs_targets = []
             for i in range(0, len(song_seq) - seq_len):
-                valid_seqs.append(np.array(song_seq[i:i+seq_len]))
+                song_seqs.append(np.array(song_seq[i:i+seq_len]))
 
                 if target_as_vector:
                     target = np.zeros(target_vector_size)
                     target[song_seq[i + seq_len]] = 1
-                    valid_targets.append(target)
+                    song_seqs_targets.append(target)
                 else:
-                    valid_targets.append(song_seq[i+seq_len])
+                    song_seqs_targets.append(song_seq[i+seq_len])
 
-        return (np.array(train_seqs), np.array(train_targets),
-                np.array(valid_seqs), np.array(valid_targets))
+            valid_seqs.append(np.array(song_seqs))
+            valid_targets.append(np.array(song_seqs_targets))
+
+        return (train_seqs, train_targets,
+                valid_seqs, valid_targets)
 
     def _get_batched(self, seqs_getter, seq_len=2, batch_size=1, target_as_vector=False):
         (train_seqs, train_targets, 
          valid_seqs, valid_targets) = seqs_getter(seq_len=seq_len, target_as_vector=target_as_vector)
-        assert batch_size <= len(train_seqs)
-        assert batch_size <= len(valid_seqs)
-        num_train_batches = int(np.floor(len(train_seqs) / batch_size))
-        num_valid_batches = int(np.floor(len(valid_seqs) / batch_size))
-        batched_train_seqs = np.split(
-                train_seqs[:num_train_batches*batch_size], num_train_batches, axis=0)
-        batched_train_targets = np.split(
-                train_targets[:num_train_batches*batch_size], num_train_batches, axis=0)
-        batched_valid_seqs = np.split(
-                valid_seqs[:num_valid_batches*batch_size], num_valid_batches, axis=0)
-        batched_valid_targets = np.split(
-                valid_targets[:num_valid_batches*batch_size], num_valid_batches, axis=0)
-        
-        data = {'batched_train_seqs': np.array(batched_train_seqs),
-                'batched_train_targets': np.array(batched_train_targets),
-                'batched_valid_seqs': np.array(batched_valid_seqs),
-                'batched_valid_targets': np.array(batched_valid_targets)}
-        return data
+
+        batched_train_seqs = []
+        batched_train_targets = []
+        batched_valid_seqs = []
+        batched_valid_targets = []
+        for song_seqs, song_targets in zip(train_seqs, train_targets):
+            assert batch_size <= len(song_seqs)
+            num_train_batches = int(np.floor(len(song_seqs) / batch_size))
+            batched_song_seqs = np.split(
+                    song_seqs[:num_train_batches*batch_size], num_train_batches, axis=0)
+            batched_song_targets = np.split(
+                    song_targets[:num_train_batches*batch_size], num_train_batches, axis=0)
+
+            batched_train_seqs.append(batched_song_seqs)
+            batched_train_targets.append(batched_song_targets)
+
+        for song_seqs, song_targets in zip(valid_seqs, valid_targets):
+            assert batch_size <= len(song_seqs)
+            num_valid_batches = int(np.floor(len(song_seqs) / batch_size))
+            batched_song_seqs = np.split(
+                    song_seqs[:num_valid_batches*batch_size], num_valid_batches, axis=0)
+            batched_song_targets = np.split(
+                    song_targets[:num_valid_batches*batch_size], num_valid_batches, axis=0)
+
+            batched_valid_seqs.append(batched_song_seqs)
+            batched_valid_targets.append(batched_song_targets)
+
+        return {'batched_train_seqs': batched_train_seqs,
+                'batched_train_targets': batched_train_targets,
+                'batched_valid_seqs': batched_valid_seqs,
+                'batched_valid_targets': batched_valid_targets}
 
     def get_harmony(self, seq_len=2, **kwargs):
         train_seqs = []
         train_targets = []
         valid_seqs = []
         valid_targets = []
+
         for song in self.train:
             song_pitch_harmonies = []
             for measure in song['measures']:
@@ -102,9 +126,14 @@ class LeadSheetDataLoader(DataLoader):
                         harmony_index += 1
                     song_pitch_harmonies.append(measure['harmonies'][harmony_index])
 
+            song_pitch_harmony_seqs = []
+            song_pitch_harmony_targets = []
             for i in range(0, len(song_pitch_harmonies) - seq_len):
-                train_seqs.append(np.array(song_pitch_harmonies[i:i+seq_len]))
-                train_targets.append(np.array(song_pitch_harmonies[i+seq_len]))
+                song_pitch_harmony_seqs.append(np.array(song_pitch_harmonies[i:i+seq_len]))
+                song_pitch_harmony_targets.append(np.array(song_pitch_harmonies[i+seq_len]))
+
+            train_seqs.append(np.array(song_pitch_harmony_seqs))
+            train_targets.append(np.array(song_pitch_harmony_targets))
 
         for song in self.valid:
             song_pitch_harmonies = []
@@ -115,13 +144,17 @@ class LeadSheetDataLoader(DataLoader):
                         harmony_index += 1
                     song_pitch_harmonies.append(measure['harmonies'][harmony_index])
 
+            song_pitch_harmony_seqs = []
+            song_pitch_harmony_targets = []
             for i in range(0, len(song_pitch_harmonies) - seq_len):
-                valid_seqs.append(np.array(song_pitch_harmonies[i:i+seq_len]))
-                valid_targets.append(np.array(song_pitch_harmonies[i+seq_len]))
+                song_pitch_harmony_seqs.append(np.array(song_pitch_harmonies[i:i+seq_len]))
+                song_pitch_harmony_targets.append(np.array(song_pitch_harmonies[i+seq_len]))
 
-        # pdb.set_trace()
-        return (np.array(train_seqs), np.array(train_targets),
-                np.array(valid_seqs), np.array(valid_targets))
+            valid_seqs.append(np.array(song_pitch_harmony_seqs))
+            valid_targets.append(np.array(song_pitch_harmony_targets))
+
+        return (train_seqs, train_targets,
+                valid_seqs, valid_targets)
 
 
     def get_batched_harmony(self, seq_len=2, batch_size=1):
