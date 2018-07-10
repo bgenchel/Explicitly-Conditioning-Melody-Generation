@@ -91,8 +91,10 @@ harmony_dim = batched_train_chord_seqs.shape[-1]
 net = PitchLSTM(args.pitch_input_dict_size, args.dur_input_dict_size, harmony_dim,
                 args.pitch_embedding_dim, args.dur_embedding_dim, args.hidden_dim,
                 args.output_dim, num_lstm_layers=args.num_layers, batch_size=args.batch_size)
+
 if torch.cuda.is_available():
     net.cuda()
+
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 loss_fn = nn.NLLLoss()

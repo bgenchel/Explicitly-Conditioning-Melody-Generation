@@ -4,6 +4,9 @@ import os.path as op
 import torch
 from torch.autograd import Variable
 
+################################################################################
+# Validation Functions
+################################################################################
 def compute_avg_loss(net, loss_fn, songs_batched_seqs, songs_batched_targets):
     total_loss = 0.0
     batch_count = 0
@@ -69,15 +72,19 @@ def compute_harmony_plus_conditioned_avg_loss(net, loss_fn, songs_batched_chords
     avg_loss = total_loss/batch_count
     return avg_loss
 
+################################################################################
+# Training Functions
+################################################################################
 def train_net(net, loss_fn, optimizer, epochs, songs_batched_train_seqs, 
               songs_batched_train_targets, songs_batched_valid_seqs, 
-              songs_batched_valid_targets, print_every=5):
+              songs_batched_valid_targets, log_func, print_every=5):
     interrupted = False
     train_losses = []
     valid_losses = []
     print("Beginning Training")
     print("Cuda available: ", torch.cuda.is_available())
     try:
+        total_steps = 0
         for epoch in range(epochs): # 10 epochs to start
             batch_count = 0
             avg_loss = 0.0
@@ -107,8 +114,10 @@ def train_net(net, loss_fn, optimizer, epochs, songs_batched_train_seqs,
                     if batch_count % print_every == print_every - 1:
                         print('epoch: %d, batch_count: %d, loss: %.5f'%(
                             epoch + 1, batch_count + 1, avg_loss / print_every))
+                        log_func(avg_loss / print_every, total_steps)
                         avg_loss = 0.0
                     batch_count += 1
+                    total_steps += 1
             print('Average Epoch Loss: %f'%(epoch_loss/batch_count))
             train_losses.append(epoch_loss/batch_count)
             valid_loss = compute_avg_loss(net, loss_fn, songs_batched_valid_seqs,

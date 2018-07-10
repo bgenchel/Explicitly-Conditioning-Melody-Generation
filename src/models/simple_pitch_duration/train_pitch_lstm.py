@@ -1,4 +1,5 @@
 import argparse
+from functools import partial
 import os
 import os.path as op
 import pickle
@@ -14,6 +15,8 @@ from model_classes import PitchLSTM
 sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
 from utils.dataloaders import LeadSheetDataLoader
 from utils.training import train_net, save_run
+from utils.logging import Logger
+
 
 run_datetime_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 info_dict = OrderedDict()
@@ -44,10 +47,15 @@ parser.add_argument('-nl', '--num_layers', default=2, type=int,
                     help="number of lstm layers to use.")
 parser.add_argument('-lr', '--learning_rate', default=1e-3, type=float,
                     help="learning rate for sgd")
+parser.add_argument('-pe', '--print_every', default=10, type=int,
+                    help="how often to print the loss during training.")
 parser.add_argument('-k', '--keep', action='store_true',
                     help="save information about this run")
 args = parser.parse_args()
 info_dict.update(vars(args))
+
+logger = Logger('./logs/%s' % ('-'.join(['pitch', args.title])))
+log_func = 
 
 root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, "data", "processed", "datasets")
@@ -73,7 +81,7 @@ loss_fn = nn.NLLLoss()
 
 net, interrupted, train_losses, valid_losses = train_net(net, loss_fn, optimizer, 
         args.epochs, batched_train_seqs, batched_train_targets, batched_valid_seqs, 
-        batched_valid_targets)
+        batched_valid_targets, logger, print_every=args.print_every)
 
 info_dict['interrupted'] = interrupted
 info_dict['epochs_completed'] = len(train_losses)
