@@ -9,13 +9,17 @@ import torch.optim as optim
 from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
+from tensorboardX import SummaryWriter
 
 from model_classes import DurationLSTM
 sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
+from utils.constants import DEFAULT_PRINT_EVERY
 from utils.dataloaders import LeadSheetDataLoader
-from utils.training import train_net, save_run
+from utils.training import train_harmony_conditioned_net, save_run
 
-run_datetime_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+torch.cuda.device(0)
+
+run_datetime_str = datetime.now().strftime('%b%d-%y_%H:%M:%S')
 info_dict = OrderedDict()
 info_dict['run_datetime'] = run_datetime_str
 
@@ -38,7 +42,7 @@ parser.add_argument('-ed', '--embedding_dim', default=20, type=int,
                     help="size of note embeddings.")
 parser.add_argument('-hd', '--hidden_dim', default=25, type=int,
                     help="size of hidden state.")
-parser.add_argument('-od', '--output_dim', default=128, type=int,
+parser.add_argument('-od', '--output_dim', default=18, type=int,
                     help="size of output softmax.")
 parser.add_argument('-nl', '--num_layers', default=2, type=int,
                     help="number of lstm layers to use.")
@@ -48,6 +52,8 @@ parser.add_argument('-m', '--momentum', default=0.9, type=float,
                     help="momentum for sgd.")
 parser.add_argument('-k', '--keep', action='store_true',
                     help="save information about this run")
+parser.add_argument('-pe', '--print_every', default=DEFAULT_PRINT_EVERY, type=int,
+                    help="how often to print the loss during training.")
 parser.add_argument('-s', '--show', action='store_true',
                     help="show figures as they are generated")
 args = parser.parse_args()
@@ -57,8 +63,10 @@ root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, "data", "processed", "datasets")
 if args.charlie_parker:
     dataset = pickle.load(open(op.join(data_dir, "charlie_parker_dataset.pkl"), "rb"))
+    args.title = '_'.join([args.title, 'CP'])
 else:
     dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
+    args.title = '_'.join([args.title, 'FULL'])
 
 lsdl = LeadSheetDataLoader(dataset, args.num_songs)
 batch_dict = lsdl.get_batched_dur_seqs(seq_len=args.seq_len, batch_size=args.batch_size)
@@ -67,31 +75,44 @@ batched_train_dur_targets = batch_dict['batched_train_targets']
 batched_valid_dur_seqs = batch_dict['batched_valid_seqs']
 batched_valid_dur_targets = batch_dict['batched_valid_targets']
 
+harm_batch_dict = lsdl.get_batched_harmony(seq_len=args.seq_len, batch_size=args.batch_size)
+batched_train_chord_seqs = harm_batch_dict['batched_train_seqs']
+batched_train_chord_targets = harm_batch_dict['batched_train_targets']
+batched_valid_chord_seqs = harm_batch_dict['batched_valid_seqs']
+batched_valid_chord_targets = harm_batch_dict['batched_valid_targets']
+
+harmony_dim = batched_train_chord_seqs.shape[-1]
+
 net = DurationLSTM(args.input_dict_size, args.embedding_dim, args.hidden_dim,
-                   args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
+    args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
 if torch.cuda.is_available():
     net.cuda()
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 loss_fn = nn.NLLLoss()
 
-net, interrupted, train_losses, valid_losses = train_net(
-        net, loss_fn, optimizer, args.epochs, batched_train_dur_seqs, 
-        batched_train_dur_targets, batched_valid_dur_seqs, batched_valid_dur_targets)
+dirpath = op.join(os.getcwd(), "runs", "duration", args.title)
+writer = SummaryWriter(op.join(dirpath, 'tensorboard'))
 
-info_dict['interrupted'] = interrupted
-info_dict['epochs_completed'] = len(train_losses)
-info_dict['final_training_loss'] = train_losses[-1]
-info_dict['final_valid_loss'] = valid_losses[-1]
+net, interrupted, train_losses, valid_losses = train_harmony_conditioned_net(
+    net, loss_fn, optimizer, args.epochs, batched_train_chord_seqs, 
+    batched_train_dur_seqs, batched_train_dur_targets, batched_valid_dur_seqs, 
+    batched_valid_dur_targets, writer, args.print_every)
 
-model_inputs = {'input_dict_size': args.input_dict_size, 
-                'embedding_dim': args.embedding_dim,
-                'hidden_dim': args.hidden_dim,
-                'output_dim': args.output_dim,
-                'num_layers': args.num_layers,
-                'batch_size': args.batch_size}
-
-dirpath = op.join(os.getcwd(), "runs", "durations", args.title)
+writer.close()
 
 if args.keep:
+    info_dict['interrupted'] = interrupted
+    info_dict['epochs_completed'] = len(train_losses)
+    info_dict['final_training_loss'] = train_losses[-1]
+    info_dict['final_valid_loss'] = valid_losses[-1]
+
+    model_inputs = {'input_dict_size': args.input_dict_size, 
+                    'embedding_dim': args.embedding_dim,
+                    'hidden_dim': args.hidden_dim,
+                    'output_dim': args.output_dim,
+                    'num_layers': args.num_layers,
+                    'batch_size': args.batch_size,
+                    'harmony_dim': harmony_dim}
+
     save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, net)

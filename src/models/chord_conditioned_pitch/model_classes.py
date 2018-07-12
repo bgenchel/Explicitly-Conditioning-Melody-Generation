@@ -8,7 +8,7 @@ torch.manual_seed(1)
 
 class PitchLSTM(nn.Module):
     def __init__(self, input_dict_size, harmony_dim, embedding_dim, hidden_dim, 
-                 output_dim, num_layers=2, batch_size=None, test=False, **kwargs):
+            output_dim, num_layers=2, batch_size=None, test=False, **kwargs):
         super(PitchLSTM, self).__init__(**kwargs)
         self.input_dict_size = input_dict_size
         self.hidden_dim = hidden_dim
@@ -60,20 +60,22 @@ class PitchLSTM(nn.Module):
         output = self.softmax(decoded)
         return output
 
-
 class DurationLSTM(nn.Module):
-    def __init__(self, input_dict_size, embedding_dim, hidden_dim, 
-                 output_dim, num_layers=2, batch_size=None, test=False, **kwargs):
+    def __init__(self, input_dict_size, harmony_dim, embedding_dim, hidden_dim, 
+            output_dim, num_layers=2, batch_size=None, test=False, **kwargs):
         super(DurationLSTM, self).__init__(**kwargs)
         self.input_dict_size = input_dict_size
-        self.embedding_dim = embedding_dim
         self.hidden_dim = hidden_dim
-        self.output_dim = output_dim
         self.num_layers = num_layers
         self.test = test
 
+        harmony_encoding_dim = (3*harmony_dim)//4
+
+        self.harmony_fc1 = nn.Linear(harmony_dim, harmony_encoding_dim)
+        self.harmony_fc2 = nn.Linear(harmony_encoding_dim, harmony_encoding_dim)
         self.dur_embedding = nn.Embedding(input_dict_size, embedding_dim)
-        self.lstm = nn.LSTM(embedding_dim, hidden_dim, num_layers=num_layers, batch_first=True)
+        self.encoder = nn.Linear(embedding_dim + harmony_encoding_dim, hidden_dim)
+        self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=num_layers, batch_first=True)
         self.decoder = nn.Linear(hidden_dim, output_dim)
         self.softmax = nn.LogSoftmax(dim=2)
 
@@ -100,9 +102,13 @@ class DurationLSTM(nn.Module):
         self.hidden_and_cell = (new_hidden, new_cell)
         return
 
-    def forward(self, pitches):
-        embedded_pitches = self.dur_embedding(pitches)
-        lstm_out, self.hidden_and_cell = self.lstm(embedded_pitches, self.hidden_and_cell)
+    def forward(self, harmonies, durs):
+        # pdb.set_trace()
+        encoded_harmonies = self.harmony_fc2(F.relu(self.harmony_fc1(harmonies)))
+        embedded_durs = self.pitch_embedding(durs)
+        inpt = torch.cat([encoded_harmonies, embedded_durs], 2) # Concatenate along 3rd dimension
+        encoded_inpt = F.relu(self.encoder(inpt))
+        lstm_out, self.hidden_and_cell = self.lstm(encoded_inpt, self.hidden_and_cell)
         decoded = self.decoder(lstm_out)
         output = self.softmax(decoded)
         return output

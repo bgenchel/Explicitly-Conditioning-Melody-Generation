@@ -1,11 +1,23 @@
 import json
+import random
 import os
 import os.path as op
 import torch
 from torch.autograd import Variable
+from .constants import DEFAULT_PRINT_EVERY
 
 ################################################################################
-# Validation Functions
+# Helper Functions
+################################################################################
+def write_loss(train_loss, valid_loss, writer, step):
+    writer.add_scalars('loss', {"training": train_loss, 
+        "validation": valid_loss}, step)
+    print('Step %i Average Training Loss: %f'%(step, train_loss))
+    print('Step %i Average Validation Loss: %f'%(step, valid_loss))
+    return
+
+################################################################################
+# Loss Calculation Functions
 ################################################################################
 def compute_avg_loss(net, loss_fn, songs_batched_seqs, songs_batched_targets):
     total_loss = 0.0
@@ -26,7 +38,7 @@ def compute_avg_loss(net, loss_fn, songs_batched_seqs, songs_batched_targets):
     return avg_loss
 
 def compute_harmony_conditioned_avg_loss(net, loss_fn, songs_batched_chords,
-                                         songs_batched_seqs, songs_batched_targets):
+        songs_batched_seqs, songs_batched_targets):
     total_loss = 0.0
     batch_count = 0
     songs_groups = zip(songs_batched_chords, songs_batched_seqs, songs_batched_targets)
@@ -47,9 +59,7 @@ def compute_harmony_conditioned_avg_loss(net, loss_fn, songs_batched_chords,
         return avg_loss
 
 def compute_harmony_plus_conditioned_avg_loss(net, loss_fn, songs_batched_chords,
-                                              songs_batched_cond_seqs, 
-                                              songs_batched_seqs, 
-                                              songs_batched_targets):
+        songs_batched_cond_seqs, songs_batched_seqs, songs_batched_targets):
     total_loss = 0.0
     batch_count = 0
     songs_groups = zip(songs_batched_chords, songs_batched_cond_seqs, 
@@ -76,20 +86,29 @@ def compute_harmony_plus_conditioned_avg_loss(net, loss_fn, songs_batched_chords
 # Training Functions
 ################################################################################
 def train_net(net, loss_fn, optimizer, epochs, songs_batched_train_seqs, 
-              songs_batched_train_targets, songs_batched_valid_seqs, 
-              songs_batched_valid_targets, log_func, print_every=5):
+        songs_batched_train_targets, songs_batched_valid_seqs, 
+        songs_batched_valid_targets, writer, print_every=DEFAULT_PRINT_EVERY):
     interrupted = False
     train_losses = []
     valid_losses = []
     print("Beginning Training")
     print("Cuda available: ", torch.cuda.is_available())
     try:
-        total_steps = 0
-        for epoch in range(epochs): # 10 epochs to start
+        # write the initial loss
+        train_loss = compute_avg_loss(net, loss_fn, songs_batched_train_seqs, 
+            songs_batched_train_targets)
+        train_losses.append(train_loss)
+        valid_loss = compute_avg_loss(net, loss_fn, songs_batched_valid_seqs, 
+            songs_batched_valid_targets)
+        valid_losses.append(valid_loss)
+        write_loss(train_loss, valid_loss, writer, 0)
+        # train
+        for epoch in range(epochs):
             batch_count = 0
             avg_loss = 0.0
             epoch_loss = 0.0
-            songs_groups = zip(songs_batched_train_seqs, songs_batched_train_targets)
+            songs_groups = list(zip(songs_batched_train_seqs, songs_batched_train_targets))
+            random.shuffle(songs_groups)
             for song_group in songs_groups:
                 for seq_batch, target_batch in zip(*song_group):
                     # get the data, wrap it in a Variable
@@ -114,15 +133,14 @@ def train_net(net, loss_fn, optimizer, epochs, songs_batched_train_seqs,
                     if batch_count % print_every == print_every - 1:
                         print('epoch: %d, batch_count: %d, loss: %.5f'%(
                             epoch + 1, batch_count + 1, avg_loss / print_every))
-                        log_func(avg_loss / print_every, total_steps)
                         avg_loss = 0.0
                     batch_count += 1
-                    total_steps += 1
-            print('Average Epoch Loss: %f'%(epoch_loss/batch_count))
-            train_losses.append(epoch_loss/batch_count)
-            valid_loss = compute_avg_loss(net, loss_fn, songs_batched_valid_seqs,
-                                          songs_batched_valid_targets)
+            train_loss = epoch_loss/batch_count
+            train_losses.append(train_loss)
+            valid_loss = compute_avg_loss(net, loss_fn, songs_batched_valid_seqs, 
+                songs_batched_valid_targets)
             valid_losses.append(valid_loss)
+            write_loss(train_loss, valid_loss, writer, epoch + 1)
         print('Finished Training')
     except KeyboardInterrupt:
         print('Training Interrupted')
@@ -130,22 +148,34 @@ def train_net(net, loss_fn, optimizer, epochs, songs_batched_train_seqs,
     return (net, interrupted, train_losses, valid_losses)
 
 def train_harmony_conditioned_net(net, loss_fn, optimizer, epochs, 
-            songs_batched_train_chord_seqs, songs_batched_train_seqs, 
-            songs_batched_train_targets, songs_batched_valid_chord_seqs, 
-            songs_batched_valid_seqs, songs_batched_valid_targets, 
-            print_every=5):
+        songs_batched_train_chord_seqs, songs_batched_train_seqs, 
+        songs_batched_train_targets, songs_batched_valid_chord_seqs, 
+        songs_batched_valid_seqs, songs_batched_valid_targets, writer, 
+        print_every=DEFAULT_PRINT_EVERY):
     interrupted = False
     train_losses = []
     valid_losses = []
     print("Beginning Training")
     print("Cuda available: ", torch.cuda.is_available())
     try:
+        # write initial loss
+        train_loss = compute_harmony_conditioned_avg_loss(net, loss_fn, 
+            songs_batched_train_chord_seqs, songs_batched_train_seqs, 
+            songs_batched_train_targets)
+        train_losses.append(train_loss)
+        valid_loss = compute_harmony_conditioned_avg_loss(net, loss_fn, 
+            songs_batched_valid_chord_seqs, songs_batched_valid_seqs, 
+            songs_batched_valid_targets)
+        valid_losses.append(valid_loss)
+        write_loss(train_loss, valid_loss, writer, 0)
+        # train net
         for epoch in range(epochs): # 10 epochs to start
             batch_count = 0
             avg_loss = 0.0
             epoch_loss = 0.0
-            songs_groups = zip(songs_batched_train_chord_seqs, 
-                               songs_batched_train_seqs, songs_batched_train_targets)
+            songs_groups = list(zip(songs_batched_train_chord_seqs, 
+                songs_batched_train_seqs, songs_batched_train_targets))
+            random.shuffle(songs_groups)
             for song_group in songs_groups:
                 for chord_batch, seq_batch, target_batch in zip(*song_group): 
                 # get the data, wrap it in a Variable
@@ -174,15 +204,13 @@ def train_harmony_conditioned_net(net, loss_fn, optimizer, epochs,
                             epoch + 1, batch_count + 1, avg_loss / print_every))
                         avg_loss = 0.0
                     batch_count += 1
-            print('Average Epoch Loss: %f'%(epoch_loss/batch_count))
+            train_loss = epoch_loss/batch_count
             train_losses.append(epoch_loss/batch_count)
-            # import pdb
-            # pdb.set_trace()
-            valid_loss = compute_harmony_conditioned_avg_loss(
-                    net, loss_fn, songs_batched_valid_chord_seqs, 
-                    songs_batched_valid_seqs, songs_batched_valid_targets)
-            print('Validation Loss: %f'%(valid_loss))
+            valid_loss = compute_harmony_conditioned_avg_loss(net, loss_fn, 
+                songs_batched_valid_chord_seqs, songs_batched_valid_seqs, 
+                songs_batched_valid_targets)
             valid_losses.append(valid_loss)
+            write_loss(train_loss, valid_loss, writer, epoch + 1)
         print('Finished Training')
     except KeyboardInterrupt:
         print('Training Interrupted')
@@ -194,19 +222,33 @@ def train_harmony_plus_conditioned_net(net, loss_fn, optimizer, epochs,
         songs_batched_train_chord_seqs, songs_batched_train_cond_seqs, 
         songs_batched_train_seqs, songs_batched_train_targets, 
         songs_batched_valid_chord_seqs, songs_batched_valid_cond_seqs, 
-        songs_batched_valid_seqs, songs_batched_valid_targets, print_every=5):
+        songs_batched_valid_seqs, songs_batched_valid_targets, writer,
+        print_every=DEFAULT_PRINT_EVERY):
     interrupted = False
     train_losses = []
     valid_losses = []
     print("Beginning Training")
     print("Cuda available: ", torch.cuda.is_available())
     try:
-        for epoch in range(epochs): # 10 epochs to start
+        # write initial loss
+        train_loss = compute_harmony_plus_conditioned_avg_loss(net, loss_fn, 
+            songs_batched_train_chord_seqs, songs_batched_train_cond_seqs,
+            songs_batched_train_seqs, songs_batched_train_targets)
+        train_losses.append(train_loss)
+        valid_loss = compute_harmony_plus_conditioned_avg_loss(net, loss_fn, 
+            songs_batched_valid_chord_seqs, songs_batched_valid_cond_seqs,
+            songs_batched_valid_seqs, songs_batched_valid_targets)
+        valid_losses.append(valid_loss)
+        write_loss(train_loss, valid_loss, writer, 0)
+        # train net
+        for epoch in range(epochs):
             batch_count = 0
             avg_loss = 0.0
             epoch_loss = 0.0
-            songs_groups = zip(songs_batched_train_chord_seqs, songs_batched_train_cond_seqs,
-                               songs_batched_train_seqs, songs_batched_train_targets)
+            songs_groups = list(zip(songs_batched_train_chord_seqs, 
+                songs_batched_train_cond_seqs, songs_batched_train_seqs, 
+                songs_batched_train_targets))
+            random.shuffle(songs_groups)
             for song_group in songs_groups:
                 for chord_batch, cond_batch, seq_batch, target_batch in zip(*song_group):
                     # get the data, wrap it in a Variable
@@ -237,15 +279,13 @@ def train_harmony_plus_conditioned_net(net, loss_fn, optimizer, epochs,
                             epoch + 1, batch_count + 1, avg_loss / print_every))
                         avg_loss = 0.0
                     batch_count += 1
-            print('Average Epoch Loss: %f'%(epoch_loss/batch_count))
-            train_losses.append(epoch_loss/batch_count)
-            # import pdb
-            # pdb.set_trace()
+            train_loss = epoch_loss/batch_count
+            train_losses.append(train_loss)
             valid_loss = compute_harmony_plus_conditioned_avg_loss(net, loss_fn, 
-                    songs_batched_valid_chord_seqs, songs_batched_valid_cond_seqs,
-                    songs_batched_valid_seqs, songs_batched_valid_targets)
-            print('Validation Loss: %f'%(valid_loss))
+                songs_batched_valid_chord_seqs, songs_batched_valid_cond_seqs,
+                songs_batched_valid_seqs, songs_batched_valid_targets)
             valid_losses.append(valid_loss)
+            write_loss(train_loss, valid_loss, writer, epoch + 1)
         print('Finished Training')
     except KeyboardInterrupt:
         print('Training Interrupted')
