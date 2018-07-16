@@ -1,4 +1,5 @@
 import pdb
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -105,7 +106,7 @@ class DurationLSTM(nn.Module):
     def forward(self, harmonies, durs):
         # pdb.set_trace()
         encoded_harmonies = self.harmony_fc2(F.relu(self.harmony_fc1(harmonies)))
-        embedded_durs = self.pitch_embedding(durs)
+        embedded_durs = self.dur_embedding(durs)
         inpt = torch.cat([encoded_harmonies, embedded_durs], 2) # Concatenate along 3rd dimension
         encoded_inpt = F.relu(self.encoder(inpt))
         lstm_out, self.hidden_and_cell = self.lstm(encoded_inpt, self.hidden_and_cell)

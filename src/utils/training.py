@@ -44,8 +44,7 @@ def compute_harmony_conditioned_avg_loss(net, loss_fn, songs_batched_chords,
         songs_batched_seqs, songs_batched_targets):
     total_loss = 0.0
     batch_count = 0
-    songs_groups = list(zip(songs_batched_chords, songs_batched_seqs,
-        songs_batched_targets))
+    songs_groups = list(zip(songs_batched_chords, songs_batched_seqs, songs_batched_targets))
     random.shuffle(songs_groups)
     for song_group in songs_groups[:STOCHASTIC_SAMPLE_SIZE]:
         for chord_batch, seq_batch, target_batch in zip(*song_group):

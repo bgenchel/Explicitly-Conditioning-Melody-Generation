@@ -81,10 +81,11 @@ batched_train_chord_targets = harm_batch_dict['batched_train_targets']
 batched_valid_chord_seqs = harm_batch_dict['batched_valid_seqs']
 batched_valid_chord_targets = harm_batch_dict['batched_valid_targets']
 
-harmony_dim = batched_train_chord_seqs.shape[-1]
+harmony_dim = batched_train_chord_seqs[0][0].shape[-1]
 
-net = DurationLSTM(args.input_dict_size, args.embedding_dim, args.hidden_dim,
-    args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
+net = DurationLSTM(args.input_dict_size, harmony_dim, args.embedding_dim, 
+    args.hidden_dim, args.output_dim, num_layers=args.num_layers, 
+    batch_size=args.batch_size)
 if torch.cuda.is_available():
     net.cuda()
 params = net.parameters()
@@ -96,8 +97,8 @@ writer = SummaryWriter(op.join(dirpath, 'tensorboard'))
 
 net, interrupted, train_losses, valid_losses = train_harmony_conditioned_net(
     net, loss_fn, optimizer, args.epochs, batched_train_chord_seqs, 
-    batched_train_dur_seqs, batched_train_dur_targets, batched_valid_dur_seqs, 
-    batched_valid_dur_targets, writer, args.print_every)
+    batched_train_dur_seqs, batched_train_dur_targets, batched_valid_chord_seqs, 
+    batched_valid_dur_seqs, batched_valid_dur_targets, writer, args.print_every)
 
 writer.close()
 
