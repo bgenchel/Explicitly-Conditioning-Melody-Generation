@@ -43,6 +43,8 @@ class PitchLSTM(nn.Module):
         return
 
     def repackage_hidden_and_cell(self):
+        import pdb
+        pdb.set_trace()
         new_hidden = Variable(self.hidden_and_cell[0].data)
         new_cell = Variable(self.hidden_and_cell[1].data)
         if torch.cuda.is_available() and (not self.test):

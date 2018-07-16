@@ -6,6 +6,8 @@ import torch
 from torch.autograd import Variable
 from .constants import DEFAULT_PRINT_EVERY
 
+STOCHASTIC_SAMPLE_SIZE = 30
+
 ################################################################################
 # Helper Functions
 ################################################################################
@@ -22,8 +24,9 @@ def write_loss(train_loss, valid_loss, writer, step):
 def compute_avg_loss(net, loss_fn, songs_batched_seqs, songs_batched_targets):
     total_loss = 0.0
     batch_count = 0
-    songs_groups = zip(songs_batched_seqs, songs_batched_targets)
-    for song_group in songs_groups: 
+    songs_groups = list(zip(songs_batched_seqs, songs_batched_targets))
+    random.shuffle(songs_groups)
+    for song_group in songs_groups[:STOCHASTIC_SAMPLE_SIZE]:  # stochastic check?
         for seq_batch, target_batch in zip(*song_group):
             inpt = Variable(torch.LongTensor(seq_batch))
             target = Variable(torch.LongTensor(target_batch))
@@ -41,8 +44,10 @@ def compute_harmony_conditioned_avg_loss(net, loss_fn, songs_batched_chords,
         songs_batched_seqs, songs_batched_targets):
     total_loss = 0.0
     batch_count = 0
-    songs_groups = zip(songs_batched_chords, songs_batched_seqs, songs_batched_targets)
-    for song_group in songs_groups:
+    songs_groups = list(zip(songs_batched_chords, songs_batched_seqs,
+        songs_batched_targets))
+    random.shuffle(songs_groups)
+    for song_group in songs_groups[:STOCHASTIC_SAMPLE_SIZE]:
         for chord_batch, seq_batch, target_batch in zip(*song_group):
             chord_inpt = Variable(torch.FloatTensor(chord_batch))
             seq_inpt = Variable(torch.LongTensor(seq_batch))
@@ -62,9 +67,10 @@ def compute_harmony_plus_conditioned_avg_loss(net, loss_fn, songs_batched_chords
         songs_batched_cond_seqs, songs_batched_seqs, songs_batched_targets):
     total_loss = 0.0
     batch_count = 0
-    songs_groups = zip(songs_batched_chords, songs_batched_cond_seqs, 
-                       songs_batched_seqs, songs_batched_targets)
-    for song_group in songs_groups:
+    songs_groups = list(zip(songs_batched_chords, songs_batched_cond_seqs, 
+        songs_batched_seqs, songs_batched_targets))
+    random.shuffle(songs_groups)
+    for song_group in songs_groups[:STOCHASTIC_SAMPLE_SIZE]:
         for chord_batch, cond_batch, seq_batch, target_batch in zip(*song_group): 
             chord_inpt = Variable(torch.FloatTensor(chord_batch))
             cond_inpt = Variable(torch.LongTensor(cond_batch))

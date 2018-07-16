@@ -36,8 +36,7 @@ parser.add_argument('-b', '--batch_size', default=5, type=int,
                     help="number of training epochs")
 parser.add_argument('-sl', '--seq_len', default=1, type=int,
                     help="number of previous steps to consider in prediction.")
-parser.add_argument('-id', '--input_dict_size', default=128, type=int,
-                    help="range of possible input note values.")
+parser.add_argument('-id', '--input_dict_size', default=128, type=int, help="range of possible input note values.")
 parser.add_argument('-ed', '--embedding_dim', default=20, type=int,
                     help="size of note embeddings.")
 parser.add_argument('-hd', '--hidden_dim', default=25, type=int,
