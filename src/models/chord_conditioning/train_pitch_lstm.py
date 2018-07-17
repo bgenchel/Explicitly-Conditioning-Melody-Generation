@@ -77,7 +77,7 @@ batched_train_chord_targets = harm_batch_dict['batched_train_targets']
 batched_valid_chord_seqs = harm_batch_dict['batched_valid_seqs']
 batched_valid_chord_targets = harm_batch_dict['batched_valid_targets']
 
-harmony_dim = batched_train_chord_seqs.shape[-1]
+harmony_dim = batched_train_chord_seqs[0][0].shape[-1]
 
 net = PitchLSTM(args.input_dict_size, harmony_dim, args.embedding_dim, args.hidden_dim,
     args.output_dim, num_layers=args.num_layers, batch_size=args.batch_size)
