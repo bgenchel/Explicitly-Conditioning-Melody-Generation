@@ -53,8 +53,9 @@ parser.add_argument('-pe', '--print_every', default=DEFAULT_PRINT_EVERY, type=in
 parser.add_argument('-k', '--keep', action='store_true',
                     help="save information about this run")
 args = parser.parse_args()
-info_dict.update(vars(args))
 
+if args.title != run_datetime_str:
+    args.title = '_'.join([run_datetime_str, args.title])
 root_dir = str(Path(op.abspath(__file__)).parents[3])
 data_dir = op.join(root_dir, "data", "processed", "datasets")
 if args.charlie_parker:
@@ -63,6 +64,7 @@ if args.charlie_parker:
 else:
     dataset = pickle.load(open(op.join(data_dir, "dataset.pkl"), "rb"))
     args.title = '_'.join([args.title, 'FULL'])
+info_dict.update(vars(args))
 
 lsdl = LeadSheetDataLoader(dataset, args.num_songs)
 batch_dict = lsdl.get_batched_dur_seqs(seq_len=args.seq_len, batch_size=args.batch_size)
@@ -79,7 +81,11 @@ params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 loss_fn = nn.NLLLoss()
 
-dirpath = op.join(os.getcwd(), "runs", "duration", args.title)
+dirpath = op.join(os.getcwd(), "runs", "duration")
+if args.keep:
+    dirpath = op.join(dirpath, args.title)
+else:
+    dirpath = op.join(dirpath, "test_runs", args.title)
 writer = SummaryWriter(op.join(dirpath, 'tensorboard'))
 
 net, interrupted, train_losses, valid_losses = train_net(
@@ -87,18 +93,16 @@ net, interrupted, train_losses, valid_losses = train_net(
         batched_valid_seqs, batched_valid_targets, writer, args.print_every)
 
 writer.close()
+info_dict['interrupted'] = interrupted
+info_dict['epochs_completed'] = len(train_losses)
+info_dict['final_training_loss'] = train_losses[-1]
+info_dict['final_valid_loss'] = valid_losses[-1]
 
-if args.keep:
-    info_dict['interrupted'] = interrupted
-    info_dict['epochs_completed'] = len(train_losses)
-    info_dict['final_training_loss'] = train_losses[-1]
-    info_dict['final_valid_loss'] = valid_losses[-1]
+model_inputs = {'input_dict_size': args.input_dict_size, 
+                'embedding_dim': args.embedding_dim,
+                'hidden_dim': args.hidden_dim,
+                'output_dim': args.output_dim,
+                'num_layers': args.num_layers,
+                'batch_size': args.batch_size}
 
-    model_inputs = {'input_dict_size': args.input_dict_size, 
-                    'embedding_dim': args.embedding_dim,
-                    'hidden_dim': args.hidden_dim,
-                    'output_dim': args.output_dim,
-                    'num_layers': args.num_layers,
-                    'batch_size': args.batch_size}
-
-    save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, net)
+save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, net, args.keep)

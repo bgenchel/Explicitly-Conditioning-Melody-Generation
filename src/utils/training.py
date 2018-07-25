@@ -284,7 +284,8 @@ def train_harmony_plus_conditioned_net(net, loss_fn, optimizer, epochs,
 
     return (net, interrupted, train_losses, valid_losses)
 
-def save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model):
+def save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model,
+        keep=False):
     if not op.exists(dirpath):
         os.makedirs(dirpath)
 
@@ -296,13 +297,14 @@ def save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model
             fp.write('%s:%s\t %s\n'%(str(k), space_buffer, str(v)))
         fp.close()
 
-    print('Writing training losses ...') 
-    json.dump(train_losses, open(op.join(dirpath, 'train_losses.json'), 'w'), indent=4)
+    if keep:
+        print('Writing training losses ...') 
+        json.dump(train_losses, open(op.join(dirpath, 'train_losses.json'), 'w'), indent=4)
 
-    print('Writing validation losses ...') 
-    json.dump(valid_losses, open(op.join(dirpath, 'valid_losses.json'), 'w'), indent=4)
+        print('Writing validation losses ...') 
+        json.dump(valid_losses, open(op.join(dirpath, 'valid_losses.json'), 'w'), indent=4)
 
-    print('Saving model ...')
-    json.dump(model_inputs, open(op.join(dirpath, 'model_inputs.json'), 'w'), indent=4)
-    torch.save(model.state_dict(), op.join(dirpath, 'model_state.pt'))
+        print('Saving model ...')
+        json.dump(model_inputs, open(op.join(dirpath, 'model_inputs.json'), 'w'), indent=4)
+        torch.save(model.state_dict(), op.join(dirpath, 'model_state.pt'))
     return
