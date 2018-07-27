@@ -4,7 +4,6 @@ PITCH_DIM = 128
 DUR_DIM = 18
 
 DEFAULT_PRINT_EVERY = 50
-DEFAULT_WRITE_EVERY = 100
 
 NOTES_MAP = {'rest': 127, 'B#': 0, 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 
              'E': 4, 'Fb': 4, 'E#': 5, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 
