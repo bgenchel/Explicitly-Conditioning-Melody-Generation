@@ -14,6 +14,7 @@ class ChordCondLSTM(nn.Module):
         super(ChordCondLSTM, self).__init__(**kwargs)
         self.hidden_dim = hidden_dim
         self.num_layers = num_layers
+        self.batch_norm = batch_norm
         self.cuda = cuda
 
         chord_encoding_dim = (3*chord_dim)//4

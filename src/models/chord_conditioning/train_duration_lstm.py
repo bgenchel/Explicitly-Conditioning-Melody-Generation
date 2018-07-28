@@ -52,7 +52,7 @@ chord_dim = batched_train_chord_seqs[0][0].shape[-1]
 
 net = ChordCondLSTM(input_dict_size=DUR_DIM, 
                     chord_dim=chord_dim, 
-                    embedding_dim=args.embedding_dim, 
+                    embedding_dim=args.dur_embedding_dim, 
                     hidden_dim=args.hidden_dim,
                     output_dim=DUR_DIM,
                     num_layers=args.num_layers,

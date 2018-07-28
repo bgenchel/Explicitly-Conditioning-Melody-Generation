@@ -11,11 +11,11 @@ from datetime import datetime
 from pathlib import Path
 from tensorboardX import SummaryWriter
 
-from model_classes import PitchLSTM
+from model_classes import ChordandInterConditionedLSTM
 sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
-from utils.constants import DEFAULT_PRINT_EVERY, PITCH_DIM, DUR_DIM
+from utils import training
+from utils.constants import PITCH_DIM, DUR_DIM, DEFAULT_PRINT_EVERY
 from utils.dataloaders import LeadSheetDataLoader
-from utils.training import train_harmony_plus_conditioned_net, save_run
 
 torch.cuda.device(0)
 
@@ -23,41 +23,7 @@ run_datetime_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 info_dict = OrderedDict()
 info_dict['run_datetime'] = run_datetime_str
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-t', '--title', default=run_datetime_str, type=str,
-                    help="custom title for run data directory")
-parser.add_argument('-cp', '--charlie_parker', action="store_true",
-                    help="use the charlie parker dataset.")
-parser.add_argument('-n', '--num_songs', default=None, type=int,
-                    help="number of songs to include in training")
-parser.add_argument('-e', '--epochs', default=10, type=int,
-                    help="number of training epochs")
-parser.add_argument('-b', '--batch_size', default=5, type=int,
-                    help="number of training epochs")
-parser.add_argument('-sl', '--seq_len', default=1, type=int,
-                    help="number of previous steps to consider in prediction.")
-parser.add_argument('-pid', '--pitch_input_dict_size', default=PITCH_DIM, type=int,
-                    help="range of possible input note values.")
-parser.add_argument('-ped', '--pitch_embedding_dim', default=20, type=int,
-                    help="size of note embeddings.")
-parser.add_argument('-did', '--dur_input_dict_size', default=DUR_DIM, type=int,
-                    help="range of possible input note values.")
-parser.add_argument('-ded', '--dur_embedding_dim', default=9, type=int,
-                    help="size of note embeddings.")
-parser.add_argument('-hd', '--hidden_dim', default=25, type=int,
-                    help="size of hidden state.")
-parser.add_argument('-od', '--output_dim', default=PITCH_DIM, type=int,
-                    help="size of output softmax.")
-parser.add_argument('-nl', '--num_layers', default=2, type=int,
-                    help="number of lstm layers to use.")
-parser.add_argument('-lr', '--learning_rate', default=1e-3, type=float,
-                    help="learning rate for sgd")
-parser.add_argument('-pe', '--print_every', default=DEFAULT_PRINT_EVERY, type=int,
-                    help="how often to print the loss during training.")
-parser.add_argument('-k', '--keep', action='store_true',
-                    help="save information about this run")
-args = parser.parse_args()
-
+args = training.get_args()
 if args.title != run_datetime_str:
     args.title = '_'.join([run_datetime_str, args.title])
 root_dir = str(Path(op.abspath(__file__)).parents[3])
@@ -89,13 +55,21 @@ batched_train_chord_targets = batch_dict['batched_train_targets']
 batched_valid_chord_seqs = batch_dict['batched_valid_seqs']
 batched_valid_chord_targets = batch_dict['batched_valid_targets']
 
-# batched_harmony_seqs.shape = num_batches x seqs per batch x seq len x harmony size
-harmony_dim = batched_train_chord_seqs[0][0].shape[-1]
+chord_dim = batched_train_chord_seqs[0][0].shape[-1]
 
-net = PitchLSTM(args.pitch_input_dict_size, args.dur_input_dict_size, harmony_dim,
-                args.pitch_embedding_dim, args.dur_embedding_dim, args.hidden_dim,
-                args.output_dim, num_lstm_layers=args.num_layers, batch_size=args.batch_size)
-if torch.cuda.is_available():
+net = ChordandInterConditionedLSTM(input_dict_size=PITCH_DIM, 
+                                   cond_dict_size=DUR_DIM,
+                                   chord_dim=chord_dim,
+                                   embedding_dim=args.pitch_embedding_dim,
+                                   cond_embedding_dim=args.cond_embedding_dim,
+                                   hidden_dim=args.hidden_dim,
+                                   output_dim=PITCH_DIM,
+                                   num_layers=args.num_layers,
+                                   batch_size=args.batch_size,
+                                   dropout=args.dropout,
+                                   batch_norm=args.batch_norm,
+                                   cuda=(not args.no_cuda))
+if torch.cuda.is_available() and (not args.no_cuda):
     net.cuda()
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
@@ -108,25 +82,28 @@ else:
     dirpath = op.join(dirpath, "test_runs", args.title)
 writer = SummaryWriter(op.join(dirpath, 'tensorboard'))
 
-net, interrupted, train_losses, valid_losses = train_harmony_plus_conditioned_net(
-        net, loss_fn, optimizer, args.epochs, batched_train_chord_seqs,
-        batched_train_dur_seqs, batched_train_pitch_seqs, batched_train_pitch_targets, 
-        batched_valid_chord_seqs, batched_valid_dur_seqs, batched_valid_pitch_seqs, 
-        batched_valid_pitch_targets, writer, args.print_every)
+net, interrupted, train_losses, valid_losses = training.train_and_inter_conditioned_net(
+    net, loss_fn, optimizer, args.epochs, batched_train_chord_seqs,
+    batched_train_dur_seqs, batched_train_pitch_seqs, batched_train_pitch_targets, 
+    batched_valid_chord_seqs, batched_valid_dur_seqs, batched_valid_pitch_seqs, 
+    batched_valid_pitch_targets, writer, args.print_every)
 
 writer.close()
 info_dict['interrupted'] = interrupted
 info_dict['epochs_completed'] = len(train_losses)
 info_dict['final_training_loss'] = train_losses[-1]
 
-model_inputs = {'pitch_input_dict_size': args.pitch_input_dict_size, 
-                'dur_input_dict_size': args.dur_input_dict_size,
-                'harmony_dim': harmony_dim,
-                'pitch_embedding_dim': args.pitch_embedding_dim,
-                'dur_embedding_dim': args.dur_embedding_dim,
+model_inputs = {'input_dict_size': PITCH_DIM,
+                'cond_dict_size': DUR_DIM,
+                'chord_dim': chord_dim,
+                'embedding_dim': args.pitch_embedding_dim,
+                'cond_embedding_dim': args.dur_embedding_dim,
                 'hidden_dim': args.hidden_dim,
-                'output_dim': args.output_dim,
-                'num_lstm_layers': args.num_layers,
-                'batch_size': args.batch_size}
+                'output_dim': PITCH_DIM,
+                'num_layers': args.num_layers,
+                'batch_size': args.batch_size,
+                'dropout': args.dropout,
+                'batch_norm': args.batch_norm,
+                'cuda': not args.no_cuda}
 
-save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, net, args.keep)
+training.save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, net, args.keep)
