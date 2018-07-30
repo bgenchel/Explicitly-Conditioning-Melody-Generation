@@ -46,8 +46,9 @@ net = BaselineLSTM(input_dict_size=PITCH_DIM,
                    embedding_dim=args.pitch_embedding_dim, 
                    hidden_dim=args.hidden_dim,
                    output_dim=PITCH_DIM, 
-                   num_layers=args.num_layers, 
+                   seq_len=args.seq_len,
                    batch_size=args.batch_size,
+                   num_layers=args.num_layers, 
                    dropout=args.dropout,
                    batch_norm=args.batch_norm,
                    no_cuda=args.no_cuda)
@@ -73,12 +74,14 @@ info_dict['final_training_loss'] = train_losses[-1]
 info_dict['final_valid_loss'] = valid_losses[-1]
 
 model_inputs = {'input_dict_size': PITCH_DIM, 
-                'embedding_dim': args.embedding_dim,
+                'embedding_dim': args.pitch_embedding_dim,
                 'hidden_dim': args.hidden_dim,
                 'output_dim': PITCH_DIM,
-                'num_layers': args.num_layers,
+                'seq_len': args.seq_len,
                 'batch_size': args.batch_size,
+                'num_layers': args.num_layers,
                 'dropout': args.dropout,
-                'batch_norm': args.batch_norm}
+                'batch_norm': args.batch_norm,
+                'no_cuda': args.no_cuda}
 
 training.save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, net, args.keep)

@@ -55,8 +55,9 @@ net = ChordCondLSTM(input_dict_size=DUR_DIM,
                     embedding_dim=args.dur_embedding_dim, 
                     hidden_dim=args.hidden_dim,
                     output_dim=DUR_DIM,
-                    num_layers=args.num_layers,
+                    seq_len=args.seq_len,
                     batch_size=args.batch_size,
+                    num_layers=args.num_layers,
                     dropout=args.dropout,
                     batch_norm=args.batch_norm,
                     no_cuda=args.no_cuda)
@@ -84,13 +85,14 @@ info_dict['final_valid_loss'] = valid_losses[-1]
 
 model_inputs = {'input_dict_size': DUR_DIM, 
                 'chord_dim': chord_dim,
-                'embedding_dim': args.embedding_dim,
+                'embedding_dim': args.dur_embedding_dim,
                 'hidden_dim': args.hidden_dim,
                 'output_dim': args.output_dim,
-                'num_layers': args.num_layers,
+                'seq_len': args.seq_len,
                 'batch_size': args.batch_size,
+                'num_layers': args.num_layers,
                 'dropout': args.dropout,
                 'batch_norm': args.batch_norm,
-                'cuda': not args.no_cuda}
+                'no_cuda': args.no_cuda}
 
 training.save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, net, args.keep)

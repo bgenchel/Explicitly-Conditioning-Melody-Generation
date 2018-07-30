@@ -102,6 +102,6 @@ model_inputs = {'input_dict_size': PITCH_DIM,
                 'batch_size': args.batch_size,
                 'dropout': args.dropout,
                 'batch_norm': args.batch_norm,
-                'cuda': not args.no_cuda}
+                'no_cuda': args.no_cuda}
 
 training.save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, net, args.keep)
