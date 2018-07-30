@@ -23,7 +23,7 @@ run_datetime_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
 info_dict = OrderedDict()
 info_dict['run_datetime'] = run_datetime_str
 
-args = training.get_args()
+args = training.get_args(default_title=run_datetime_str)
 if args.title != run_datetime_str:
     args.title = '_'.join([run_datetime_str, args.title])
 root_dir = str(Path(op.abspath(__file__)).parents[3])
@@ -68,9 +68,7 @@ net = ChordandInterConditionedLSTM(input_dict_size=PITCH_DIM,
                                    batch_size=args.batch_size,
                                    dropout=args.dropout,
                                    batch_norm=args.batch_norm,
-                                   cuda=(not args.no_cuda))
-if torch.cuda.is_available() and (not args.no_cuda):
-    net.cuda()
+                                   no_cuda=args.no_cuda)
 params = net.parameters()
 optimizer = optim.Adam(params, lr=args.learning_rate)
 loss_fn = nn.NLLLoss()

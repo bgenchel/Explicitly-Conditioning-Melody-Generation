@@ -4,6 +4,7 @@ import random
 import os
 import os.path as op
 import torch
+from datetime import datetime
 from torch.autograd import Variable
 from .constants import DEFAULT_PRINT_EVERY
 
@@ -288,9 +289,9 @@ def train_chord_and_inter_conditioned_net(net, loss_fn, optimizer, epochs,
 ################################################################################
 # Process Functions
 ################################################################################
-def get_args(output_dim):
+def get_args(default_title=""):
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--title', default=run_datetime_str, type=str,
+    parser.add_argument('-t', '--title', default=default_title, type=str,
                         help="custom title for run data directory")
     parser.add_argument('-cp', '--charlie_parker', action="store_true",
                         help="use the charlie parker dataset.")
@@ -315,13 +316,13 @@ def get_args(output_dim):
     parser.add_argument('-do', '--dropout', default=0.0, type=float,
                         help="drop out rate for LSTM")
     parser.add_argument('-bn', '--batch_norm', action="store_true",
-                        help="use batch normalization")
+                        help="use batch normalization.")
     parser.add_argument('-nc', '--no_cuda', action="store_true",
-                        help="use batch normalization")
+                        help="don't allow the use of CUDA, even if it's available.")
     parser.add_argument('-pe', '--print_every', default=DEFAULT_PRINT_EVERY, type=int,
                         help="how often to print the loss during training.")
     parser.add_argument('-k', '--keep', action='store_true',
-                        help="save information about this run")
+                        help="save model files and other about this run")
     return parser.parse_args()
 
 def save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model,
