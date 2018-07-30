@@ -1,3 +1,4 @@
+import argparse
 import json
 import random
 import os
@@ -147,7 +148,7 @@ def train_net(net, loss_fn, optimizer, epochs, batched_train_seqs,
         interrupted = True
     return (net, interrupted, train_losses, valid_losses)
 
-def train_harmony_conditioned_net(net, loss_fn, optimizer, epochs, 
+def train_chord_conditioned_net(net, loss_fn, optimizer, epochs, 
         batched_train_chord_seqs, batched_train_seqs, batched_train_targets, 
         batched_valid_chord_seqs, batched_valid_seqs, batched_valid_targets, 
         writer, print_every=DEFAULT_PRINT_EVERY):
@@ -213,7 +214,7 @@ def train_harmony_conditioned_net(net, loss_fn, optimizer, epochs,
 
     return (net, interrupted, train_losses, valid_losses)
 
-def train_harmony_plus_conditioned_net(net, loss_fn, optimizer, epochs, 
+def train_chord_and_inter_conditioned_net(net, loss_fn, optimizer, epochs, 
         batched_train_chord_seqs, batched_train_cond_seqs, batched_train_seqs, 
         batched_train_targets, batched_valid_chord_seqs, batched_valid_cond_seqs, 
         batched_valid_seqs, batched_valid_targets, writer, print_every=DEFAULT_PRINT_EVERY):
@@ -283,6 +284,45 @@ def train_harmony_plus_conditioned_net(net, loss_fn, optimizer, epochs,
         interrupted = True
 
     return (net, interrupted, train_losses, valid_losses)
+
+################################################################################
+# Process Functions
+################################################################################
+def get_args(output_dim):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-t', '--title', default=run_datetime_str, type=str,
+                        help="custom title for run data directory")
+    parser.add_argument('-cp', '--charlie_parker', action="store_true",
+                        help="use the charlie parker dataset.")
+    parser.add_argument('-n', '--num_songs', default=None, type=int,
+                        help="number of songs to include in training")
+    parser.add_argument('-e', '--epochs', default=10, type=int,
+                        help="number of training epochs")
+    parser.add_argument('-b', '--batch_size', default=5, type=int,
+                        help="number of training epochs")
+    parser.add_argument('-sl', '--seq_len', default=1, type=int,
+                        help="number of previous steps to consider in prediction.")
+    parser.add_argument('-ped', '--pitch_embedding_dim', default=32, type=int,
+                        help="size of note embeddings.")
+    parser.add_argument('-ded', '--dur_embedding_dim', default=8, type=int,
+                        help="size of note embeddings.")
+    parser.add_argument('-hd', '--hidden_dim', default=128, type=int,
+                        help="size of hidden state.")
+    parser.add_argument('-nl', '--num_layers', default=2, type=int,
+                        help="number of lstm layers to use.")
+    parser.add_argument('-lr', '--learning_rate', default=1e-3, type=float,
+                        help="learning rate for sgd")
+    parser.add_argument('-do', '--dropout', default=0.0, type=float,
+                        help="drop out rate for LSTM")
+    parser.add_argument('-bn', '--batch_norm', action="store_true",
+                        help="use batch normalization")
+    parser.add_argument('-nc', '--no_cuda', action="store_true",
+                        help="use batch normalization")
+    parser.add_argument('-pe', '--print_every', default=DEFAULT_PRINT_EVERY, type=int,
+                        help="how often to print the loss during training.")
+    parser.add_argument('-k', '--keep', action='store_true',
+                        help="save information about this run")
+    return parser.parse_args()
 
 def save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model,
         keep=False):
