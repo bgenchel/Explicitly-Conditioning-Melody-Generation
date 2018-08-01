@@ -1,7 +1,7 @@
 """
 """
 PITCH_DIM = 128
-DUR_DIM = 18
+DUR_DIM = 19
 
 DEFAULT_PRINT_EVERY = 50
 
@@ -13,7 +13,7 @@ DURATIONS_MAP = {'whole': 0, 'half': 1, 'quarter': 2, 'eighth': 3, '16th': 4,
                  'whole-triplet': 5, 'half-triplet': 6, 'quarter-triplet': 7, 
                  'eighth-triplet': 8, '16th-triplet': 9, 'whole-dot': 10, 'half-dot': 11, 
                  'quarter-dot': 12, 'eighth-dot': 13, '16th-dot': 14, '32nd': 15, 
-                 '32nd-triplet': 16, '32nd-dot': 17, 'other': -1}
+                 '32nd-triplet': 16, '32nd-dot': 17, 'none': 18}
 
 KEYS_DICT = {"major": {'0': 'C', '1': 'G', '2': 'D', '3': 'A', '4': 'E', '5': 'B', '6': 'F#', 
                   '-1': 'F', '-2': 'Bb', '-3': 'Eb', '-4': 'Ab', '-5': 'Db', '-6': 'Gb'},

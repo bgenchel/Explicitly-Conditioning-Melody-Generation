@@ -1,7 +1,10 @@
 import numpy as np
 from torch.utils.data import DataLoader
-from .constants import PITCH_DIM, DUR_DIM, NOTES_MAP
+from .constants import PITCH_DIM, DUR_DIM, NOTES_MAP, DURATIONS_MAP
 
+PITCH_KEY = "pitch_numbers"
+DUR_KEY = "duration_tags"
+filler = {PITCH_KEY: NOTES_MAP['rest'], DUR_KEY: DURATIONS_MAP['none']}
 
 class LeadSheetDataLoader(DataLoader):
     """
@@ -35,7 +38,7 @@ class LeadSheetDataLoader(DataLoader):
                     for i, thing in enumerate(measure[seq_key]):
                         full_song_seq.append(thing)
 
-                full_song_seq = [NOTES_MAP['rest']]*seq_len + full_song_seq
+                full_song_seq = [filler[seq_key]]*seq_len + full_song_seq
                 for i in range(0, len(full_song_seq) - seq_len):
                     seqs.append(np.array(full_song_seq[i:i+seq_len]))
 
@@ -101,7 +104,7 @@ class LeadSheetDataLoader(DataLoader):
 
     def get_pitch_seqs(self, seq_len=2, target_as_vector=False):
         train_seqs, train_targets, valid_seqs, valid_targets = self._get_seqs(
-            "pitch_numbers", seq_len, target_as_vector, PITCH_DIM)
+            PITCH_KEY, seq_len, target_as_vector, PITCH_DIM)
         return (train_seqs, train_targets, valid_seqs, valid_targets)
 
     def get_batched_pitch_seqs(self, seq_len=2, batch_size=1, target_as_vector=False):
@@ -109,7 +112,7 @@ class LeadSheetDataLoader(DataLoader):
 
     def get_dur_seqs(self, seq_len=2, target_as_vector=False):
         train_seqs, train_targets, valid_seqs, valid_targets = self._get_seqs(
-            "duration_tags", seq_len, target_as_vector, DUR_DIM)
+            DUR_KEY, seq_len, target_as_vector, DUR_DIM)
         return (train_seqs, train_targets, valid_seqs, valid_targets)
 
     def get_batched_dur_seqs(self, seq_len=2, batch_size=1, target_as_vector=False):

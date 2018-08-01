@@ -31,7 +31,7 @@ def compute_avg_loss(net, loss_fn, batched_seqs, batched_targets):
     for seq_batch, target_batch in batch_groups[:STOCHASTIC_SAMPLE_SIZE]:  # stochastic check?
         inpt = Variable(torch.LongTensor(seq_batch))
         target = Variable(torch.LongTensor(target_batch))
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not net.no_cuda):
             inpt = inpt.cuda()
             target = target.cuda()
         output = net(inpt)[:, -1, :]
@@ -51,7 +51,7 @@ def compute_harmony_conditioned_avg_loss(net, loss_fn, batched_chords,
         chord_inpt = Variable(torch.FloatTensor(chord_batch))
         seq_inpt = Variable(torch.LongTensor(seq_batch))
         target = Variable(torch.LongTensor(target_batch))
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not net.no_cuda):
             chord_inpt = chord_inpt.cuda()
             seq_inpt = seq_inpt.cuda()
             target = target.cuda()
@@ -73,7 +73,7 @@ def compute_harmony_plus_conditioned_avg_loss(net, loss_fn, batched_chords,
         cond_inpt = Variable(torch.LongTensor(cond_batch))
         seq_inpt = Variable(torch.LongTensor(seq_batch))
         target = Variable(torch.LongTensor(target_batch))
-        if torch.cuda.is_available():
+        if torch.cuda.is_available() and (not net.no_cuda()):
             chord_inpt = chord_inpt.cuda()
             cond_inpt = cond_inpt.cuda()
             seq_inpt = seq_inpt.cuda()
@@ -116,7 +116,7 @@ def train_net(net, loss_fn, optimizer, epochs, batched_train_seqs,
                 # get the data, wrap it in a Variable
                 seq_batch_var = Variable(torch.LongTensor(seq_batch))
                 target_batch_var = Variable(torch.LongTensor(target_batch))
-                if torch.cuda.is_available():
+                if torch.cuda.is_available() and (not net.no_cuda):
                     seq_batch_var = seq_batch_var.cuda()
                     target_batch_var = target_batch_var.cuda()
                 # detach hidden state
@@ -180,7 +180,7 @@ def train_chord_conditioned_net(net, loss_fn, optimizer, epochs,
                 chord_inpt = Variable(torch.FloatTensor(chord_batch))
                 seq_inpt = Variable(torch.LongTensor(seq_batch))
                 target_inpt = Variable(torch.LongTensor(target_batch))
-                if torch.cuda.is_available():
+                if torch.cuda.is_available() and (not net.no_cuda):
                     chord_inpt = chord_inpt.cuda()
                     seq_inpt = seq_inpt.cuda()
                     target_inpt = target_inpt.cuda()
@@ -249,7 +249,7 @@ def train_chord_and_inter_conditioned_net(net, loss_fn, optimizer, epochs,
                 cond_inpt = Variable(torch.LongTensor(cond_batch))
                 seq_inpt = Variable(torch.LongTensor(seq_batch))
                 target_inpt = Variable(torch.LongTensor(target_batch))
-                if torch.cuda.is_available():
+                if torch.cuda.is_available() and (not net.no_cuda):
                     chord_inpt = chord_inpt.cuda()
                     cond_inpt = cond_inpt.cuda()
                     seq_inpt = seq_inpt.cuda()

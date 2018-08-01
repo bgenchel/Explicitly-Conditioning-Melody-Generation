@@ -46,8 +46,8 @@ net = BaselineLSTM(input_dict_size=DUR_DIM,
                    hidden_dim=args.hidden_dim,
                    output_dim=DUR_DIM, 
                    num_layers=args.num_layers, 
-                   batch_size=args.batch_size,
                    seq_len=args.seq_len,
+                   batch_size=args.batch_size,
                    dropout=args.dropout,
                    batch_norm=args.batch_norm,
                    no_cuda=args.no_cuda)
@@ -63,8 +63,8 @@ else:
 writer = SummaryWriter(op.join(dirpath, 'tensorboard'))
 
 net, interrupted, train_losses, valid_losses = training.train_net(
-        net, loss_fn, optimizer, args.epochs, batched_train_seqs, batched_train_targets,
-        batched_valid_seqs, batched_valid_targets, writer, args.print_every)
+    net, loss_fn, optimizer, args.epochs, batched_train_seqs, batched_train_targets,
+    batched_valid_seqs, batched_valid_targets, writer, args.print_every)
 
 writer.close()
 info_dict['interrupted'] = interrupted
