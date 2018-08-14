@@ -73,7 +73,7 @@ def compute_harmony_plus_conditioned_avg_loss(net, loss_fn, batched_chords,
         cond_inpt = Variable(torch.LongTensor(cond_batch))
         seq_inpt = Variable(torch.LongTensor(seq_batch))
         target = Variable(torch.LongTensor(target_batch))
-        if torch.cuda.is_available() and (not net.no_cuda()):
+        if torch.cuda.is_available() and (not net.no_cuda):
             chord_inpt = chord_inpt.cuda()
             cond_inpt = cond_inpt.cuda()
             seq_inpt = seq_inpt.cuda()

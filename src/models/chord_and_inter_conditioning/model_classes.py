@@ -1,3 +1,4 @@
+import numpy as np
 import pdb
 import torch
 import torch.nn as nn
@@ -7,28 +8,27 @@ from torch.autograd import Variable
 torch.manual_seed(1)
 
 class ChordandInterConditionedLSTM(nn.Module):
-    def __init__(self, input_dict_size, cond_dict_size, chord_dim, 
-                 embedding_dim, cond_embedding_dim, hidden_dim, output_dim, 
-                 num_layers=2, batch_size=None, dropout=0.5, batch_norm=True,
-                 no_cuda=False, **kwargs):
+    def __init__(self, input_dict_size, cond_dict_size, chord_dim, embedding_dim, 
+            cond_embedding_dim, hidden_dim, output_dim, seq_len, batch_size, 
+            num_layers=2, dropout=0.5, batch_norm=True, no_cuda=False, **kwargs):
         super(ChordandInterConditionedLSTM, self).__init__(**kwargs)
         self.hidden_dim = hidden_dim
-        self.num_layers = num_lstm_layers
+        self.num_layers = num_layers
         self.batch_norm = batch_norm
         self.no_cuda = no_cuda
 
         chord_encoding_dim = (3*chord_dim)//4
         self.chord_fc1 = nn.Linear(chord_dim, chord_encoding_dim)
-        self.chord_bn = nn.BatchNorm1d(chord_encoding_dim)
+        self.chord_bn = nn.BatchNorm1d(seq_len)
         self.chord_fc2 = nn.Linear(chord_encoding_dim, chord_encoding_dim)
         self.embedding = nn.Embedding(input_dict_size, embedding_dim)
         self.cond_embedding = nn.Embedding(cond_dict_size, cond_embedding_dim)
         self.encoder = nn.Linear(embedding_dim + cond_embedding_dim + chord_encoding_dim, hidden_dim)
-        self.encoder_bn = nn.BatchNorm1d(hidden_dim)
+        self.encoder_bn = nn.BatchNorm1d(seq_len)
         self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=self.num_layers, batch_first=True)
         mid_dim = (hidden_dim + output_dim) // 2
         self.decode1 = nn.Linear(hidden_dim, mid_dim)
-        self.decode_bn = nn.BatchNorm1d(mid_dim)
+        self.decode_bn = nn.BatchNorm1d(seq_len)
         self.decode2 = nn.Linear(mid_dim, output_dim)
         self.softmax = nn.LogSoftmax(dim=2)
 

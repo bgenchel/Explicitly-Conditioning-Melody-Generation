@@ -10,8 +10,12 @@ import torch
 from torch.autograd import Variable
 from pathlib import Path
 
-sys.path.append(Path(op.abspath(__file__)).parents[1])
+sys.path.append(str(Path(op.abspath(__file__)).parents[1]))
+from models.simple_pitch_duration.model_classes import BaselineLSTM
+from models.chord_conditioning.model_classes import ChordCondLSTM
+from models.chord_and_inter_conditioning.model_classes import ChordandInterConditionedLSTM
 from utils.reverse_pianoroll import piano_roll_to_pretty_midi
+from utils.constants import NOTES_MAP, DURATIONS_MAP
 
 ##### MONKEY PATCH #####
 import torch._utils
@@ -25,22 +29,6 @@ except AttributeError:
         return tensor
     torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
 ########## 
-
-parser = argparse.ArgumentParser()
-parser.add_argument('-t', '--title', default="generated", type=str,
-                    help="what to name the output")
-parser.add_argument('-m', '--model', default="condition_everything", type=str,
-                    choices=('condition_everything', 'chord_conditioned_pitch',
-                    'simple_pitch_duration'), help="which model to use for generation")
-parser.add_argument('-pn', '--pitch_run_name', type=str,
-                    help="select which pitch run to use")
-parser.add_argument('-dn', '--dur_run_name', type=str,
-                    help="select which dur run to use")
-parser.add_argument('-ss', '--seed_song', type=str, default=None,
-                    help="number of measures to use as seeds to the network")
-parser.add_argument('-sm', '--seed_measures', type=int, default=1,
-                    help="number of measures to use as seeds to the network")
-args = parser.parse_args()
 
 REST_NUM = 127
 
@@ -57,7 +45,35 @@ TAG_TO_TICKS = {'whole': 96, 'half': 48, 'quarter': 24, 'eighth': 12, '16th': 6,
                  'quarter-dot': 36, 'eighth-dot': 18, '16th-dot': 9, '32nd': 3, 
                  '32nd-triplet': 2, '32nd-dot': 5, 'other': -1}
 
+NUM_TO_MODEL = {1: {'name': 'simple_pitch_duration',
+                    'model': BaselineLSTM}, 
+                2: {'name': 'chord_conditioning', 
+                    'model': ChordCondLSTM},
+                3: {'name': 'chord_and_inter_conditioning',
+                    'model': ChordandInterConditionedLSTM}}
+
+PITCH_KEY = "pitch_numbers"
+DUR_KEY = "duration_tags"
+FILLER = {PITCH_KEY: NOTES_MAP['rest'], DUR_KEY: DURATIONS_MAP['none']}
+
+CHORD_DIM = 12
 CHORD_OFFSET = 60 # chords will be in octave 4
+BUFF_LEN = 16
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-t', '--title', default="generated", type=str,
+                    help="what to name the output")
+parser.add_argument('-m', '--model', type=int,
+                    choices=(1, 2, 3), help="which model to use for generation")
+parser.add_argument('-pn', '--pitch_run_name', type=str,
+                    help="select which pitch run to use")
+parser.add_argument('-dn', '--dur_run_name', type=str,
+                    help="select which dur run to use")
+parser.add_argument('-sm', '--seed_measures', type=int, default=1,
+                    help="number of measures to use as seeds to the network")
+parser.add_argument('-ss', '--seed_song', type=str, default=None,
+                    help="which song to generate over.")
+args = parser.parse_args()
 
 def convert_melody_to_piano_roll_mat(pitches, dur_nums):
     dur_ticks = [TAG_TO_TICKS[NUM_TO_TAG[dur]] for dur in dur_nums]
@@ -90,25 +106,28 @@ def convert_chords_to_piano_roll_mat(note_chords, dur_nums):
     return output_mat
 
 root_dir = str(Path(op.abspath(__file__)).parents[2])
-model_dir = op.join(root_dir, 'src', 'models', args.model)
+model_dir = op.join(root_dir, 'src', 'models', NUM_TO_MODEL[args.model]['name'])
 
-sys.path.append(model_dir)
-from models import PitchLSTM, DurationLSTM
-
-pitch_dir = op.join(model_dir, 'runs', 'pitches', args.pitch_run_name)
-dur_dir = op.join(model_dir, 'runs', 'durations', args.dur_run_name)
+pitch_dir = op.join(model_dir, 'runs', 'pitch', args.pitch_run_name)
+dur_dir = op.join(model_dir, 'runs', 'duration', args.dur_run_name)
 
 pitch_model_inputs = json.load(open(op.join(pitch_dir, 'model_inputs.json'), 'r'))
 pitch_model_inputs['batch_size'] = 1
+pitch_model_inputs['dropout'] = 0
+pitch_model_inputs['no_cuda'] = True
 pitch_model_state = torch.load(op.join(pitch_dir, 'model_state.pt'), map_location='cpu')
-pitch_net = PitchLSTM(**pitch_model_inputs, test=True)
+pitch_net = NUM_TO_MODEL[args.model]['model'](**pitch_model_inputs)
 pitch_net.load_state_dict(pitch_model_state)
+pitch_net.eval()
 
 dur_model_inputs = json.load(open(op.join(dur_dir, 'model_inputs.json'), 'r'))
 dur_model_inputs['batch_size'] = 1
+dur_model_inputs['dropout'] = 0
+dur_model_inputs['no_cuda'] = True
 dur_model_state = torch.load(op.join(dur_dir, 'model_state.pt'), map_location='cpu')
-dur_net = DurationLSTM(**dur_model_inputs, test=True)
+dur_net = NUM_TO_MODEL[args.model]['model'](**dur_model_inputs)
 dur_net.load_state_dict(dur_model_state)
+dur_net.eval()
 
 data_dir = op.join(root_dir, 'data', 'processed', 'songs')
 if args.seed_song is None:
@@ -118,15 +137,17 @@ else:
     seed_song = pickle.load(open(op.join(data_dir, args.seed_song), 'rb'))
 
 seed_song_chords = []
-for measure in seed_song['measures'][args.seed_measures:]:
+for measure in seed_song['measures']:
     seed_song_chords.append(measure['harmonies'])
 
 seed_pitches = []
 seed_durs = []
 seed_note_chords = []
 for measure in seed_song['measures'][:args.seed_measures]:
-    measure_pitches = measure['pitch_numbers']
-    measure_durs = measure['duration_tags']
+    # import pdb
+    # pdb.set_trace()
+    measure_pitches = measure[PITCH_KEY]
+    measure_durs = measure[DUR_KEY]
     measure_note_chords = []
     harmony_index = 0
     for j in range(len(measure_pitches)):
@@ -137,11 +158,16 @@ for measure in seed_song['measures'][:args.seed_measures]:
     seed_durs.extend(measure_durs)
     seed_note_chords.extend(measure_note_chords)
 
-seed_len = len(seed_pitches)
+pitches_buff = np.array([FILLER[PITCH_KEY]]*(BUFF_LEN))
+pitches_buff[-len(seed_pitches):] = seed_pitches
+durs_buff = np.array([FILLER[DUR_KEY]]*(BUFF_LEN))
+durs_buff[-len(seed_durs):] = seed_durs
+note_chords_buff = np.array([(lambda: [0]*CHORD_DIM)() for _ in range(BUFF_LEN)])
+note_chords_buff[-len(seed_note_chords):] = seed_note_chords
 
-chord_inpt = Variable(torch.FloatTensor(seed_note_chords)).view(1, seed_len, -1)
-pitch_inpt = Variable(torch.LongTensor(seed_pitches)).view(1, -1)
-dur_inpt = Variable(torch.LongTensor(seed_durs)).view(1, -1)
+chord_inpt = Variable(torch.FloatTensor(note_chords_buff)).view(1, -1, CHORD_DIM)
+pitch_inpt = Variable(torch.LongTensor(pitches_buff)).view(1, -1)
+dur_inpt = Variable(torch.LongTensor(durs_buff)).view(1, -1)
 
 note_chord_seq = seed_note_chords
 pitch_seq = seed_pitches
@@ -154,26 +180,33 @@ for i, measure_chords in enumerate(seed_song_chords):
     for chord in measure_chords:
         total_ticks = 0
         while total_ticks < tick_lim:
-            if args.model == 'condition_everything':
+            if args.model == 3:
                 pitch_out = pitch_net(chord_inpt, dur_inpt, pitch_inpt)
                 dur_out = dur_net(chord_inpt, pitch_inpt, dur_inpt)
-            elif args.model == 'chord_conditioned_pitch':
+            elif args.model == 2:
                 pitch_out = pitch_net(chord_inpt, pitch_inpt)
-                dur_out = dur_net(dur_inpt)
-            elif args.model == 'simple_pitch_duration':
+                dur_out = dur_net(chord_inpt, dur_inpt)
+            elif args.model == 1:
                 pitch_out = pitch_net(pitch_inpt)
                 dur_out = dur_net(dur_inpt)
 
-            pitch_seq.append(np.argmax(pitch_out.data[:, -1, :]))
-            dur_tag = np.argmax(dur_out.data[:, -1, :])
-            total_ticks += TAG_TO_TICKS[NUM_TO_TAG[dur_tag]]
-            dur_seq.append(dur_tag)
-            note_chord_seq.append(chord)
+            new_pitch = np.argmax(pitch_out.data[:, -1, :])
+            new_dur = np.argmax(dur_out.data[:, -1, :])
+            total_ticks += TAG_TO_TICKS[NUM_TO_TAG[new_dur]]
 
-            pitch_inpt = Variable(torch.LongTensor(pitch_seq[-seed_len:]).view(1, -1))
-            dur_inpt = Variable(torch.LongTensor(dur_seq[-seed_len:]).view(1, -1))
-            chord_inpt = Variable(torch.FloatTensor(
-                note_chord_seq[-seed_len:]).view(1, seed_len, -1))
+            pitches_buff[0] = new_pitch
+            pitches_buff = np.roll(pitches_buff, -1)
+            pitch_inpt = Variable(torch.LongTensor(pitches_buff).view(1, -1))
+            durs_buff[0] = new_dur
+            durs_buff = np.roll(durs_buff, -1)
+            dur_inpt = Variable(torch.LongTensor(durs_buff).view(1, -1))
+            note_chords_buff[0] = chord
+            note_chords_buff = np.roll(note_chords_buff, -1)
+            chord_inpt = Variable(torch.FloatTensor(note_chords_buff).view(1, -1, CHORD_DIM))
+
+            pitch_seq.append(new_pitch)
+            dur_seq.append(new_dur)
+            note_chord_seq.append(chord)
 
 melody_pr_mat = convert_melody_to_piano_roll_mat(pitch_seq, dur_seq)
 chords_pr_mat = convert_chords_to_piano_roll_mat(note_chord_seq, dur_seq)
@@ -186,5 +219,5 @@ melody_path = op.join(outdir, '%s_melody.mid' % args.title)
 chords_path = op.join(outdir, '%s_chords.mid' % args.title)
 print('Writing melody midi file %s ...' % melody_path)
 melody_pm.write(melody_path)
-print('Writing chords midi file %s ...' % melody_path)
+print('Writing chords midi file %s ...' % chords_path)
 chords_pm.write(chords_path)

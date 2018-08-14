@@ -54,7 +54,7 @@ class LeadSheetDataLoader(DataLoader):
         valid_seqs, valid_targets = extract_sequences(self.valid)
         return (train_seqs, train_targets, valid_seqs, valid_targets)
 
-    def get_harmony(self, seq_len=2):
+    def get_harmony(self, seq_len=2, **kwargs):
         def extract_note_chord_seqs(dataset):
             seqs = []
             targets = []

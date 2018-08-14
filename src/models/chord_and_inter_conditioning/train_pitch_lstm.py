@@ -19,7 +19,7 @@ from utils.dataloaders import LeadSheetDataLoader
 
 torch.cuda.device(0)
 
-run_datetime_str = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
+run_datetime_str = datetime.now().strftime('%b%d-%y_%H:%M:%S')
 info_dict = OrderedDict()
 info_dict['run_datetime'] = run_datetime_str
 
@@ -61,11 +61,12 @@ net = ChordandInterConditionedLSTM(input_dict_size=PITCH_DIM,
                                    cond_dict_size=DUR_DIM,
                                    chord_dim=chord_dim,
                                    embedding_dim=args.pitch_embedding_dim,
-                                   cond_embedding_dim=args.cond_embedding_dim,
+                                   cond_embedding_dim=args.dur_embedding_dim,
                                    hidden_dim=args.hidden_dim,
                                    output_dim=PITCH_DIM,
-                                   num_layers=args.num_layers,
+                                   seq_len=args.seq_len,
                                    batch_size=args.batch_size,
+                                   num_layers=args.num_layers,
                                    dropout=args.dropout,
                                    batch_norm=args.batch_norm,
                                    no_cuda=args.no_cuda)
@@ -80,7 +81,7 @@ else:
     dirpath = op.join(dirpath, "test_runs", args.title)
 writer = SummaryWriter(op.join(dirpath, 'tensorboard'))
 
-net, interrupted, train_losses, valid_losses = training.train_and_inter_conditioned_net(
+net, interrupted, train_losses, valid_losses = training.train_chord_and_inter_conditioned_net(
     net, loss_fn, optimizer, args.epochs, batched_train_chord_seqs,
     batched_train_dur_seqs, batched_train_pitch_seqs, batched_train_pitch_targets, 
     batched_valid_chord_seqs, batched_valid_dur_seqs, batched_valid_pitch_seqs, 
@@ -98,8 +99,9 @@ model_inputs = {'input_dict_size': PITCH_DIM,
                 'cond_embedding_dim': args.dur_embedding_dim,
                 'hidden_dim': args.hidden_dim,
                 'output_dim': PITCH_DIM,
-                'num_layers': args.num_layers,
+                'seq_len': args.seq_len,
                 'batch_size': args.batch_size,
+                'num_layers': args.num_layers,
                 'dropout': args.dropout,
                 'batch_norm': args.batch_norm,
                 'no_cuda': args.no_cuda}
