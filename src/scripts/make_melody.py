@@ -73,6 +73,8 @@ parser.add_argument('-sm', '--seed_measures', type=int, default=1,
                     help="number of measures to use as seeds to the network")
 parser.add_argument('-ss', '--seed_song', type=str, default=None,
                     help="which song to generate over.")
+parser.add_argument('-nr', '--num_repeats', type=int, default=1,
+                    help="generate over the chords (nr) times.")
 args = parser.parse_args()
 
 def convert_melody_to_piano_roll_mat(pitches, dur_nums):
@@ -98,7 +100,7 @@ def convert_chords_to_piano_roll_mat(note_chords, dur_nums):
         for j in range(len(note_chords[i])):
             if note_chords[i][j] == 1:
                 chord_tone = j + CHORD_OFFSET
-                output_mat[chord_tone, int(onsets[i]):int(onsets[i+1])] = 1.0
+                output_mat[chord_tone, int(onsets[i]):(int(onsets[i+1]))] = 1.0
     for j in range(len(note_chords[-1])):
         if j == 1:
             chord_tone = j + CHORD_OFFSET
@@ -144,8 +146,6 @@ seed_pitches = []
 seed_durs = []
 seed_note_chords = []
 for measure in seed_song['measures'][:args.seed_measures]:
-    # import pdb
-    # pdb.set_trace()
     measure_pitches = measure[PITCH_KEY]
     measure_durs = measure[DUR_KEY]
     measure_note_chords = []
@@ -158,6 +158,10 @@ for measure in seed_song['measures'][:args.seed_measures]:
     seed_durs.extend(measure_durs)
     seed_note_chords.extend(measure_note_chords)
 
+seed_groups = list(zip(seed_pitches, seed_durs, seed_note_chords))
+random.shuffle(seed_groups)
+seed_pitches, seed_durs, seed_note_chords = zip(*seed_groups)
+
 pitches_buff = np.array([FILLER[PITCH_KEY]]*(BUFF_LEN))
 pitches_buff[-len(seed_pitches):] = seed_pitches
 durs_buff = np.array([FILLER[DUR_KEY]]*(BUFF_LEN))
@@ -169,44 +173,45 @@ chord_inpt = Variable(torch.FloatTensor(note_chords_buff)).view(1, -1, CHORD_DIM
 pitch_inpt = Variable(torch.LongTensor(pitches_buff)).view(1, -1)
 dur_inpt = Variable(torch.LongTensor(durs_buff)).view(1, -1)
 
-note_chord_seq = seed_note_chords
-pitch_seq = seed_pitches
-dur_seq = seed_durs
-for i, measure_chords in enumerate(seed_song_chords):
-    tick_lim = TAG_TO_TICKS["whole"]
-    if len(measure_chords) > 1:
-        tick_lim = TAG_TO_TICKS["half"]
-    
-    for chord in measure_chords:
-        total_ticks = 0
-        while total_ticks < tick_lim:
-            if args.model == 3:
-                pitch_out = pitch_net(chord_inpt, dur_inpt, pitch_inpt)
-                dur_out = dur_net(chord_inpt, pitch_inpt, dur_inpt)
-            elif args.model == 2:
-                pitch_out = pitch_net(chord_inpt, pitch_inpt)
-                dur_out = dur_net(chord_inpt, dur_inpt)
-            elif args.model == 1:
-                pitch_out = pitch_net(pitch_inpt)
-                dur_out = dur_net(dur_inpt)
+note_chord_seq = []
+pitch_seq = []
+dur_seq = []
+for _ in range(args.num_repeats):
+    for i, measure_chords in enumerate(seed_song_chords):
+        tick_lim = TAG_TO_TICKS["whole"]
+        if len(measure_chords) > 1:
+            tick_lim = TAG_TO_TICKS["half"]
+        
+        for chord in measure_chords:
+            total_ticks = 0
+            while total_ticks < tick_lim:
+                if args.model == 3:
+                    pitch_out = pitch_net(chord_inpt, dur_inpt, pitch_inpt)
+                    dur_out = dur_net(chord_inpt, pitch_inpt, dur_inpt)
+                elif args.model == 2:
+                    pitch_out = pitch_net(chord_inpt, pitch_inpt)
+                    dur_out = dur_net(chord_inpt, dur_inpt)
+                elif args.model == 1:
+                    pitch_out = pitch_net(pitch_inpt)
+                    dur_out = dur_net(dur_inpt)
 
-            new_pitch = np.argmax(pitch_out.data[:, -1, :])
-            new_dur = np.argmax(dur_out.data[:, -1, :])
-            total_ticks += TAG_TO_TICKS[NUM_TO_TAG[new_dur]]
+                new_pitch = np.argmax(pitch_out.data[:, -1, :])
+                new_dur = np.argmax(dur_out.data[:, -1, :])
+                total_ticks += TAG_TO_TICKS[NUM_TO_TAG[new_dur]]
 
-            pitches_buff[0] = new_pitch
-            pitches_buff = np.roll(pitches_buff, -1)
-            pitch_inpt = Variable(torch.LongTensor(pitches_buff).view(1, -1))
-            durs_buff[0] = new_dur
-            durs_buff = np.roll(durs_buff, -1)
-            dur_inpt = Variable(torch.LongTensor(durs_buff).view(1, -1))
-            note_chords_buff[0] = chord
-            note_chords_buff = np.roll(note_chords_buff, -1)
-            chord_inpt = Variable(torch.FloatTensor(note_chords_buff).view(1, -1, CHORD_DIM))
+                pitches_buff[0] = new_pitch
+                pitches_buff = np.roll(pitches_buff, -1)
+                pitch_inpt = Variable(torch.LongTensor(pitches_buff).view(1, -1))
+                durs_buff[0] = new_dur
+                durs_buff = np.roll(durs_buff, -1)
+                dur_inpt = Variable(torch.LongTensor(durs_buff).view(1, -1))
+                note_chords_buff[0] = chord
+                note_chords_buff = np.roll(note_chords_buff, -1)
+                chord_inpt = Variable(torch.FloatTensor(note_chords_buff).view(1, -1, CHORD_DIM))
 
-            pitch_seq.append(new_pitch)
-            dur_seq.append(new_dur)
-            note_chord_seq.append(chord)
+                pitch_seq.append(new_pitch)
+                dur_seq.append(new_dur)
+                note_chord_seq.append(chord)
 
 melody_pr_mat = convert_melody_to_piano_roll_mat(pitch_seq, dur_seq)
 chords_pr_mat = convert_chords_to_piano_roll_mat(note_chord_seq, dur_seq)

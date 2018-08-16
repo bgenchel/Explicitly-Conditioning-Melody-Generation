@@ -35,7 +35,13 @@ def get_key(jsdict):
                     mode = key_dict["mode"]["text"]
                 else:
                     mode = "major" # just assume, it doesn't really matter anyways
-                key = "%s%s" % (KEYS_DICT[mode][position], mode)
+                try:
+                    key = "%s%s" % (KEYS_DICT[mode][position], mode)
+                except KeyError:
+                    print("Error!! mode: {}, position: {}".format(mode, position))
+                    key = None
+
+
     return key, multiple
 
 def get_time_signature(jsdict):

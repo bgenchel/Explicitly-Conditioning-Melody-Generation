@@ -53,5 +53,8 @@ if __name__ == '__main__':
     fpaths = [op.join(xml_path, fname) for fname in os.listdir(xml_path)]
     for fpath in fpaths:
         print('parsing %s...' % op.basename(fpath))
-        with open(op.join(json_path, op.basename(fpath).split('.')[0] + '.json'), 'w') as fp:
-            json.dump(xml_to_dict(fpath), fp, indent=4)
+        try:
+            with open(op.join(json_path, op.basename(fpath).split('.')[0] + '.json'), 'w') as fp:
+                json.dump(xml_to_dict(fpath), fp, indent=4)
+        except: 
+            print('Error!')
