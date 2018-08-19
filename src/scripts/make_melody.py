@@ -58,7 +58,7 @@ FILLER = {PITCH_KEY: NOTES_MAP['rest'], DUR_KEY: DURATIONS_MAP['none']}
 
 CHORD_DIM = 12
 CHORD_OFFSET = 60 # chords will be in octave 4
-BUFF_LEN = 8
+# BUFF_LEN = 32
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default="generated", type=str,
@@ -130,6 +130,9 @@ dur_model_state = torch.load(op.join(dur_dir, 'model_state.pt'), map_location='c
 dur_net = NUM_TO_MODEL[args.model]['model'](**dur_model_inputs)
 dur_net.load_state_dict(dur_model_state)
 dur_net.eval()
+
+assert pitch_model_inputs['seq_len'] == dur_model_inputs['seq_len']
+BUFF_LEN = pitch_model_inputs['seq_len']
 
 data_dir = op.join(root_dir, 'data', 'processed', 'songs')
 if args.seed_song is None:
