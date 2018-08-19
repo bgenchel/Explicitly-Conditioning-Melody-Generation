@@ -58,7 +58,7 @@ FILLER = {PITCH_KEY: NOTES_MAP['rest'], DUR_KEY: DURATIONS_MAP['none']}
 
 CHORD_DIM = 12
 CHORD_OFFSET = 60 # chords will be in octave 4
-BUFF_LEN = 16
+BUFF_LEN = 8
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default="generated", type=str,
@@ -161,6 +161,9 @@ for measure in seed_song['measures'][:args.seed_measures]:
 seed_groups = list(zip(seed_pitches, seed_durs, seed_note_chords))
 random.shuffle(seed_groups)
 seed_pitches, seed_durs, seed_note_chords = zip(*seed_groups)
+seed_pitches = seed_pitches[-BUFF_LEN:]
+seed_durs = seed_durs[-BUFF_LEN:]
+seed_note_chords = seed_note_chords[-BUFF_LEN:]
 
 pitches_buff = np.array([FILLER[PITCH_KEY]]*(BUFF_LEN))
 pitches_buff[-len(seed_pitches):] = seed_pitches
