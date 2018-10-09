@@ -4,7 +4,7 @@ import os
 import sys
 from pathlib import Path
 from harmony import Harmony
-from pprint import pprint
+from copy import deepcopy
 import pickle
 
 sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
@@ -24,6 +24,9 @@ class Parser:
 
         # Individual file names
         self.json_paths = [op.join(self.json_dir, filename) for filename in os.listdir(self.json_dir)]
+
+        # Storage for the parsed output
+        self.parsed = None
 
         # Parse based on output format
         if output == "pitch_duration_tokens":
@@ -162,14 +165,33 @@ class Parser:
                 "measures": measures
             })
 
-        return songs
+        # TEST - verify all ticks have been captures
+        for song in songs:
+            for i, measure in enumerate(song["measures"]):
+                ticks_in_measure = 0
+                for group in measure:
+                    ticks_in_measure += len(group["ticks"])
+                if ticks_in_measure != int(4 * self.ticks):
+                    print(i)
+                    print("Wrong!", "wanted %d" % (int(4 * self.ticks)), "got %d" % (ticks_in_measure))
 
+        self.parsed = songs
+
+    ##########################################################################
+    # For a measure, returns a set of ticks grouped by associated harmony in
+    #   the following format:
+    #   [{
+    #      harmony,
+    #      ticks (num_ticks x 38) (F3-E6)
+    #   },
+    #   ...]
+    ##########################################################################
     def parse_measure_midi_ticks(self, measure, scale_factor, last_harmony):
         # Set note value for each tick in the measure
         ticks_by_note = []
         for note in measure["notes"]:
             note_divisions = int(note["duration"]["text"])
-            note_ticks = int(scale_factor * note_divisions)
+            note_ticks = round(scale_factor * note_divisions)
             note_index = get_note_index(note)
 
             for i in range(note_ticks):
@@ -182,7 +204,8 @@ class Parser:
 
         # Group the ticks by the harmony they fall under
         if measure["harmonies"]:
-            harmonies_start_in_ticks = [int(scale_factor * harmony_start) for harmony_start in measure["harmonies_start"]]
+            harmonies_start_in_ticks = [int(scale_factor * harmony_start) for harmony_start in
+                                        measure["harmonies_start"]]
             for i, harmony_start in enumerate(harmonies_start_in_ticks):
                 # Use the last harmony if there's no harmony to start this measure
                 if i == 0 and harmony_start != 0:
@@ -191,11 +214,13 @@ class Parser:
                         "ticks": ticks_by_note[0:harmony_start]
                     })
 
+                # Find the new harmony
                 harmony = Harmony(measure["harmonies"][i]).get_simple_pitch_classes_binary()
                 group = {
                     "harmony": harmony
                 }
 
+                # Add the ticks that fall under this harmony to the group
                 if i == len(measure["harmonies"]) - 1:
                     new_last_harmony = harmony
                     group["ticks"] = ticks_by_note[harmony_start:]
@@ -212,6 +237,34 @@ class Parser:
 
         return parsed_measure, new_last_harmony
 
+    def save_parsed(self, transpose=False):
+        # Ensure parsing has happened
+        if not self.parsed:
+            print("Nothing has been parsed.")
+            return
+
+        for song in self.parsed:
+            if transpose:
+                for steps in range(-6, 6):
+                    transposed = transpose_song_midi_ticks(song, steps)
+                    filename = "-".join([
+                        "_".join(transposed["metadata"]["title"].split(" ")),
+                        "_".join(transposed["metadata"]["artist"].split(" "))]) + "_%d" % steps + ".pkl"
+                    outpath = op.join(self.song_dir, filename)
+                    pickle.dump(transposed, open(outpath, 'wb'))
+            else:
+                filename = "-".join([
+                    "_".join(song["metadata"]["title"].split(" ")),
+                    "_".join(song["metadata"]["artist"].split(" "))]) + ".pkl"
+                outpath = op.join(self.song_dir, filename)
+                pickle.dump(song, open(outpath, 'wb'))
+
+
+#############################################
+# Returns:
+#   If there's only one key: key, False
+#   If there's more than one key: None, True
+##############################################
 def get_key(song_dict):
     """
     I know from analysis that the only keys in my particular dataset are major
@@ -243,10 +296,17 @@ def get_key(song_dict):
     return key, multiple
 
 
+##########################################################################
+# Returns the divisions per quarter note in the JSON represented MusicXML
+##########################################################################
 def get_divisions(song_dict):
     return int(song_dict["part"]["measures"][0]["attributes"]["divisions"]["text"])
 
 
+##################################################################
+# Given a MusicXML note element, squashes the note between F3-E6,
+#   returning an index where 0 is F3, 35 is E6, and 36 is 'rest'
+##################################################################
 def get_note_index(note):
     if "rest" in note.keys():
         return 36
@@ -272,3 +332,75 @@ def get_note_index(note):
 
         # 0 - 35
         return (((octave - 3) * 12) + note_int) - 5
+
+
+########################################
+# Transposes a song in MIDI ticks form
+########################################
+def transpose_song_midi_ticks(song, steps):
+    sign = lambda x: (1, -1)[x < 0]
+
+    transposed = deepcopy(song)
+    for measure in transposed["measures"]:
+        for group in measure:
+            if group["harmony"]:
+                # Transpose harmony
+                group["harmony"] = rotate(group["harmony"], steps)
+
+            # Transpose ticks
+            direction = sign(steps)
+            new_ticks = group["ticks"]
+            for _ in range(abs(steps)):
+                ticks = []
+                for tick in new_ticks:
+                    ticks.append(transpose_ticks(tick, direction))
+                new_ticks = ticks
+            group["ticks"] = new_ticks
+
+    return transposed
+
+
+###################################################
+# Transposes a MIDI tick array one step up or down
+###################################################
+def transpose_ticks(ticks, direction):
+    note = ticks.index(1)
+
+    # Don't have to transpose a rest
+    if note == len(ticks) - 1:
+        return ticks
+
+    # Transpose up a step
+    if direction > 0:
+        if note == len(ticks) - 2:
+            # Make E6 transpose "up" to F5
+            transposed = [0 for i in range(len(ticks))]
+            transposed[note - 11] = 1
+            return transposed
+        else:
+            transposed = ticks
+            transposed.insert(0, transposed.pop(len(transposed) - 2))
+            return transposed
+    else:
+        # Transpose down a step
+        if note == 0:
+            # Make F3 transpose "down" to E4
+            transposed = [0 for i in range(len(ticks))]
+            transposed[note + 11] = 1
+            return transposed
+        else:
+            transposed = ticks
+            transposed.insert(len(transposed) - 2, transposed.pop(0))
+            return transposed
+
+
+#########################################
+# Rotates a list a given number of steps
+#########################################
+def rotate(l, x):
+    return l[-x:] + l[:-x]
+
+
+if __name__ == '__main__':
+    parser = Parser(output="midi_ticks")
+    parser.save_parsed()
