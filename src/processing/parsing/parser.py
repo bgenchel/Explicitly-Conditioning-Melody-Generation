@@ -138,7 +138,10 @@ class Parser:
 
         for filename in self.json_paths:
             # Load song dict
-            song_dict = json.load(open(filename))
+            try:
+                song_dict = json.load(open(filename))
+            except:
+                print("Unable to load JSON for %s" % filename)
 
             # Get song metadata
             metadata = self.parse_metadata(filename, song_dict)
@@ -165,16 +168,6 @@ class Parser:
                 "measures": measures
             })
 
-        # TEST - verify all ticks have been captures
-        for song in songs:
-            for i, measure in enumerate(song["measures"]):
-                ticks_in_measure = 0
-                for group in measure:
-                    ticks_in_measure += len(group["ticks"])
-                if ticks_in_measure != int(4 * self.ticks):
-                    print(i)
-                    print("Wrong!", "wanted %d" % (int(4 * self.ticks)), "got %d" % (ticks_in_measure))
-
         self.parsed = songs
 
     ##########################################################################
@@ -190,6 +183,9 @@ class Parser:
         # Set note value for each tick in the measure
         ticks_by_note = []
         for note in measure["notes"]:
+            if not "duration" in note:
+                print("Skipping grace note...")
+                continue
             note_divisions = int(note["duration"]["text"])
             note_ticks = round(scale_factor * note_divisions)
             note_index = get_note_index(note)
@@ -250,12 +246,14 @@ class Parser:
                     filename = "-".join([
                         "_".join(transposed["metadata"]["title"].split(" ")),
                         "_".join(transposed["metadata"]["artist"].split(" "))]) + "_%d" % steps + ".pkl"
+                    filename = filename.replace("/", ",")
                     outpath = op.join(self.song_dir, filename)
                     pickle.dump(transposed, open(outpath, 'wb'))
             else:
                 filename = "-".join([
                     "_".join(song["metadata"]["title"].split(" ")),
                     "_".join(song["metadata"]["artist"].split(" "))]) + ".pkl"
+                filename = filename.replace("/", ",")
                 outpath = op.join(self.song_dir, filename)
                 pickle.dump(song, open(outpath, 'wb'))
 
@@ -321,11 +319,13 @@ def get_note_index(note):
         # Squash to F3-E6
         if octave < 3:
             if note_int < 5:
+                print("Note %s out of range, transposing..." % note_string)
                 octave = 4
             else:
                 octave = 3
         elif octave > 5:
             if note_int > 5:
+                print("Note %s out of range, transposing..." % note_string)
                 octave = 5
             else:
                 octave = 6
