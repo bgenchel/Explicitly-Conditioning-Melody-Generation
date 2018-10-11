@@ -11,12 +11,16 @@ sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
 from utils.constants import NOTES_MAP, DURATIONS_MAP, KEYS_DICT
 
 
-##################################################################
-# Parser
-#   Loads, parses, and formats JSON data into model-ready inputs
-##################################################################
 class Parser:
-    def __init__(self, output="pitch_duration_tokens", json_dir=None, root_dir=None, song_dir=None, dataset_dir=None):
+    def __init__(self, output="pitch_duration_tokens", root_dir=None, json_dir=None, song_dir=None, dataset_dir=None):
+        """
+        Loads, parses, and formats JSON data into model-ready inputs.
+        :param output: the desired parsing format, either "pitch_duration_tokens" or "midi_ticks"
+        :param root_dir: the project directory
+        :param json_dir: the directory containing the JSON formatted MusicXML
+        :param song_dir: the directory to save parsed individual songs
+        :param dataset_dir: the directory to save full datasets
+        """
         self.root_dir, \
         self.json_dir, \
         self.song_dir, \
@@ -35,10 +39,15 @@ class Parser:
             self.ticks = 24
             self.parse_midi_ticks()
 
-    ############################################
-    # Ensures that all input/output dirs exist
-    ############################################
     def verify_directories(self, root_dir, json_dir, song_dir, dataset_dir):
+        """
+        Ensures that all input/output directories exist.
+        :param root_dir: the project directory
+        :param json_dir: the directory containing the JSON formatted MusicXML
+        :param song_dir: the directory to save parsed individual songs
+        :param dataset_dir: the directory to save full datasets
+        :return:
+        """
         # Directory of the project, from which to base other dirs
         if not root_dir:
             # Looks up 3 directories to get project dir
@@ -70,17 +79,19 @@ class Parser:
 
         return root_dir, json_dir, song_dir, dataset_dir
 
-    ##############################################
-    # Given the JSON input as a dict, returns:
-    #   {
-    #       title,
-    #       artist,
-    #       key,
-    #       time_signature
-    #   }
-    #   or, None, if a song has more than one key
-    ##############################################
     def parse_metadata(self, filename, song_dict):
+        """
+        Given the JSON input as a dict, returns.
+        :param filename: name of the file from which song_dict is loaded, used as a backup for title/artist
+        :param song_dict:  a song dict in the format created by src/processing/conversion/xml_to_json.py
+        :return: an object containing metadata for the song in the following format:
+        {
+          title,
+          artist,
+          key,
+          time_signature
+        }
+        """
         # Strip filename of path and file extension (.json)
         filename = filename.split('/')[-1][:-5]
 
@@ -116,24 +127,24 @@ class Parser:
             "time_signature": time_signature
         }
 
-    ###########################################################
-    # Parses the JSON, and returns a list of dicts for each
-    #   song in the following format:
-    #   {
-    #       metadata: {
-    #           title,
-    #           artist,
-    #           key,
-    #           time_signature
-    #       },
-    #       measures: [[{
-    #           harmony,
-    #           ticks (num_ticks x 38) (F3-E6)
-    #       }], ...]
-    #   }
-    #   or, None, if a song has more than one key
-    ###########################################################
     def parse_midi_ticks(self):
+        """
+        Parses the JSON formatted MusicXML into MIDI ticks format.
+        :return: a list of parsed songs in the following format:
+        {
+          metadata: {
+              title,
+              artist,
+              key,
+              time_signature
+          },
+          measures: [[{
+            harmony,
+            ticks (num_ticks x 38) (F3-E6)
+          }], ...]
+        }
+        or, None, if a song has more than one key
+        """
         songs = []
 
         for filename in self.json_paths:
@@ -171,16 +182,14 @@ class Parser:
 
         self.parsed = songs
 
-    ##########################################################################
-    # For a measure, returns a set of ticks grouped by associated harmony in
-    #   the following format:
-    #   [{
-    #      harmony,
-    #      ticks (num_ticks x 38) (F3-E6)
-    #   },
-    #   ...]
-    ##########################################################################
     def parse_measure_midi_ticks(self, measure, scale_factor, last_harmony):
+        """
+        For a measure, returns a set of ticks grouped by associated harmony in.
+        :param measure: a measure dict in the format created by src/processing/conversion/xml_to_json.py
+        :param scale_factor: the scale factor between XML divisions and midi ticks
+        :param last_harmony: a reference to the last harmony used in case a measure has none
+        :return: a list of groups that contains a harmony and the midi ticks associated with that harmony
+        """
         parsed_measure = []
         new_last_harmony = last_harmony
 
@@ -216,6 +225,11 @@ class Parser:
         return parsed_measure, new_last_harmony
 
     def save_parsed(self, transpose=False):
+        """
+        Saves the parsed songs as .pkl to song_dir.
+        :param transpose: if True, transposes and saves each song in all 12 keys.
+        :return: None
+        """
         # Ensure parsing has happened
         if not self.parsed:
             print("Nothing has been parsed.")
@@ -240,15 +254,14 @@ class Parser:
                 pickle.dump(song, open(outpath, 'wb'))
 
 
-#############################################
-# Returns:
-#   If there's only one key: key, False
-#   If there's more than one key: None, True
-##############################################
 def get_key(song_dict):
     """
+    Fetches a key from the JSON representation of MusicXML for a song.
+
     I know from analysis that the only keys in my particular dataset are major
     and minor.
+    :param song_dict: a song dict in the format created by src/processing/conversion/xml_to_json.py
+    :return: ff there's only one key: (key, False), if there's more than one key: (None, True)
     """
     key = None
     multiple = False
@@ -276,18 +289,21 @@ def get_key(song_dict):
     return key, multiple
 
 
-##########################################################################
-# Returns the divisions per quarter note in the JSON represented MusicXML
-##########################################################################
 def get_divisions(song_dict):
+    """
+    Fetch the divisions per quarter note in the JSON represented MusicXML
+    :param song_dict: a song dict in the format created by src/processing/conversion/xml_to_json.py
+    :return: the number of divisions a quarter note is split into in this song's MusicXML representation
+    """
     return int(song_dict["part"]["measures"][0]["attributes"]["divisions"]["text"])
 
 
-##################################################################
-# Given a MusicXML note element, squashes the note between F3-E6,
-#   returning an index where 0 is F3, 35 is E6, and 36 is 'rest'
-##################################################################
 def get_note_index(note):
+    """
+    Fetches an index value for encoding a note's pitch for MIDI tick pitch formatting.
+    :param note: a note dict in the format created by src/processing/conversion/xml_to_json.py
+    :return: an index representing a note value, where 0 is F3, 35 is E6, and 36 is 'rest'
+    """
     if "rest" in note.keys():
         return 36
     else:
@@ -316,10 +332,14 @@ def get_note_index(note):
         return (((octave - 3) * 12) + note_int) - 5
 
 
-########################################
-# Transposes a song in MIDI ticks form
-########################################
 def transpose_song_midi_ticks(song, steps):
+    """
+    Transposes a song that has been parsed into MIDI ticks form.
+    :param song: a song parsed into MIDI ticks form
+    :param steps: a positive or negative number representing how many steps to transpose
+    :return: a transposed song in MIDI ticks form
+    """
+
     sign = lambda x: (1, -1)[x < 0]
 
     transposed = deepcopy(song)
@@ -342,10 +362,13 @@ def transpose_song_midi_ticks(song, steps):
     return transposed
 
 
-###################################################
-# Transposes a MIDI tick array one step up or down
-###################################################
 def transpose_ticks(ticks, direction):
+    """
+    Transposes a MIDI tick array one step up or down.
+    :param ticks: a one-hot array representing a pitch F3-E6 or rest
+    :param direction: either -1 or 1, representing the direction to transpose
+    :return: a transposed MIDI tick array
+    """
     note = ticks.index(1)
 
     # Don't have to transpose a rest
@@ -376,10 +399,13 @@ def transpose_ticks(ticks, direction):
             return transposed
 
 
-#########################################
-# Rotates a list a given number of steps
-#########################################
 def rotate(l, x):
+    """
+    Rotates a list a given number of steps
+    :param l: the list to rotate
+    :param x: a positive or negative integer steps to rotate
+    :return: the rotated list
+    """
     return l[-x:] + l[:-x]
 
 
