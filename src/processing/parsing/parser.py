@@ -142,6 +142,7 @@ class Parser:
                 song_dict = json.load(open(filename))
             except:
                 print("Unable to load JSON for %s" % filename)
+                continue
 
             # Get song metadata
             metadata = self.parse_metadata(filename, song_dict)
@@ -180,56 +181,37 @@ class Parser:
     #   ...]
     ##########################################################################
     def parse_measure_midi_ticks(self, measure, scale_factor, last_harmony):
-        # Set note value for each tick in the measure
-        ticks_by_note = []
-        for note in measure["notes"]:
-            if not "duration" in note:
-                print("Skipping grace note...")
-                continue
-            note_divisions = int(note["duration"]["text"])
-            note_ticks = round(scale_factor * note_divisions)
-            note_index = get_note_index(note)
-
-            for i in range(note_ticks):
-                tick = [0 for _ in range(37)]
-                tick[note_index] = 1
-                ticks_by_note.append(tick)
-
-        new_last_harmony = last_harmony
         parsed_measure = []
+        new_last_harmony = last_harmony
 
-        # Group the ticks by the harmony they fall under
-        if measure["harmonies"]:
-            harmonies_start_in_ticks = [int(scale_factor * harmony_start) for harmony_start in
-                                        measure["harmonies_start"]]
-            for i, harmony_start in enumerate(harmonies_start_in_ticks):
-                # Use the last harmony if there's no harmony to start this measure
-                if i == 0 and harmony_start != 0:
-                    parsed_measure.append({
-                        "harmony": last_harmony,
-                        "ticks": ticks_by_note[0:harmony_start]
-                    })
+        for group in measure["groups"]:
+            # Set note value for each tick in the measure
+            ticks_by_note = []
+            for note in group["notes"]:
+                if not "duration" in note:
+                    print("Skipping grace note...")
+                    continue
+                note_divisions = int(note["duration"]["text"])
+                note_ticks = round(scale_factor * note_divisions)
+                note_index = get_note_index(note)
 
-                # Find the new harmony
-                harmony = Harmony(measure["harmonies"][i]).get_simple_pitch_classes_binary()
-                group = {
-                    "harmony": harmony
-                }
+                for i in range(note_ticks):
+                    tick = [0 for _ in range(37)]
+                    tick[note_index] = 1
+                    ticks_by_note.append(tick)
 
-                # Add the ticks that fall under this harmony to the group
-                if i == len(measure["harmonies"]) - 1:
-                    new_last_harmony = harmony
-                    group["ticks"] = ticks_by_note[harmony_start:]
-                else:
-                    group["ticks"] = ticks_by_note[harmony_start:harmonies_start_in_ticks[i + 1]]
-
-                parsed_measure.append(group)
-        else:
-            # If no new harmonies, use the last harmony
-            parsed_measure.append({
-                "harmony": new_last_harmony,
-                "ticks": ticks_by_note
-            })
+            if not group["harmony"]:
+                parsed_measure.append({
+                    "harmony": last_harmony,
+                    "ticks": ticks_by_note
+                })
+            else:
+                harmony = Harmony(group["harmony"]).get_seventh_pitch_classes_binary()
+                new_last_harmony = harmony
+                parsed_measure.append({
+                    "harmony": harmony,
+                    "ticks": ticks_by_note
+                })
 
         return parsed_measure, new_last_harmony
 
