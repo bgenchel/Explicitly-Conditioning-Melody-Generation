@@ -198,7 +198,7 @@ def parse_json(fpath):
         parsed['measures'].append(parse_measure(measure, divisions))
 
     # try to fill in harmonies somewhat niavely
-    harmonies_per_measure = set()
+    max_harmonies_per_measure = 0
     for i, measure in enumerate(parsed['measures']):
         if not measure['harmonies']:
             if i == 0:
@@ -211,11 +211,9 @@ def parse_json(fpath):
                     if before_measure['harmonies']:
                         measure['harmonies'].append(before_measure['harmonies'][0])
                         break
-        harmonies_per_measure.add(len(measure['harmonies']))
+        max_harmonies_per_measure = max(len(measure['harmonies']), max_harmonies_per_measure)
 
-    if max(harmonies_per_measure) == 0:
-        return None
-    elif max(harmonies_per_measure) > 2:
+    if max_harmonies_per_measure == 0:
         return None
 
     return parsed
