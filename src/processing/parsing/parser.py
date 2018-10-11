@@ -6,6 +6,7 @@ from pathlib import Path
 from harmony import Harmony
 from copy import deepcopy
 import pickle
+import argparse
 
 sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
 from utils.constants import NOTES_MAP, DURATIONS_MAP, KEYS_DICT
@@ -21,6 +22,8 @@ class Parser:
         :param song_dir: the directory to save parsed individual songs
         :param dataset_dir: the directory to save full datasets
         """
+        self.output = output
+
         self.root_dir, \
         self.json_dir, \
         self.song_dir, \
@@ -33,11 +36,13 @@ class Parser:
         self.parsed = None
 
         # Parse based on output format
-        if output == "pitch_duration_tokens":
-            pass
-        elif output == "midi_ticks":
+        if self.output == "pitch_duration_tokens":
+            self.parse_pitch_duration_tokens()
+        elif self.output == "midi_ticks":
             self.ticks = 24
             self.parse_midi_ticks()
+        else:
+            raise Exception("Unrecognized output format.")
 
     def verify_directories(self, root_dir, json_dir, song_dir, dataset_dir):
         """
@@ -133,13 +138,16 @@ class Parser:
         :return: a list of parsed songs in the following format:
         {
           metadata: {
-              title,
-              artist,
-              key,
-              time_signature
+            title,
+            artist,
+            key,
+            time_signature
           },
           measures: [[{
-            harmony,
+            harmony: {
+              root,
+              pitch_classes
+            },
             ticks (num_ticks x 38) (F3-E6)
           }], ...]
         }
@@ -154,6 +162,8 @@ class Parser:
             except:
                 print("Unable to load JSON for %s" % filename)
                 continue
+
+            print("Parsing %s" % op.basename(filename))
 
             # Get song metadata
             metadata = self.parse_metadata(filename, song_dict)
@@ -170,7 +180,7 @@ class Parser:
 
             # Parse each measure
             measures = []
-            last_harmony = []
+            last_harmony = {}
             for measure in song_dict["part"]["measures"]:
                 parsed_measure, last_harmony = self.parse_measure_midi_ticks(measure, scale_factor, last_harmony)
                 measures.append(parsed_measure)
@@ -188,9 +198,11 @@ class Parser:
         :param measure: a measure dict in the format created by src/processing/conversion/xml_to_json.py
         :param scale_factor: the scale factor between XML divisions and midi ticks
         :param last_harmony: a reference to the last harmony used in case a measure has none
-        :return: a list of groups that contains a harmony and the midi ticks associated with that harmony
+        :return: a dict containing a list of groups that contains a harmony and the midi ticks associated with that harmony
         """
-        parsed_measure = []
+        parsed_measure = {
+            "groups": []
+        }
         new_last_harmony = last_harmony
 
         for group in measure["groups"]:
@@ -210,19 +222,172 @@ class Parser:
                     ticks_by_note.append(tick)
 
             if not group["harmony"]:
-                parsed_measure.append({
+                parsed_measure["groups"].append({
                     "harmony": last_harmony,
                     "ticks": ticks_by_note
                 })
             else:
-                harmony = Harmony(group["harmony"]).get_seventh_pitch_classes_binary()
-                new_last_harmony = harmony
-                parsed_measure.append({
-                    "harmony": harmony,
+                harmony = Harmony(group["harmony"])
+                harmony_dict = {
+                    "root": harmony.get_one_hot_root(),
+                    "pitch_classes": harmony.get_seventh_pitch_classes_binary()
+                }
+                new_last_harmony = harmony_dict
+                parsed_measure["groups"].append({
+                    "harmony": harmony_dict,
                     "ticks": ticks_by_note
                 })
 
         return parsed_measure, new_last_harmony
+
+    def parse_pitch_duration_tokens(self):
+        """
+        Parses the JSON formatted MusicXML into pitch duration tokens format.
+        :return: a list of parsed songs in the following format:
+        {
+          metadata: {
+            title,
+            artist,
+            key,
+            time_signature
+          },
+          measures: [{
+            groups: {
+              harmony: {
+                root,
+                pitch_classes
+              },
+              pitch_numbers,
+              duration_tags,
+              bar_position
+            }, ...
+          }, ...]
+        }
+        or, None, if a song has more than one key
+        """
+        songs = []
+
+        for filename in self.json_paths:
+            # Load song dict
+            try:
+                song_dict = json.load(open(filename))
+            except:
+                print("Unable to load JSON for %s" % filename)
+                continue
+
+            print("Parsing %s" % op.basename(filename))
+
+            # Get song metadata
+            metadata = self.parse_metadata(filename, song_dict)
+
+            # Get song divisions
+            divisions = get_divisions(song_dict)
+
+            # Parse each measure
+            measures = []
+            for measure in song_dict["part"]["measures"]:
+                parsed_measure = self.parse_measure_pitch_duration_tokens(measure, divisions)
+                measures.append(parsed_measure)
+
+            # try to fill in harmonies somewhat naively
+            max_harmonies_per_measure = 0
+            for i, measure in enumerate(measures):
+                for j, group in enumerate(measure["groups"]):
+                    if not group["harmony"]:
+                        if i == 0 and j == 0:
+                            for after_group in measures[i]["groups"][j + 1:]:
+                                if after_group["harmony"]:
+                                    measure["groups"][j]["harmony"] = after_group["harmony"]
+                                    break
+                            for after_measure in measures[i + 1:]:
+                                for after_measure_group in after_measure["groups"]:
+                                    if after_measure_group["harmony"]:
+                                        measure["groups"][j]["harmony"] = after_measure_group["harmony"]
+                                        break
+                        elif i == 0:
+                            for before_group in measure["groups"][j - 1::-1]:
+                                if before_group["harmony"]:
+                                    measure["groups"][j]["harmony"] = before_group["harmony"]
+                                    break
+                        else:
+                            for before_group in measure["groups"][j - 1::-1]:
+                                if before_group["harmony"]:
+                                    measure["groups"][j]["harmony"] = before_group["harmony"]
+                                    break
+                            for before_measure in measures[i - 1::-1]:
+                                for before_measure_group in before_measure["groups"]:
+                                    if before_measure_group["harmony"]:
+                                        measure["groups"][j]["harmony"] = before_measure_group["harmony"]
+                                        break
+                max_harmonies_per_measure = max(len(measure["groups"]), max_harmonies_per_measure)
+
+            if max_harmonies_per_measure == 0:
+                continue
+
+            songs.append({
+                "metadata": metadata,
+                "measures": measures
+            })
+
+        self.parsed = songs
+
+    def parse_measure_pitch_duration_tokens(self, measure, divisions):
+        """
+        Parses a measure according to the pitch duration token parsing process.
+        :param measure: a measure dict in the format created by src/processing/conversion/xml_to_json.py
+        :param divisions: the number of divisions a quarter note is split into in this song's MusicXML representation
+        :return: a dict containing a list of groups containing the pitch numbers, durations, and bar positions for each
+                harmony in a measure
+        """
+        parsed_measure = {
+            "groups": []
+        }
+
+        for group in measure["groups"]:
+            parsed_group = {
+                "harmony": {},
+                "pitch_numbers": [],
+                "duration_tags": [],
+                "bar_position": []
+            }
+            harmony = Harmony(group["harmony"])
+            parsed_group["harmony"]["root"] = harmony.get_one_hot_root()
+            parsed_group["harmony"]["pitch_classes"] = harmony.get_seventh_pitch_classes_binary()
+            dur_ticks_list = []
+            for note_dict in group["notes"]:
+                # want monophonic, so we'll just take the top note
+                if "chord" in note_dict.keys() or "grace" in note_dict.keys():
+                    continue
+                else:
+                    pitch_num, dur_tag, dur_ticks = self.parse_note_pitch_duration_tokens(note_dict, divisions)
+                    parsed_group["pitch_numbers"].append(pitch_num)
+                    parsed_group["duration_tags"].append(dur_tag)
+                    dur_ticks_list.append(dur_ticks)
+            dur_ticks_list = [sum(dur_ticks_list[:i]) for i in range(len(dur_ticks_list))]
+            dur_to_next_bar = [4 * divisions - dur_ticks for dur_ticks in dur_ticks_list]
+            parsed_group["bar_position"] = dur_to_next_bar
+            parsed_measure["groups"].append(parsed_group)
+        return parsed_measure
+
+    def parse_note_pitch_duration_tokens(self, note_dict, divisions):
+        """
+        Parses a note according to the pitch duration token parsing process.
+        :param note_dict: a note dict in the format created by src/processing/conversion/xml_to_json.py
+        :param divisions: the number of divisions a quarter note is split into in this song's MusicXML representation
+        :return: a number reflecting the pitch, a string representing the duration, and the duration in divisions
+        """
+        if "rest" in note_dict.keys():
+            pitch_num = NOTES_MAP["rest"]
+        elif "pitch" in note_dict.keys():
+            note_string = note_dict["pitch"]["step"]["text"]
+            if "alter" in note_dict["pitch"].keys():
+                note_string += (lambda x: "b" if -1 else ("#" if 1 else ""))(
+                    note_dict["pitch"]["alter"]["text"])
+            octave = int(note_dict["pitch"]["octave"]["text"])
+            pitch_num = (octave + 1) * 12 + NOTES_MAP[note_string]
+
+        dur_tag, dur_ticks = get_note_duration(note_dict, divisions)
+        return pitch_num, dur_tag, dur_ticks
 
     def save_parsed(self, transpose=False):
         """
@@ -238,7 +403,11 @@ class Parser:
         for song in self.parsed:
             if transpose:
                 for steps in range(-6, 6):
-                    transposed = transpose_song_midi_ticks(song, steps)
+                    if self.output == "pitch_duration_tokens":
+                        transposed = transpose_song_pitch_duration_tokens(song, steps)
+                    else:
+                        transposed = transpose_song_midi_ticks(song, steps)
+
                     filename = "-".join([
                         "_".join(transposed["metadata"]["title"].split(" ")),
                         "_".join(transposed["metadata"]["artist"].split(" "))]) + "_%d" % steps + ".pkl"
@@ -343,8 +512,11 @@ def transpose_song_midi_ticks(song, steps):
     sign = lambda x: (1, -1)[x < 0]
 
     transposed = deepcopy(song)
+    print("transposing by %i" % steps)
+    transposed["transposition"] = steps
+
     for measure in transposed["measures"]:
-        for group in measure:
+        for group in measure["groups"]:
             if group["harmony"]:
                 # Transpose harmony
                 group["harmony"] = rotate(group["harmony"], steps)
@@ -399,6 +571,101 @@ def transpose_ticks(ticks, direction):
             return transposed
 
 
+def get_note_duration(note_dict, divisions=24):
+    """
+    Fetches the duration of a note in JSON formatted MusicXML.
+    :param note_dict: a note dict in the format created by src/processing/conversion/xml_to_json.py
+    :param divisions: the number of divisions a quarter note is split into in this song's MusicXML representation
+    :return: a string representing the duration, and the duration in divisions
+    """
+    dur_dict = {'double': divisions * 8, 'whole': divisions * 4, 'half': divisions * 2,
+                'quarter': divisions, '8th': divisions / 2, '16th': divisions / 4, '32nd': divisions / 8}
+
+    if "duration" not in note_dict.keys():
+        note_dur = -1
+    else:
+        note_dur = float(note_dict["duration"]["text"])
+
+    if "type" in note_dict.keys():
+        note_type = note_dict["type"]["text"]
+        if note_type == "eighth":
+            note_type = "8th"
+        label = note_type
+        if note_dur == (3 * dur_dict[note_type] / 2):
+            label = '-'.join([label, 'dot'])
+        elif note_dur == (dur_dict[note_type] * 2 / 3):
+            label = '-'.join([label, 'triplet'])
+        elif note_dur != dur_dict[note_type]:
+            print("Undefined %s duration. Entering as regular %s." % (note_type, note_type))
+    elif note_dur == dur_dict["double"]:
+        label = "double"
+    elif note_dur == (3 * dur_dict["double"] / 2):
+        label = "double-dot"
+    elif note_dur == (2 * dur_dict["double"] / 3):
+        label = "double-triplet"
+    elif note_dur == dur_dict["whole"]:
+        label = "whole"
+    elif note_dur == (3 * dur_dict["whole"] / 2):
+        label = "whole-dot"
+    elif note_dur == (2 * dur_dict["whole"] / 3):
+        label = "whole-triplet"
+    elif note_dur == dur_dict["half"]:
+        label = "half"
+    elif note_dur == (3 * dur_dict["half"] / 2):
+        label = "half-dot"
+    elif note_dur == (2 * dur_dict["half"] / 3):
+        label = "half-triplet"
+    elif note_dur == dur_dict["quarter"]:
+        label = "quarter"
+    elif note_dur == (3 * dur_dict["quarter"] / 2):
+        label = "quarter-dot"
+    elif note_dur == (2 * dur_dict["quarter"] / 3):
+        label = "quarter-triplet"
+    elif note_dur == dur_dict["8th"]:
+        label = "8th"
+    elif note_dur == (3 * dur_dict["8th"] / 2):
+        label = "8th-dot"
+    elif note_dur == (2 * dur_dict["8th"] / 3):
+        label = "8th-triplet"
+    elif note_dur == dur_dict["16th"]:
+        label = "16th"
+    elif note_dur == (3 * dur_dict["16th"] / 2):
+        label = "16th-dot"
+    elif note_dur == (2 * dur_dict["16th"] / 3):
+        label = "16th-triplet"
+    elif note_dur == dur_dict["32nd"]:
+        label = "32nd"
+    elif note_dur == (3 * dur_dict["32nd"] / 2):
+        label = "32nd-dot"
+    elif note_dur == (3 * dur_dict["32nd"] / 3):
+        label = "32nd-triplet"
+    else:
+        print("Undefined duration %.2f. Labeling 'other'." % (note_dur / divisions))
+        label = "other"
+    return DURATIONS_MAP[label], note_dur
+
+
+def transpose_song_pitch_duration_tokens(song, steps):
+    """
+    Transposes a song in the pitch duration token format.
+    :param song: a song in pitch duration token format
+    :param steps: positive or negative integer number of steps to transpose
+    :return: a transposed song in pitch duration token format
+    """
+    transposed = deepcopy(song)
+    transposed["transposition"] = steps
+    print("transposing by %i" % steps)
+    for i, measure in enumerate(transposed["measures"]):
+        for j, group in enumerate(measure["groups"]):
+            group["pitch_numbers"] = [
+                (lambda n: n + steps if n != NOTES_MAP["rest"] else n)(pn)
+                for pn in group["pitch_numbers"]]
+            group["harmony"]["root"] = rotate(group["harmony"]["root"], steps)
+            group["harmony"]["pitch_classes"] = rotate(group["harmony"]["pitch_classes"], steps)
+            transposed["measures"][i]["groups"][j] = group
+    return transposed
+
+
 def rotate(l, x):
     """
     Rotates a list a given number of steps
@@ -410,5 +677,12 @@ def rotate(l, x):
 
 
 if __name__ == '__main__':
-    parser = Parser(output="midi_ticks")
-    parser.save_parsed()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", default="pitch_duration_tokens",
+                        help="The output format of the processed data.")
+    parser.add_argument("--transpose", default=False,
+                        help="Whether or not to transpose the parsed songs into all 12 keys.")
+    args = parser.parse_args()
+
+    p = Parser(output=args.output)
+    p.save_parsed(transpose=args.transpose)
