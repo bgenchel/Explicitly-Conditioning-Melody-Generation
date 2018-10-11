@@ -29,7 +29,7 @@ def xml_to_dict(fpath):
                 root_dict["degrees"].append(child_dict)
             elif child.tag == "note":
                 if not len(root_dict["groups"]):
-                    root_dict["groups"].append({"harmony": None, "notes": []})
+                    root_dict["groups"].append({"harmony": {}, "notes": []})
                 root_dict["groups"][-1]["notes"].append(child_dict)
             else:
                 root_dict[child.tag] = child_dict
