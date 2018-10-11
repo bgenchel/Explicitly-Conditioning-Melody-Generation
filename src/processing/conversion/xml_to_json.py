@@ -22,6 +22,7 @@ def xml_to_dict(fpath):
                 child_dict = recurse(child, child_dict)
 
             if child.tag == "measure":
+                child_dict["harmonies_start"] = harmony_timing(child)
                 root_dict["measures"].append(child_dict)
             elif child.tag == "harmony":
                 root_dict["groups"].append({"harmony": child_dict, "notes": []})
@@ -40,7 +41,30 @@ def xml_to_dict(fpath):
     root = tree.getroot()
     xml_dict[root.tag] = {"attributes": root.attrib}
     return recurse(root, xml_dict)
-                
+
+# Used to get the start position of a chord for use in MIDI tick representation
+def harmony_timing(measure):
+    harmonies_start = []
+
+    position = 0
+
+    for el in measure:
+        # Advance position for note
+        if el.tag == "note":
+            for child in el:
+                if child.tag == "duration":
+                    position += int(child.text)
+        elif el.tag == "forward":
+            # Forward has one child, duration
+            position += int(el[0].text)
+        elif el.tag == "backward":
+            # Backward has one child, duration
+            position -= int(el[0].text)
+        elif el.tag == "harmony":
+            # Capture the start time of this harmony
+            harmonies_start.append(position)
+
+    return harmonies_start
 
 if __name__ == '__main__':
     root_dir = str(Path(op.abspath(__file__)).parents[3])
@@ -55,7 +79,10 @@ if __name__ == '__main__':
     for fpath in fpaths:
         print('parsing %s...' % op.basename(fpath))
         try:
-            with open(op.join(json_path, op.basename(fpath).split('.')[0] + '.json'), 'w') as fp:
-                json.dump(xml_to_dict(fpath), fp, indent=4)
+            if op.basename(fpath)[-4:] == ".xml":
+                with open(op.join(json_path, op.basename(fpath).split('.')[0] + '.json'), 'w') as fp:
+                    json.dump(xml_to_dict(fpath), fp, indent=4)
+            else:
+                raise Exception()
         except: 
             print('Error!')

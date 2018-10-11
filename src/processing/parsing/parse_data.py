@@ -7,14 +7,23 @@ import pickle
 import random
 import sys
 from pathlib import Path
+import argparse
 from harmony import Harmony
+from pprint import pprint
 
 sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
 from utils.constants import NOTES_MAP, DURATIONS_MAP, KEYS_DICT
 
+# Directories
+root_dir = str(Path(op.abspath(__file__)).parents[3])
+json_dir = op.join(root_dir, 'data', 'raw', 'json')
+song_dir = op.join(root_dir, 'data', 'processed', 'songs')
+dataset_dir = op.join(root_dir, 'data', 'processed', 'datasets')
+
 
 def rotate(l, x):
     return l[-x:] + l[:-x]
+
 
 def get_key(jsdict):
     """
@@ -34,26 +43,28 @@ def get_key(jsdict):
                 if "mode" in key_dict.keys():
                     mode = key_dict["mode"]["text"]
                 else:
-                    mode = "major" # just assume, it doesn't really matter anyways
+                    mode = "major"  # just assume, it doesn't really matter anyways
                 try:
                     key = "%s%s" % (KEYS_DICT[mode][position], mode)
                 except KeyError:
                     print("Error!! mode: {}, position: {}".format(mode, position))
                     key = None
 
-
     return key, multiple
+
 
 def get_time_signature(jsdict):
     time_dict = jsdict["part"]["measures"][0]["attributes"]["time"]
     return "%s/%s" % (time_dict["beats"], time_dict["beat-type"])
 
+
 def get_divisions(jsdict):
     return int(jsdict["part"]["measures"][0]["attributes"]["divisions"]["text"])
 
+
 def get_note_duration(note_dict, division=24):
-    dur_dict = {'double': division*8, 'whole': division*4, 'half':  division*2, 'quarter': division, 
-                '8th': division/2, '16th': division/4, '32nd': division/8}
+    dur_dict = {'double': division * 8, 'whole': division * 4, 'half':  division * 2, 
+                'quarter': division, '8th': division / 2, '16th': division / 4, '32nd': division / 8}
 
     if "duration" not in note_dict.keys():
         note_dur = -1
@@ -69,7 +80,7 @@ def get_note_duration(note_dict, division=24):
             label = '-'.join([label, 'dot'])
         elif note_dur == (dur_dict[note_type] * 2 / 3):
             label = '-'.join([label, 'triplet'])
-        elif note_dur != dur_dict[note_type]: 
+        elif note_dur != dur_dict[note_type]:
             print("Undefined %s duration. Entering as regular %s." % (note_type, note_type))
     elif note_dur == dur_dict["double"]:
         label = "double"
@@ -114,9 +125,10 @@ def get_note_duration(note_dict, division=24):
     elif note_dur == (3 * dur_dict["32nd"] / 3):
         label = "32nd-triplet"
     else:
-        print("Undefined duration %.2f. Labeling 'other'." % (note_dur/division))
+        print("Undefined duration %.2f. Labeling 'other'." % (note_dur / division))
         label = "other"
     return DURATIONS_MAP[label], note_dur
+
 
 def parse_note(note_dict, division=24):
     if "rest" in note_dict.keys():
@@ -125,13 +137,14 @@ def parse_note(note_dict, division=24):
         note_string = note_dict["pitch"]["step"]["text"]
         if "alter" in note_dict["pitch"].keys():
             note_string += (lambda x: "b" if -1 else ("#" if 1 else ""))(
-                                note_dict["pitch"]["alter"]["text"])
+                note_dict["pitch"]["alter"]["text"])
         octave = int(note_dict["pitch"]["octave"]["text"])
-        pitch_num = (octave + 1)*12 + NOTES_MAP[note_string]
+        pitch_num = (octave + 1) * 12 + NOTES_MAP[note_string]
 
     dur_tag, dur_ticks = get_note_duration(note_dict, division)
     return pitch_num, dur_tag, dur_ticks
 
+  
 def parse_measure(measure_dict, divisions=24):
     parsed = {"groups": []}
     for group in measure_dict["groups"]:
@@ -156,12 +169,14 @@ def parse_measure(measure_dict, divisions=24):
         parsed["groups"].append(parsed_group)
     return parsed
 
+  
 def parse_json(fpath):
     print("Parsing %s" % op.basename(fpath))
     jsdict = json.load(open(fpath))
     divisions = get_divisions(jsdict)
 
     key, multiple = get_key(jsdict)
+
     if multiple is True:
         return None
 
@@ -175,7 +190,7 @@ def parse_json(fpath):
         artist = jsdict["identification"]["creator"]
     parsed = {"title": title,
               "artist": artist,
-              "key": key, # skip files with multiple keys
+              "key": key,  # skip files with multiple keys
               "time_signature": get_time_signature(jsdict),
               "measures": []}
 
@@ -187,12 +202,12 @@ def parse_json(fpath):
     for i, measure in enumerate(parsed['measures']):
         if not measure['harmonies']:
             if i == 0:
-                for after_measure in parsed['measures'][i+1:]:
+                for after_measure in parsed['measures'][i + 1:]:
                     if after_measure['harmonies']:
                         measure['harmonies'].append(after_measure['harmonies'][0])
                         break
-            else: 
-                for before_measure in parsed['measures'][i-1::-1]:
+            else:
+                for before_measure in parsed['measures'][i - 1::-1]:
                     if before_measure['harmonies']:
                         measure['harmonies'].append(before_measure['harmonies'][0])
                         break
@@ -205,12 +220,7 @@ def parse_json(fpath):
 
     return parsed
 
-if __name__ == '__main__':
-    root_dir = str(Path(op.abspath(__file__)).parents[3])
-    json_dir = op.join(root_dir, 'data', 'raw', 'json')
-    song_dir = op.join(root_dir, 'data', 'processed', 'songs')
-    dataset_dir = op.join(root_dir, 'data', 'processed', 'datasets')
-
+def get_json_paths():
     if not op.exists(json_dir):
         raise Exception("Json directory not found.")
     if not op.exists(song_dir):
@@ -218,7 +228,13 @@ if __name__ == '__main__':
     if not op.exists(dataset_dir):
         os.makedirs(dataset_dir)
 
-    json_paths = [op.join(json_dir, fname) for fname in os.listdir(json_dir)]
+    return [op.join(json_dir, fname) for fname in os.listdir(json_dir)]
+
+def process_pitch_duration_tokens():
+    print("Processing into pitch duration tokens...")
+
+    json_paths = get_json_paths()
+    print(json_paths)
     parsed_data = []
     charlie_parker_data = []
     for json_path in json_paths:
@@ -230,8 +246,8 @@ if __name__ == '__main__':
                 print("transposing by %i" % shift)
                 for i, measure in enumerate(transposed['measures']):
                     measure['pitch_numbers'] = [
-                            (lambda n: n + shift if n != NOTES_MAP["rest"] else n)(pn) 
-                            for pn in measure['pitch_numbers']]
+                        (lambda n: n + shift if n != NOTES_MAP["rest"] else n)(pn)
+                        for pn in measure['pitch_numbers']]
                     measure['harmonies'] = [rotate(h, shift) for h in measure['harmonies']]
                     transposed['measures'][i] = measure
                 outname = op.basename(json_path).replace('.json', '')
@@ -242,6 +258,20 @@ if __name__ == '__main__':
                 # if 'charlie_parker' in op.basename(outpath):
                 #     charlie_parker_data.append(parsed)
 
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", default="pitch_duration_tokens",
+                        help="The output format of the processed data.")
+    args = parser.parse_args()
+
+    if args.output == "pitch_duration_tokens":
+        process_pitch_duration_tokens()
+    elif args.output == "midi_ticks":
+        # process_midi_ticks()
+        pass
+    else:
+        print("Unknown output format specified.")
     # random.shuffle(parsed_data)
     # parsed_data_dict = {'train': parsed_data[:int(0.9*len(parsed_data))],
                 #         'valid': parsed_data[int(0.9*len(parsed_data)):]}
