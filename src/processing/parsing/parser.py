@@ -141,7 +141,8 @@ class Parser:
             title,
             artist,
             key,
-            time_signature
+            time_signature,
+            ticks_per_measure
           },
           measures: [[{
             harmony: {
@@ -167,6 +168,10 @@ class Parser:
 
             # Get song metadata
             metadata = self.parse_metadata(filename, song_dict)
+
+            # Add ticks per measure to metadata
+            time_signature = [int(n) for n in metadata["time_signature"].split("/")]
+            metadata["ticks_per_measure"] = int(time_signature[0] * (4 / time_signature[1]) * self.ticks)
 
             # Get song divisions
             divisions = get_divisions(song_dict)
@@ -205,6 +210,8 @@ class Parser:
         }
         new_last_harmony = last_harmony
 
+        num_ticks = 0
+
         for group in measure["groups"]:
             # Set note value for each tick in the measure
             ticks_by_note = []
@@ -220,6 +227,8 @@ class Parser:
                     tick = [0 for _ in range(37)]
                     tick[note_index] = 1
                     ticks_by_note.append(tick)
+
+            num_ticks += len(ticks_by_note)
 
             if not group["harmony"]:
                 parsed_measure["groups"].append({
@@ -237,6 +246,8 @@ class Parser:
                     "harmony": harmony_dict,
                     "ticks": ticks_by_note
                 })
+
+        parsed_measure["num_ticks"] = num_ticks
 
         return parsed_measure, new_last_harmony
 
