@@ -10,12 +10,11 @@ def xml_to_dict(fpath):
         if root.tag == "part":
             root_dict["measures"] = []
         if root.tag == "measure":
-            root_dict["harmonies"] = []
-            root_dict["notes"] = []
+            root_dict["groups"] = []
         if root.tag == "harmony":
             root_dict["degrees"] = []
 
-        for child in root:
+        for i, child in enumerate(root):
             child_dict = {'attributes': child.attrib}
             if len(list(child)) == 0:
                 child_dict['text'] = child.text
@@ -25,11 +24,13 @@ def xml_to_dict(fpath):
             if child.tag == "measure":
                 root_dict["measures"].append(child_dict)
             elif child.tag == "harmony":
-                root_dict["harmonies"].append(child_dict)
-            elif child.tag == "note":
-                root_dict["notes"].append(child_dict)
+                root_dict["groups"].append({"harmony": child_dict, "notes": []})
             elif child.tag == "degree":
                 root_dict["degrees"].append(child_dict)
+            elif child.tag == "note":
+                if not len(root_dict["groups"]):
+                    root_dict["groups"].append({"harmony": {}, "notes": []})
+                root_dict["groups"][-1]["notes"].append(child_dict)
             else:
                 root_dict[child.tag] = child_dict
         return root_dict
@@ -39,7 +40,7 @@ def xml_to_dict(fpath):
     root = tree.getroot()
     xml_dict[root.tag] = {"attributes": root.attrib}
     return recurse(root, xml_dict)
-                
+
 
 if __name__ == '__main__':
     root_dir = str(Path(op.abspath(__file__)).parents[3])
@@ -54,7 +55,10 @@ if __name__ == '__main__':
     for fpath in fpaths:
         print('parsing %s...' % op.basename(fpath))
         try:
-            with open(op.join(json_path, op.basename(fpath).split('.')[0] + '.json'), 'w') as fp:
-                json.dump(xml_to_dict(fpath), fp, indent=4)
+            if op.basename(fpath)[-4:] == ".xml":
+                with open(op.join(json_path, op.basename(fpath).split('.')[0] + '.json'), 'w') as fp:
+                    json.dump(xml_to_dict(fpath), fp, indent=4)
+            else:
+                raise Exception()
         except: 
             print('Error!')

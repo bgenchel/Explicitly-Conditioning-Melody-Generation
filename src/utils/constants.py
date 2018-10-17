@@ -9,11 +9,31 @@ NOTES_MAP = {'rest': 127, 'B#': 0, 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'E
              'E': 4, 'Fb': 4, 'E#': 5, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 
              'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11, 'Cb': 11}
 
-DURATIONS_MAP = {'whole': 0, 'half': 1, 'quarter': 2, 'eighth': 3, '16th': 4, 
-                 'whole-triplet': 5, 'half-triplet': 6, 'quarter-triplet': 7, 
-                 'eighth-triplet': 8, '16th-triplet': 9, 'whole-dot': 10, 'half-dot': 11, 
-                 'quarter-dot': 12, 'eighth-dot': 13, '16th-dot': 14, '32nd': 15, 
-                 '32nd-triplet': 16, '32nd-dot': 17, 'none': 18}
+DURATIONS_MAP = {
+    '32nd-triplet': 0, 
+    '32nd': 2, 
+    '16th-triplet': 3,
+    '32nd-dot': 4,
+    '16th': 5,
+    '8th-triplet': 6,
+    '16th-dot': 7,
+    '8th': 9,
+    'quarter-triplet': 10,
+    '8th-dot': 11,
+    'quarter': 12,
+    'half-triplet': 13,
+    'quarter-dot': 14,
+    'half': 15,
+    'whole-triplet': 16,
+    'half-dot': 17,
+    'whole': 18,
+    'double-triplet': 19,
+    'whole-dot': 20,
+    'double': 20,
+    'double-dot': 21,
+    'none': 22
+}
+
 
 KEYS_DICT = {"major": {'0': 'C', '1': 'G', '2': 'D', '3': 'A', '4': 'E', '5': 'B', '6': 'F#', 
                   '-1': 'F', '-2': 'Bb', '-3': 'Eb', '-4': 'Ab', '-5': 'Db', '-6': 'Gb'},
