@@ -1,0 +1,38 @@
+name: min-leadsheet
+channels:
+  - defaults
+dependencies:
+  - ca-certificates=2018.03.07
+  - certifi=2018.10.15
+  - libedit=3.1.20170329
+  - libffi=3.2.1
+  - ncurses=6.1
+  - openssl=1.0.2p
+  - pip=10.0.1
+  - python=3.6.6
+  - readline=7.0
+  - setuptools=40.4.3
+  - sqlite=3.25.2
+  - tk=8.6.8
+  - wheel=0.32.1
+  - xz=5.2.4
+  - zlib=1.2.11
+  - pip:
+    - antlr4-python3-runtime==4.7.1
+    - chord-labels==0.1
+    - cycler==0.10.0
+    - kiwisolver==1.0.1
+    - matplotlib==3.0.0
+    - mido==1.2.9
+    - numpy==1.15.2
+    - pathlib==1.0.1
+    - pillow==5.3.0
+    - pretty-midi==0.2.8
+    - pyparsing==2.2.2
+    - python-dateutil==2.7.3
+    - six==1.11.0
+    - torch==0.4.1
+    - torchvision==0.2.1
+    - typing==3.6.6
+prefix: /Users/benjamingenchel/anaconda/envs/min-leadsheet
+
