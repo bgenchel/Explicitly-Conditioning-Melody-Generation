@@ -1,0 +1,3098 @@
+{
+    "C7": {
+        "pitch_classes": "[0, 4, 7, 10]",
+        "count": 399,
+        "harte": "C:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "E6": {
+        "pitch_classes": "[1, 4, 8, 11]",
+        "count": 1,
+        "harte": "E:(3,5,6)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "G#dim": {
+        "pitch_classes": "[2, 8, 11]",
+        "count": 5,
+        "harte": "G#:(b3,b5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Db7": {
+        "pitch_classes": "[1, 5, 8, 11]",
+        "count": 136,
+        "harte": "Db:(3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "G13": {
+        "pitch_classes": "[0, 2, 4, 5, 7, 9, 11]",
+        "count": 16,
+        "harte": "G:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]"
+    },
+    "Ab9(#11)": {
+        "pitch_classes": "[0, 2, 3, 6, 8, 10]",
+        "count": 1,
+        "harte": "Ab:(3,5,b7,9,#11)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Cm9": {
+        "pitch_classes": "[0, 2, 3, 7, 10]",
+        "count": 8,
+        "harte": "C:(b3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Ebm7b5": {
+        "pitch_classes": "[1, 3, 6, 9]",
+        "count": 1,
+        "harte": "Eb:(b3,b5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Aaug(7,#9)": {
+        "pitch_classes": "[0, 1, 5, 8, 9]",
+        "count": 1,
+        "harte": "A:(3,#5,7,#9)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0]"
+    },
+    "Gm(#5)": {
+        "pitch_classes": "[3, 7, 10]",
+        "count": 1,
+        "harte": "G:(b3,#5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Ebmaj7": {
+        "pitch_classes": "[2, 3, 7, 10]",
+        "count": 95,
+        "harte": "Eb:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Emaj": {
+        "pitch_classes": "[4, 8, 11]",
+        "count": 24,
+        "harte": "E:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Gsus4(7,9,11,13)": {
+        "pitch_classes": "[0, 2, 4, 6, 7, 9]",
+        "count": 1,
+        "harte": "G:(4,5,7,9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0]"
+    },
+    "B/D#": {
+        "pitch_classes": "[3, 6, 11]",
+        "count": 3,
+        "harte": "B:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "Ab13": {
+        "pitch_classes": "[0, 1, 3, 5, 6, 8, 10]",
+        "count": 15,
+        "harte": "Ab:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0]"
+    },
+    "F#m7(11)": {
+        "pitch_classes": "[1, 4, 6, 9, 11]",
+        "count": 1,
+        "harte": "F#:(b3,5,b7,11)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "Cb6": {
+        "pitch_classes": "[3, 6, 8, 11]",
+        "count": 1,
+        "harte": "Cb:(3,5,6)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1]"
+    },
+    "Fsus4": {
+        "pitch_classes": "[0, 5, 10]",
+        "count": 2,
+        "harte": "F:(4,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "Gb13/Eb": {
+        "pitch_classes": "[1, 3, 4, 6, 8, 10, 11]",
+        "count": 1,
+        "harte": "Gb:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1]"
+    },
+    "Bbdim": {
+        "pitch_classes": "[1, 4, 10]",
+        "count": 15,
+        "harte": "Bb:(b3,b5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0]"
+    },
+    "Gm": {
+        "pitch_classes": "[2, 7, 10]",
+        "count": 148,
+        "harte": "G:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Bb9(b5)": {
+        "pitch_classes": "[0, 2, 4, 8, 10]",
+        "count": 3,
+        "harte": "Bb:(3,b5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "Fmaj7(#11)": {
+        "pitch_classes": "[0, 4, 5, 9, 11]",
+        "count": 1,
+        "harte": "F:(3,5,7,#11)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "Bdim": {
+        "pitch_classes": "[2, 5, 11]",
+        "count": 15,
+        "harte": "B:(b3,b5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1]"
+    },
+    "Bdim7": {
+        "pitch_classes": "[2, 5, 8, 11]",
+        "count": 20,
+        "harte": "B:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Bb11": {
+        "pitch_classes": "[0, 2, 3, 5, 8, 10]",
+        "count": 2,
+        "harte": "Bb:(3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Gmaj/A": {
+        "pitch_classes": "[2, 7, 11]",
+        "count": 5,
+        "harte": "G:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Cm7b5": {
+        "pitch_classes": "[0, 3, 6, 10]",
+        "count": 30,
+        "harte": "C:(b3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Bb6": {
+        "pitch_classes": "[2, 5, 7, 10]",
+        "count": 71,
+        "harte": "Bb:(3,5,6)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Cmaj": {
+        "pitch_classes": "[0, 4, 7]",
+        "count": 278,
+        "harte": "C:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "C#7": {
+        "pitch_classes": "[1, 5, 8, 11]",
+        "count": 5,
+        "harte": "C#:(3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Bmaj7/Eb": {
+        "pitch_classes": "[3, 6, 10, 11]",
+        "count": 1,
+        "harte": "B:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1]"
+    },
+    "Gb7(b5)": {
+        "pitch_classes": "[0, 4, 6, 10]",
+        "count": 2,
+        "harte": "Gb:(3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "F#m7": {
+        "pitch_classes": "[1, 4, 6, 9]",
+        "count": 24,
+        "harte": "F#:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Bmaj7/E": {
+        "pitch_classes": "[3, 6, 10, 11]",
+        "count": 1,
+        "harte": "B:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1]"
+    },
+    "Bbm": {
+        "pitch_classes": "[1, 5, 10]",
+        "count": 30,
+        "harte": "Bb:(b3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "Cdim/Eb": {
+        "pitch_classes": "[0, 3, 6]",
+        "count": 3,
+        "harte": "C:(b3,b5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0]"
+    },
+    "Fmaj": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 158,
+        "harte": "F:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Gm9": {
+        "pitch_classes": "[2, 5, 7, 9, 10]",
+        "count": 6,
+        "harte": "G:(b3,5,b7,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0]"
+    },
+    "C#aug": {
+        "pitch_classes": "[1, 5, 9]",
+        "count": 1,
+        "harte": "C#:(3,#5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Gsus4(7,9)": {
+        "pitch_classes": "[0, 2, 6, 7, 9]",
+        "count": 3,
+        "harte": "G:(4,5,7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0]"
+    },
+    "Am6/F#": {
+        "pitch_classes": "[0, 4, 6, 9]",
+        "count": 3,
+        "harte": "A:(b3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Gm11": {
+        "pitch_classes": "[0, 2, 5, 7, 9, 10]",
+        "count": 3,
+        "harte": "G:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0]"
+    },
+    "Gaug7": {
+        "pitch_classes": "[3, 5, 7, 11]",
+        "count": 8,
+        "harte": "G:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Gmaj7/Eb": {
+        "pitch_classes": "[2, 6, 7, 11]",
+        "count": 3,
+        "harte": "G:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1]"
+    },
+    "Bbaug": {
+        "pitch_classes": "[2, 6, 10]",
+        "count": 2,
+        "harte": "Bb:(3,#5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Daug9": {
+        "pitch_classes": "[0, 2, 4, 6, 10]",
+        "count": 2,
+        "harte": "D:(3,#5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "E13": {
+        "pitch_classes": "[1, 2, 4, 6, 8, 9, 11]",
+        "count": 7,
+        "harte": "E:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1]"
+    },
+    "Bm": {
+        "pitch_classes": "[2, 6, 11]",
+        "count": 19,
+        "harte": "B:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "Em7(4)": {
+        "pitch_classes": "[2, 4, 7, 9, 11]",
+        "count": 1,
+        "harte": "E:(b3,4,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "Gm6": {
+        "pitch_classes": "[2, 4, 7, 10]",
+        "count": 13,
+        "harte": "G:(b3,5,6)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Gb7": {
+        "pitch_classes": "[1, 4, 6, 10]",
+        "count": 37,
+        "harte": "Gb:(3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Bb7/F": {
+        "pitch_classes": "[2, 5, 8, 10]",
+        "count": 2,
+        "harte": "Bb:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Db9": {
+        "pitch_classes": "[1, 3, 5, 8, 11]",
+        "count": 31,
+        "harte": "Db:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Dmaj(9)/C": {
+        "pitch_classes": "[2, 4, 6, 9]",
+        "count": 1,
+        "harte": "D:(3,5,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Gm/F": {
+        "pitch_classes": "[2, 7, 10]",
+        "count": 3,
+        "harte": "G:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Dmaj/Eb": {
+        "pitch_classes": "[2, 6, 9]",
+        "count": 1,
+        "harte": "D:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Cmaj7(#11)": {
+        "pitch_classes": "[0, 4, 6, 7, 11]",
+        "count": 4,
+        "harte": "C:(3,5,7,#11)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1]"
+    },
+    "Adim7/Eb": {
+        "pitch_classes": "[0, 3, 6, 9]",
+        "count": 2,
+        "harte": "A:(b3,b5,bb7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Abmaj13": {
+        "pitch_classes": "[0, 1, 3, 5, 7, 8, 10]",
+        "count": 2,
+        "harte": "Ab:(3,5,7,9,11,13)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0]"
+    },
+    "F#7(#5,b9,#11)": {
+        "pitch_classes": "[0, 2, 4, 6, 7, 10]",
+        "count": 1,
+        "harte": "F#:(3,#5,b7,b9,#11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0]"
+    },
+    "Gmaj/Bb": {
+        "pitch_classes": "[2, 7, 11]",
+        "count": 1,
+        "harte": "G:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Em9": {
+        "pitch_classes": "[2, 4, 6, 7, 11]",
+        "count": 3,
+        "harte": "E:(b3,5,b7,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1]"
+    },
+    "Bm7/D": {
+        "pitch_classes": "[2, 6, 9, 11]",
+        "count": 2,
+        "harte": "B:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "Amaj/C#": {
+        "pitch_classes": "[1, 4, 9]",
+        "count": 12,
+        "harte": "A:(3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0]"
+    },
+    "F#maj": {
+        "pitch_classes": "[1, 6, 10]",
+        "count": 2,
+        "harte": "F#:(3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "F#13": {
+        "pitch_classes": "[1, 3, 4, 6, 8, 10, 11]",
+        "count": 1,
+        "harte": "F#:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1]"
+    },
+    "Dm7/A": {
+        "pitch_classes": "[0, 2, 5, 9]",
+        "count": 2,
+        "harte": "D:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Eb7": {
+        "pitch_classes": "[1, 3, 7, 10]",
+        "count": 230,
+        "harte": "Eb:(3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Abm6": {
+        "pitch_classes": "[3, 5, 8, 11]",
+        "count": 11,
+        "harte": "Ab:(b3,5,6)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Gbdim": {
+        "pitch_classes": "[0, 6, 9]",
+        "count": 5,
+        "harte": "Gb:(b3,b5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "D7(b9)/G": {
+        "pitch_classes": "[0, 2, 3, 6, 9]",
+        "count": 1,
+        "harte": "D:(3,5,b7,b9)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Gb9": {
+        "pitch_classes": "[1, 4, 6, 8, 10]",
+        "count": 12,
+        "harte": "Gb:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Bm6": {
+        "pitch_classes": "[2, 6, 8, 11]",
+        "count": 2,
+        "harte": "B:(b3,5,6)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1]"
+    },
+    "Emaj7": {
+        "pitch_classes": "[3, 4, 8, 11]",
+        "count": 16,
+        "harte": "E:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "F7(b5)": {
+        "pitch_classes": "[3, 5, 9, 11]",
+        "count": 12,
+        "harte": "F:(3,b5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "D9(b5)": {
+        "pitch_classes": "[0, 2, 4, 6, 8]",
+        "count": 1,
+        "harte": "D:(3,b5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "Ebm9": {
+        "pitch_classes": "[1, 3, 5, 6, 10]",
+        "count": 3,
+        "harte": "Eb:(b3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0]"
+    },
+    "Eb7(b9)": {
+        "pitch_classes": "[1, 3, 4, 7, 10]",
+        "count": 6,
+        "harte": "Eb:(3,5,b7,b9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Cm6(9)": {
+        "pitch_classes": "[0, 2, 3, 7, 9]",
+        "count": 1,
+        "harte": "C:(b3,5,6,9)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Dm7/G": {
+        "pitch_classes": "[0, 2, 5, 9]",
+        "count": 1,
+        "harte": "D:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "C7(#5,#9)": {
+        "pitch_classes": "[0, 3, 4, 8, 10]",
+        "count": 2,
+        "harte": "C:(3,#5,b7,#9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "Dbmaj7/C": {
+        "pitch_classes": "[0, 1, 5, 8]",
+        "count": 1,
+        "harte": "Db:(3,5,7)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Bbm6": {
+        "pitch_classes": "[1, 5, 7, 10]",
+        "count": 10,
+        "harte": "Bb:(b3,5,6)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "F": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 26,
+        "harte": "F:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Baug": {
+        "pitch_classes": "[3, 7, 11]",
+        "count": 4,
+        "harte": "B:(3,#5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Eb6": {
+        "pitch_classes": "[0, 3, 7, 10]",
+        "count": 49,
+        "harte": "Eb:(3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "D#m": {
+        "pitch_classes": "[3, 6, 10]",
+        "count": 2,
+        "harte": "D#:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "C7/Bb": {
+        "pitch_classes": "[0, 4, 7, 10]",
+        "count": 2,
+        "harte": "C:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Ebmaj69": {
+        "pitch_classes": "[0, 3, 5, 7, 10]",
+        "count": 2,
+        "harte": "Eb:(3,5,6,9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Bbm6/F": {
+        "pitch_classes": "[1, 5, 7, 10]",
+        "count": 3,
+        "harte": "Bb:(b3,5,6)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Bmaj7(#11)": {
+        "pitch_classes": "[3, 5, 6, 10, 11]",
+        "count": 1,
+        "harte": "B:(3,5,7,#11)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1]"
+    },
+    "E9": {
+        "pitch_classes": "[2, 4, 6, 8, 11]",
+        "count": 11,
+        "harte": "E:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1]"
+    },
+    "Ebsus4(7,9)": {
+        "pitch_classes": "[2, 3, 5, 8, 10]",
+        "count": 1,
+        "harte": "Eb:(4,5,7,9)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Bb": {
+        "pitch_classes": "[2, 5, 10]",
+        "count": 14,
+        "harte": "Bb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "A7(b5)": {
+        "pitch_classes": "[1, 3, 7, 9]",
+        "count": 19,
+        "harte": "A:(3,b5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Cm(maj7)": {
+        "pitch_classes": "[0, 3, 7, 11]",
+        "count": 2,
+        "harte": "C:(b3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Gbsus4": {
+        "pitch_classes": "[1, 6, 11]",
+        "count": 1,
+        "harte": "Gb:(4,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "Em7/A": {
+        "pitch_classes": "[2, 4, 7, 11]",
+        "count": 1,
+        "harte": "E:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Fm/Bb": {
+        "pitch_classes": "[0, 5, 8]",
+        "count": 9,
+        "harte": "F:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Cm": {
+        "pitch_classes": "[0, 3, 7]",
+        "count": 95,
+        "harte": "C:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "Bbm11": {
+        "pitch_classes": "[0, 1, 3, 5, 8, 10]",
+        "count": 4,
+        "harte": "Bb:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Fm7/B": {
+        "pitch_classes": "[0, 3, 5, 8]",
+        "count": 1,
+        "harte": "F:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Bbm6/C#": {
+        "pitch_classes": "[1, 5, 7, 10]",
+        "count": 1,
+        "harte": "Bb:(b3,5,6)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Ebsus4": {
+        "pitch_classes": "[3, 8, 10]",
+        "count": 4,
+        "harte": "Eb:(4,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "Amaj7/Eb": {
+        "pitch_classes": "[1, 4, 8, 9]",
+        "count": 6,
+        "harte": "A:(3,5,7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0]"
+    },
+    "Db13": {
+        "pitch_classes": "[1, 3, 5, 6, 8, 10, 11]",
+        "count": 8,
+        "harte": "Db:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1]"
+    },
+    "Fsus4(7)": {
+        "pitch_classes": "[0, 4, 5, 10]",
+        "count": 3,
+        "harte": "F:(4,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "Fm7": {
+        "pitch_classes": "[0, 3, 5, 8]",
+        "count": 247,
+        "harte": "F:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "A13": {
+        "pitch_classes": "[1, 2, 4, 6, 7, 9, 11]",
+        "count": 2,
+        "harte": "A:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1]"
+    },
+    "Asus4(7,9)": {
+        "pitch_classes": "[2, 4, 8, 9, 11]",
+        "count": 3,
+        "harte": "A:(4,5,7,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1]"
+    },
+    "Dbaug7(11)": {
+        "pitch_classes": "[1, 5, 6, 9, 11]",
+        "count": 1,
+        "harte": "Db:(3,#5,b7,11)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1]"
+    },
+    "Bmaj9": {
+        "pitch_classes": "[1, 3, 6, 10, 11]",
+        "count": 1,
+        "harte": "B:(3,5,7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1]"
+    },
+    "C6/G": {
+        "pitch_classes": "[0, 4, 7, 9]",
+        "count": 4,
+        "harte": "C:(3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Cmaj9": {
+        "pitch_classes": "[0, 2, 4, 7, 11]",
+        "count": 9,
+        "harte": "C:(3,5,7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Eaug7": {
+        "pitch_classes": "[0, 2, 4, 8]",
+        "count": 10,
+        "harte": "E:(3,#5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0]"
+    },
+    "Faug7(#9)": {
+        "pitch_classes": "[1, 3, 5, 8, 9]",
+        "count": 2,
+        "harte": "F:(3,#5,b7,#9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0]"
+    },
+    "A": {
+        "pitch_classes": "[1, 4, 9]",
+        "count": 6,
+        "harte": "A:(3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0]"
+    },
+    "Abmaj": {
+        "pitch_classes": "[0, 3, 8]",
+        "count": 78,
+        "harte": "Ab:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0]"
+    },
+    "Em11": {
+        "pitch_classes": "[2, 4, 6, 7, 9, 11]",
+        "count": 2,
+        "harte": "E:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1]"
+    },
+    "Em/B": {
+        "pitch_classes": "[4, 7, 11]",
+        "count": 1,
+        "harte": "E:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "D7(3,4)": {
+        "pitch_classes": "[0, 2, 6, 7, 9]",
+        "count": 1,
+        "harte": "D:(3,4,5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0]"
+    },
+    "Ebmaj7(#11)": {
+        "pitch_classes": "[2, 3, 7, 9, 10]",
+        "count": 2,
+        "harte": "Eb:(3,5,7,#11)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0]"
+    },
+    "Gbm6": {
+        "pitch_classes": "[1, 3, 6, 9]",
+        "count": 1,
+        "harte": "Gb:(b3,5,6)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Fsus4(7,9)": {
+        "pitch_classes": "[0, 4, 5, 7, 10]",
+        "count": 5,
+        "harte": "F:(4,5,7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "C": {
+        "pitch_classes": "[0, 4, 7]",
+        "count": 2,
+        "harte": "C:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "G7": {
+        "pitch_classes": "[2, 5, 7, 11]",
+        "count": 350,
+        "harte": "G:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Db6": {
+        "pitch_classes": "[1, 5, 8, 10]",
+        "count": 15,
+        "harte": "Db:(3,5,6)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Fdim7": {
+        "pitch_classes": "[2, 5, 8, 11]",
+        "count": 2,
+        "harte": "F:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Cmaj/Bb": {
+        "pitch_classes": "[0, 4, 7]",
+        "count": 2,
+        "harte": "C:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "E7(#5)": {
+        "pitch_classes": "[0, 2, 4, 8]",
+        "count": 2,
+        "harte": "E:(3,#5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0]"
+    },
+    "C7(#5,#9,#11)": {
+        "pitch_classes": "[0, 3, 4, 6, 8, 10]",
+        "count": 10,
+        "harte": "C:(3,#5,b7,#9,#11)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Gdim": {
+        "pitch_classes": "[1, 7, 10]",
+        "count": 4,
+        "harte": "G:(b3,b5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Bb13": {
+        "pitch_classes": "[0, 2, 3, 5, 7, 8, 10]",
+        "count": 28,
+        "harte": "Bb:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0]"
+    },
+    "F7/C": {
+        "pitch_classes": "[0, 3, 5, 9]",
+        "count": 4,
+        "harte": "F:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Fm7b5": {
+        "pitch_classes": "[3, 5, 8, 11]",
+        "count": 18,
+        "harte": "F:(b3,b5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Bsus4": {
+        "pitch_classes": "[4, 6, 11]",
+        "count": 3,
+        "harte": "B:(4,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "Asus4(7)": {
+        "pitch_classes": "[2, 4, 8, 9]",
+        "count": 1,
+        "harte": "A:(4,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0]"
+    },
+    "D9(#11)": {
+        "pitch_classes": "[0, 2, 4, 6, 8, 9]",
+        "count": 2,
+        "harte": "D:(3,5,b7,9,#11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0]"
+    },
+    "A6": {
+        "pitch_classes": "[1, 4, 6, 9]",
+        "count": 2,
+        "harte": "A:(3,5,6)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Ddim": {
+        "pitch_classes": "[2, 5, 8]",
+        "count": 8,
+        "harte": "D:(b3,b5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Ebm7": {
+        "pitch_classes": "[1, 3, 6, 10]",
+        "count": 93,
+        "harte": "Eb:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "G7(b9)": {
+        "pitch_classes": "[2, 5, 7, 8, 11]",
+        "count": 44,
+        "harte": "G:(3,5,b7,b9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1]"
+    },
+    "G7/Db": {
+        "pitch_classes": "[2, 5, 7, 11]",
+        "count": 1,
+        "harte": "G:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Am7": {
+        "pitch_classes": "[0, 4, 7, 9]",
+        "count": 174,
+        "harte": "A:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "A7(b9)": {
+        "pitch_classes": "[1, 4, 7, 9, 10]",
+        "count": 22,
+        "harte": "A:(3,5,b7,b9)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0]"
+    },
+    "D": {
+        "pitch_classes": "[2, 6, 9]",
+        "count": 13,
+        "harte": "D:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Ebdim7/Bb": {
+        "pitch_classes": "[0, 3, 6, 9]",
+        "count": 1,
+        "harte": "Eb:(b3,b5,bb7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "D7(#9)": {
+        "pitch_classes": "[0, 2, 5, 6, 9]",
+        "count": 2,
+        "harte": "D:(3,5,b7,#9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0]"
+    },
+    "Dbmaj/Ab": {
+        "pitch_classes": "[1, 5, 8]",
+        "count": 1,
+        "harte": "Db:(3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Bb7(#11)": {
+        "pitch_classes": "[2, 4, 5, 8, 10]",
+        "count": 11,
+        "harte": "Bb:(3,5,b7,#11)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "D9": {
+        "pitch_classes": "[0, 2, 4, 6, 9]",
+        "count": 41,
+        "harte": "D:(3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Ab13(b5)": {
+        "pitch_classes": "[0, 1, 2, 5, 6, 8, 10]",
+        "count": 1,
+        "harte": "Ab:(3,b5,b7,9,11,13)",
+        "pitch_classes_binary": "[1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0]"
+    },
+    "Cmaj7/E": {
+        "pitch_classes": "[0, 4, 7, 11]",
+        "count": 8,
+        "harte": "C:(3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "G": {
+        "pitch_classes": "[2, 7, 11]",
+        "count": 15,
+        "harte": "G:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "C9": {
+        "pitch_classes": "[0, 2, 4, 7, 10]",
+        "count": 47,
+        "harte": "C:(3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "C9(b5)": {
+        "pitch_classes": "[0, 2, 4, 6, 10]",
+        "count": 2,
+        "harte": "C:(3,b5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Am7b5": {
+        "pitch_classes": "[0, 3, 7, 9]",
+        "count": 33,
+        "harte": "A:(b3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "C7(b5)": {
+        "pitch_classes": "[0, 4, 6, 10]",
+        "count": 4,
+        "harte": "C:(3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Dbmaj9": {
+        "pitch_classes": "[0, 1, 3, 5, 8]",
+        "count": 4,
+        "harte": "Db:(3,5,7,9)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Absus4(7)": {
+        "pitch_classes": "[1, 3, 7, 8]",
+        "count": 1,
+        "harte": "Ab:(4,5,7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0]"
+    },
+    "D7(b5)": {
+        "pitch_classes": "[0, 2, 6, 8]",
+        "count": 4,
+        "harte": "D:(3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "F#dim7": {
+        "pitch_classes": "[0, 3, 6, 9]",
+        "count": 13,
+        "harte": "F#:(b3,b5,bb7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Gm7": {
+        "pitch_classes": "[2, 5, 7, 10]",
+        "count": 227,
+        "harte": "G:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "F7(b9)": {
+        "pitch_classes": "[0, 3, 5, 6, 9]",
+        "count": 22,
+        "harte": "F:(3,5,b7,b9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0]"
+    },
+    "Abm9": {
+        "pitch_classes": "[3, 6, 8, 10, 11]",
+        "count": 6,
+        "harte": "Ab:(b3,5,b7,9)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1]"
+    },
+    "C13(b9)": {
+        "pitch_classes": "[0, 1, 4, 5, 7, 9, 10]",
+        "count": 2,
+        "harte": "C:(3,5,b7,b9,11,13)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0]"
+    },
+    "Abmaj/C": {
+        "pitch_classes": "[0, 3, 8]",
+        "count": 2,
+        "harte": "Ab:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0]"
+    },
+    "C#m7": {
+        "pitch_classes": "[1, 4, 8, 11]",
+        "count": 21,
+        "harte": "C#:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Dsus4(7,9)": {
+        "pitch_classes": "[1, 2, 4, 7, 9]",
+        "count": 4,
+        "harte": "D:(4,5,7,9)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Bmaj7/Bb": {
+        "pitch_classes": "[3, 6, 10, 11]",
+        "count": 2,
+        "harte": "B:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1]"
+    },
+    "Cm/G": {
+        "pitch_classes": "[0, 3, 7]",
+        "count": 8,
+        "harte": "C:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "B7(b9)": {
+        "pitch_classes": "[0, 3, 6, 9, 11]",
+        "count": 12,
+        "harte": "B:(3,5,b7,b9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "F7(b5,b9)": {
+        "pitch_classes": "[3, 5, 6, 9, 11]",
+        "count": 1,
+        "harte": "F:(3,b5,b7,b9)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1]"
+    },
+    "Gbmaj7(#11)": {
+        "pitch_classes": "[0, 1, 5, 6, 10]",
+        "count": 2,
+        "harte": "Gb:(3,5,7,#11)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0]"
+    },
+    "Bbmaj": {
+        "pitch_classes": "[2, 5, 10]",
+        "count": 178,
+        "harte": "Bb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "F#maj7": {
+        "pitch_classes": "[1, 5, 6, 10]",
+        "count": 1,
+        "harte": "F#:(3,5,7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0]"
+    },
+    "Am7b5(b5)": {
+        "pitch_classes": "[0, 3, 7, 9]",
+        "count": 1,
+        "harte": "A:(b3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "B7(#9)": {
+        "pitch_classes": "[2, 3, 6, 9, 11]",
+        "count": 3,
+        "harte": "B:(3,5,b7,#9)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "C#maj7": {
+        "pitch_classes": "[0, 1, 5, 8]",
+        "count": 4,
+        "harte": "C#:(3,5,7)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "A7(b5,b9)": {
+        "pitch_classes": "[1, 3, 7, 9, 10]",
+        "count": 1,
+        "harte": "A:(3,b5,b7,b9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0]"
+    },
+    "Gbmaj": {
+        "pitch_classes": "[1, 6, 10]",
+        "count": 9,
+        "harte": "Gb:(3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "C6": {
+        "pitch_classes": "[0, 4, 7, 9]",
+        "count": 39,
+        "harte": "C:(3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Ab7(#5)": {
+        "pitch_classes": "[0, 4, 6, 8]",
+        "count": 2,
+        "harte": "Ab:(3,#5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "C#m7/B": {
+        "pitch_classes": "[1, 4, 8, 11]",
+        "count": 2,
+        "harte": "C#:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Am(#5)": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 2,
+        "harte": "A:(b3,#5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Csus4(7,9,11,13)": {
+        "pitch_classes": "[0, 2, 5, 7, 9, 11]",
+        "count": 2,
+        "harte": "C:(4,5,7,9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1]"
+    },
+    "Em7b5": {
+        "pitch_classes": "[2, 4, 7, 10]",
+        "count": 27,
+        "harte": "E:(b3,b5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "F7(5,b9,#9,#11,b13)": {
+        "pitch_classes": "[0, 1, 3, 5, 8, 9, 11]",
+        "count": 1,
+        "harte": "F:(3,5,b7,#9,#11,b13)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1]"
+    },
+    "A7(#9)": {
+        "pitch_classes": "[0, 1, 4, 7, 9]",
+        "count": 5,
+        "harte": "A:(3,5,b7,#9)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Ab7(b9)": {
+        "pitch_classes": "[0, 3, 6, 8, 9]",
+        "count": 8,
+        "harte": "Ab:(3,5,b7,b9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0]"
+    },
+    "Abaug": {
+        "pitch_classes": "[0, 4, 8]",
+        "count": 5,
+        "harte": "Ab:(3,#5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]"
+    },
+    "Fmaj/E": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 1,
+        "harte": "F:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Edim": {
+        "pitch_classes": "[4, 7, 10]",
+        "count": 28,
+        "harte": "E:(b3,b5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Ab7(b5)": {
+        "pitch_classes": "[0, 2, 6, 8]",
+        "count": 6,
+        "harte": "Ab:(3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "Ebmaj7/Bb": {
+        "pitch_classes": "[2, 3, 7, 10]",
+        "count": 1,
+        "harte": "Eb:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "G7(#5,#9)": {
+        "pitch_classes": "[3, 5, 7, 10, 11]",
+        "count": 3,
+        "harte": "G:(3,#5,b7,#9)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1]"
+    },
+    "Bmaj7(b5)": {
+        "pitch_classes": "[3, 5, 10, 11]",
+        "count": 4,
+        "harte": "B:(3,b5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1]"
+    },
+    "F7(#11)": {
+        "pitch_classes": "[0, 3, 5, 9, 11]",
+        "count": 3,
+        "harte": "F:(3,5,b7,#11)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "Eb7(b5)": {
+        "pitch_classes": "[1, 3, 7, 9]",
+        "count": 3,
+        "harte": "Eb:(3,b5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Bbmaj/D": {
+        "pitch_classes": "[2, 5, 10]",
+        "count": 6,
+        "harte": "Bb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "Cmaj/F": {
+        "pitch_classes": "[0, 4, 7]",
+        "count": 3,
+        "harte": "C:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "Gmaj/B": {
+        "pitch_classes": "[2, 7, 11]",
+        "count": 17,
+        "harte": "G:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Dbmaj": {
+        "pitch_classes": "[1, 5, 8]",
+        "count": 32,
+        "harte": "Db:(3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "G6": {
+        "pitch_classes": "[2, 4, 7, 11]",
+        "count": 4,
+        "harte": "G:(3,5,6)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Db6(9)": {
+        "pitch_classes": "[1, 3, 5, 8, 10]",
+        "count": 5,
+        "harte": "Db:(3,5,6,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Bbsus4(7)": {
+        "pitch_classes": "[3, 5, 9, 10]",
+        "count": 2,
+        "harte": "Bb:(4,5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0]"
+    },
+    "C#maj7(b5)": {
+        "pitch_classes": "[0, 1, 5, 7]",
+        "count": 2,
+        "harte": "C#:(3,b5,7)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0]"
+    },
+    "Bmaj": {
+        "pitch_classes": "[3, 6, 11]",
+        "count": 36,
+        "harte": "B:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "E13(b9)": {
+        "pitch_classes": "[1, 2, 4, 5, 8, 9, 11]",
+        "count": 1,
+        "harte": "E:(3,5,b7,b9,11,13)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1]"
+    },
+    "Em": {
+        "pitch_classes": "[4, 7, 11]",
+        "count": 75,
+        "harte": "E:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Adim7": {
+        "pitch_classes": "[0, 3, 6, 9]",
+        "count": 1,
+        "harte": "A:(b3,b5,bb7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Dsus4(7)": {
+        "pitch_classes": "[1, 2, 7, 9]",
+        "count": 1,
+        "harte": "D:(4,5,7)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "G7/B": {
+        "pitch_classes": "[2, 5, 7, 11]",
+        "count": 3,
+        "harte": "G:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Eb9(#11)": {
+        "pitch_classes": "[1, 3, 5, 7, 9, 10]",
+        "count": 3,
+        "harte": "Eb:(3,5,b7,9,#11)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0]"
+    },
+    "Ebmaj7/G": {
+        "pitch_classes": "[2, 3, 7, 10]",
+        "count": 1,
+        "harte": "Eb:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Eb7(#11)": {
+        "pitch_classes": "[1, 3, 7, 9, 10]",
+        "count": 6,
+        "harte": "Eb:(3,5,b7,#11)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0]"
+    },
+    "Cdim": {
+        "pitch_classes": "[0, 3, 6]",
+        "count": 10,
+        "harte": "C:(b3,b5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0]"
+    },
+    "Gbmaj7": {
+        "pitch_classes": "[1, 5, 6, 10]",
+        "count": 21,
+        "harte": "Gb:(3,5,7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0]"
+    },
+    "Ebmaj/G": {
+        "pitch_classes": "[3, 7, 10]",
+        "count": 10,
+        "harte": "Eb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Am11": {
+        "pitch_classes": "[0, 2, 4, 7, 9, 11]",
+        "count": 1,
+        "harte": "A:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "B9(b5)": {
+        "pitch_classes": "[1, 3, 5, 9, 11]",
+        "count": 2,
+        "harte": "B:(3,b5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "B9(#11)": {
+        "pitch_classes": "[1, 3, 5, 6, 9, 11]",
+        "count": 4,
+        "harte": "B:(3,5,b7,9,#11)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1]"
+    },
+    "B6": {
+        "pitch_classes": "[3, 6, 8, 11]",
+        "count": 1,
+        "harte": "B:(3,5,6)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1]"
+    },
+    "Dmaj7/F#": {
+        "pitch_classes": "[1, 2, 6, 9]",
+        "count": 2,
+        "harte": "D:(3,5,7)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Bb7": {
+        "pitch_classes": "[2, 5, 8, 10]",
+        "count": 418,
+        "harte": "Bb:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "G9(#5)": {
+        "pitch_classes": "[3, 5, 7, 9, 11]",
+        "count": 5,
+        "harte": "G:(3,#5,b7,9)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]"
+    },
+    "Fmaj/C": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 3,
+        "harte": "F:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Baug/D#": {
+        "pitch_classes": "[3, 7, 11]",
+        "count": 3,
+        "harte": "B:(3,#5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "C7(b13)": {
+        "pitch_classes": "[0, 4, 7, 8, 10]",
+        "count": 2,
+        "harte": "C:(3,5,b7,b13)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0]"
+    },
+    "C9(#5)": {
+        "pitch_classes": "[0, 2, 4, 8, 10]",
+        "count": 3,
+        "harte": "C:(3,#5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "Fm7(b9)": {
+        "pitch_classes": "[0, 3, 5, 6, 8]",
+        "count": 1,
+        "harte": "F:(b3,5,b7,b9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0]"
+    },
+    "Cmaj/E": {
+        "pitch_classes": "[0, 4, 7]",
+        "count": 6,
+        "harte": "C:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "B9/F#": {
+        "pitch_classes": "[1, 3, 6, 9, 11]",
+        "count": 1,
+        "harte": "B:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "B9": {
+        "pitch_classes": "[1, 3, 6, 9, 11]",
+        "count": 5,
+        "harte": "B:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "Dm6": {
+        "pitch_classes": "[2, 5, 9, 11]",
+        "count": 7,
+        "harte": "D:(b3,5,6)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "A7(#5,#9)": {
+        "pitch_classes": "[0, 1, 5, 7, 9]",
+        "count": 1,
+        "harte": "A:(3,#5,b7,#9)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0]"
+    },
+    "Bm7/E": {
+        "pitch_classes": "[2, 6, 9, 11]",
+        "count": 1,
+        "harte": "B:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "Dm7b5": {
+        "pitch_classes": "[0, 2, 5, 8]",
+        "count": 27,
+        "harte": "D:(b3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Faug": {
+        "pitch_classes": "[1, 5, 9]",
+        "count": 5,
+        "harte": "F:(3,#5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "B7(#11)": {
+        "pitch_classes": "[3, 5, 6, 9, 11]",
+        "count": 3,
+        "harte": "B:(3,5,b7,#11)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1]"
+    },
+    "Bm7": {
+        "pitch_classes": "[2, 6, 9, 11]",
+        "count": 45,
+        "harte": "B:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "F7": {
+        "pitch_classes": "[0, 3, 5, 9]",
+        "count": 356,
+        "harte": "F:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Ebm(#5)": {
+        "pitch_classes": "[3, 6, 11]",
+        "count": 4,
+        "harte": "Eb:(b3,#5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "Abaug7": {
+        "pitch_classes": "[0, 4, 6, 8]",
+        "count": 4,
+        "harte": "Ab:(3,#5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "Daug7": {
+        "pitch_classes": "[0, 2, 6, 10]",
+        "count": 7,
+        "harte": "D:(3,#5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Am9/D": {
+        "pitch_classes": "[0, 4, 7, 9, 11]",
+        "count": 1,
+        "harte": "A:(b3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "Cbmaj": {
+        "pitch_classes": "[3, 6, 11]",
+        "count": 9,
+        "harte": "Cb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "F#7": {
+        "pitch_classes": "[1, 4, 6, 10]",
+        "count": 23,
+        "harte": "F#:(3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Dbsus4(7)": {
+        "pitch_classes": "[0, 1, 6, 8]",
+        "count": 4,
+        "harte": "Db:(4,5,7)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "Fm": {
+        "pitch_classes": "[0, 5, 8]",
+        "count": 148,
+        "harte": "F:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "C7(#9)": {
+        "pitch_classes": "[0, 3, 4, 7, 10]",
+        "count": 15,
+        "harte": "C:(3,5,b7,#9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "C11": {
+        "pitch_classes": "[0, 2, 4, 5, 7, 10]",
+        "count": 2,
+        "harte": "C:(3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "F#dim": {
+        "pitch_classes": "[0, 6, 9]",
+        "count": 15,
+        "harte": "F#:(b3,b5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Db7(#11)": {
+        "pitch_classes": "[1, 5, 7, 8, 11]",
+        "count": 3,
+        "harte": "Db:(3,5,b7,#11)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1]"
+    },
+    "C#m7/F#": {
+        "pitch_classes": "[1, 4, 8, 11]",
+        "count": 1,
+        "harte": "C#:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Bm11": {
+        "pitch_classes": "[1, 2, 4, 6, 9, 11]",
+        "count": 5,
+        "harte": "B:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "E7(#9)": {
+        "pitch_classes": "[2, 4, 7, 8, 11]",
+        "count": 6,
+        "harte": "E:(3,5,b7,#9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1]"
+    },
+    "F#7(#11)": {
+        "pitch_classes": "[0, 1, 4, 6, 10]",
+        "count": 2,
+        "harte": "F#:(3,5,b7,#11)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Dbdim": {
+        "pitch_classes": "[1, 4, 7]",
+        "count": 2,
+        "harte": "Db:(b3,b5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "Abdim7": {
+        "pitch_classes": "[2, 5, 8, 11]",
+        "count": 5,
+        "harte": "Ab:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Csus4(7)": {
+        "pitch_classes": "[0, 5, 7, 11]",
+        "count": 7,
+        "harte": "C:(4,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Fmaj/Eb": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 1,
+        "harte": "F:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "C7(b9)": {
+        "pitch_classes": "[0, 1, 4, 7, 10]",
+        "count": 23,
+        "harte": "C:(3,5,b7,b9)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Bbmaj9": {
+        "pitch_classes": "[0, 2, 5, 9, 10]",
+        "count": 1,
+        "harte": "Bb:(3,5,7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0]"
+    },
+    "Bm9": {
+        "pitch_classes": "[1, 2, 6, 9, 11]",
+        "count": 3,
+        "harte": "B:(b3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "Abm(maj7)": {
+        "pitch_classes": "[3, 7, 8, 11]",
+        "count": 2,
+        "harte": "Ab:(b3,5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1]"
+    },
+    "Cmaj(#11)": {
+        "pitch_classes": "[0, 4, 6, 7]",
+        "count": 4,
+        "harte": "C:(3,5,#11)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0]"
+    },
+    "Db9(b5)": {
+        "pitch_classes": "[1, 3, 5, 7, 11]",
+        "count": 5,
+        "harte": "Db:(3,b5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "G7(#5)": {
+        "pitch_classes": "[3, 5, 7, 11]",
+        "count": 5,
+        "harte": "G:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Gb6": {
+        "pitch_classes": "[1, 3, 6, 10]",
+        "count": 1,
+        "harte": "Gb:(3,5,6)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Dm6(9)": {
+        "pitch_classes": "[2, 4, 5, 9, 11]",
+        "count": 1,
+        "harte": "D:(b3,5,6,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "F7(#5)": {
+        "pitch_classes": "[1, 3, 5, 9]",
+        "count": 1,
+        "harte": "F:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Dbm7": {
+        "pitch_classes": "[1, 4, 8, 11]",
+        "count": 11,
+        "harte": "Db:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Gb9(b5)": {
+        "pitch_classes": "[0, 4, 6, 8, 10]",
+        "count": 1,
+        "harte": "Gb:(3,b5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "C#dim7": {
+        "pitch_classes": "[1, 4, 7, 10]",
+        "count": 4,
+        "harte": "C#:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "G13(b9)": {
+        "pitch_classes": "[0, 2, 4, 5, 7, 8, 11]",
+        "count": 5,
+        "harte": "G:(3,5,b7,b9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1]"
+    },
+    "Bbmaj7": {
+        "pitch_classes": "[2, 5, 9, 10]",
+        "count": 66,
+        "harte": "Bb:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0]"
+    },
+    "Dmaj/E": {
+        "pitch_classes": "[2, 6, 9]",
+        "count": 1,
+        "harte": "D:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "E7(b5)": {
+        "pitch_classes": "[2, 4, 8, 10]",
+        "count": 4,
+        "harte": "E:(3,b5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "Am": {
+        "pitch_classes": "[0, 4, 9]",
+        "count": 98,
+        "harte": "A:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0]"
+    },
+    "Bb9(#11)": {
+        "pitch_classes": "[0, 2, 4, 5, 8, 10]",
+        "count": 1,
+        "harte": "Bb:(3,5,b7,9,#11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Dmaj/C": {
+        "pitch_classes": "[2, 6, 9]",
+        "count": 1,
+        "harte": "D:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Db7(#9)": {
+        "pitch_classes": "[1, 4, 5, 8, 11]",
+        "count": 2,
+        "harte": "Db:(3,5,b7,#9)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Dmaj7": {
+        "pitch_classes": "[1, 2, 6, 9]",
+        "count": 28,
+        "harte": "D:(3,5,7)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Db7(#5)": {
+        "pitch_classes": "[1, 5, 9, 11]",
+        "count": 1,
+        "harte": "Db:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "Abm7": {
+        "pitch_classes": "[3, 6, 8, 11]",
+        "count": 40,
+        "harte": "Ab:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1]"
+    },
+    "Ebm": {
+        "pitch_classes": "[3, 6, 10]",
+        "count": 39,
+        "harte": "Eb:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "G/D": {
+        "pitch_classes": "[2, 7, 11]",
+        "count": 6,
+        "harte": "G:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "C#m7b5": {
+        "pitch_classes": "[1, 4, 7, 11]",
+        "count": 3,
+        "harte": "C#:(b3,b5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Faug7(b9)": {
+        "pitch_classes": "[1, 3, 5, 6, 9]",
+        "count": 1,
+        "harte": "F:(3,#5,b7,b9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0]"
+    },
+    "Emaj/B": {
+        "pitch_classes": "[4, 8, 11]",
+        "count": 1,
+        "harte": "E:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "A7(#5)": {
+        "pitch_classes": "[1, 5, 7, 9]",
+        "count": 7,
+        "harte": "A:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0]"
+    },
+    "F9": {
+        "pitch_classes": "[0, 3, 5, 7, 9]",
+        "count": 29,
+        "harte": "F:(3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0]"
+    },
+    "Eb6/G": {
+        "pitch_classes": "[0, 3, 7, 10]",
+        "count": 1,
+        "harte": "Eb:(3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "D7/F#": {
+        "pitch_classes": "[0, 2, 6, 9]",
+        "count": 6,
+        "harte": "D:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Eb9(b5)": {
+        "pitch_classes": "[1, 3, 5, 7, 9]",
+        "count": 1,
+        "harte": "Eb:(3,b5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0]"
+    },
+    "Em/G": {
+        "pitch_classes": "[4, 7, 11]",
+        "count": 1,
+        "harte": "E:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Gmaj7(#5)/Eb": {
+        "pitch_classes": "[3, 6, 7, 11]",
+        "count": 3,
+        "harte": "G:(3,#5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1]"
+    },
+    "Em7(11)": {
+        "pitch_classes": "[2, 4, 7, 9, 11]",
+        "count": 1,
+        "harte": "E:(b3,5,b7,11)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "Gm7/F": {
+        "pitch_classes": "[2, 5, 7, 10]",
+        "count": 1,
+        "harte": "G:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Eb6/Bb": {
+        "pitch_classes": "[0, 3, 7, 10]",
+        "count": 3,
+        "harte": "Eb:(3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Caug7": {
+        "pitch_classes": "[0, 4, 8, 10]",
+        "count": 11,
+        "harte": "C:(3,#5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "Aaug7": {
+        "pitch_classes": "[1, 5, 7, 9]",
+        "count": 4,
+        "harte": "A:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0]"
+    },
+    "Abmaj7": {
+        "pitch_classes": "[0, 3, 7, 8]",
+        "count": 73,
+        "harte": "Ab:(3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0]"
+    },
+    "Bm/F#": {
+        "pitch_classes": "[2, 6, 11]",
+        "count": 1,
+        "harte": "B:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "Am6": {
+        "pitch_classes": "[0, 4, 6, 9]",
+        "count": 29,
+        "harte": "A:(b3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Am7/D": {
+        "pitch_classes": "[0, 4, 7, 9]",
+        "count": 3,
+        "harte": "A:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Ab6": {
+        "pitch_classes": "[0, 3, 5, 8]",
+        "count": 25,
+        "harte": "Ab:(3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "E7": {
+        "pitch_classes": "[2, 4, 8, 11]",
+        "count": 101,
+        "harte": "E:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Ebm6": {
+        "pitch_classes": "[0, 3, 6, 10]",
+        "count": 21,
+        "harte": "Eb:(b3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Fm7/Bb": {
+        "pitch_classes": "[0, 3, 5, 8]",
+        "count": 3,
+        "harte": "F:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Abdim": {
+        "pitch_classes": "[2, 8, 11]",
+        "count": 9,
+        "harte": "Ab:(b3,b5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Am7b5/Eb": {
+        "pitch_classes": "[0, 3, 7, 9]",
+        "count": 1,
+        "harte": "A:(b3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "G#dim7": {
+        "pitch_classes": "[2, 5, 8, 11]",
+        "count": 17,
+        "harte": "G#:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Cbdim7": {
+        "pitch_classes": "[2, 5, 8, 11]",
+        "count": 1,
+        "harte": "Cb:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Adim": {
+        "pitch_classes": "[0, 3, 9]",
+        "count": 10,
+        "harte": "A:(b3,b5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]"
+    },
+    "Bb7(b9)": {
+        "pitch_classes": "[2, 5, 8, 10, 11]",
+        "count": 12,
+        "harte": "Bb:(3,5,b7,b9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1]"
+    },
+    "Cm/Eb": {
+        "pitch_classes": "[0, 3, 7]",
+        "count": 4,
+        "harte": "C:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "Dmaj7(#5)/Eb": {
+        "pitch_classes": "[1, 2, 6, 10]",
+        "count": 1,
+        "harte": "D:(3,#5,7)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Bb9": {
+        "pitch_classes": "[0, 2, 5, 8, 10]",
+        "count": 39,
+        "harte": "Bb:(3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Gdim7": {
+        "pitch_classes": "[1, 4, 7, 10]",
+        "count": 3,
+        "harte": "G:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Dmaj": {
+        "pitch_classes": "[2, 6, 9]",
+        "count": 70,
+        "harte": "D:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "G#7/D#": {
+        "pitch_classes": "[0, 3, 6, 8]",
+        "count": 1,
+        "harte": "G#:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "Bbmaj/F": {
+        "pitch_classes": "[2, 5, 10]",
+        "count": 9,
+        "harte": "Bb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "Gmaj": {
+        "pitch_classes": "[2, 7, 11]",
+        "count": 127,
+        "harte": "G:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "A9": {
+        "pitch_classes": "[1, 4, 7, 9, 11]",
+        "count": 16,
+        "harte": "A:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "Bbm9/Eb": {
+        "pitch_classes": "[0, 1, 5, 8, 10]",
+        "count": 1,
+        "harte": "Bb:(b3,5,b7,9)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Bbaug7": {
+        "pitch_classes": "[2, 6, 8, 10]",
+        "count": 11,
+        "harte": "Bb:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "C#7/G#": {
+        "pitch_classes": "[1, 5, 8, 11]",
+        "count": 2,
+        "harte": "C#:(3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Abmaj/Bb": {
+        "pitch_classes": "[0, 3, 8]",
+        "count": 2,
+        "harte": "Ab:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0]"
+    },
+    "Dm": {
+        "pitch_classes": "[2, 5, 9]",
+        "count": 56,
+        "harte": "D:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Fdim": {
+        "pitch_classes": "[5, 8, 11]",
+        "count": 13,
+        "harte": "F:(b3,b5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "C6(9)": {
+        "pitch_classes": "[0, 2, 4, 7, 9]",
+        "count": 4,
+        "harte": "C:(3,5,6,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Bb7(b5)": {
+        "pitch_classes": "[2, 4, 8, 10]",
+        "count": 15,
+        "harte": "Bb:(3,b5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "C7(#11)": {
+        "pitch_classes": "[0, 4, 6, 7, 10]",
+        "count": 3,
+        "harte": "C:(3,5,b7,#11)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0]"
+    },
+    "Emaj9": {
+        "pitch_classes": "[3, 4, 6, 8, 11]",
+        "count": 2,
+        "harte": "E:(3,5,7,9)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1]"
+    },
+    "C#m": {
+        "pitch_classes": "[1, 4, 8]",
+        "count": 10,
+        "harte": "C#:(b3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]"
+    },
+    "Gmaj/D": {
+        "pitch_classes": "[2, 7, 11]",
+        "count": 19,
+        "harte": "G:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Bbm7b5": {
+        "pitch_classes": "[1, 4, 8, 10]",
+        "count": 2,
+        "harte": "Bb:(b3,b5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "Gaug": {
+        "pitch_classes": "[3, 7, 11]",
+        "count": 3,
+        "harte": "G:(3,#5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Dmaj13": {
+        "pitch_classes": "[1, 2, 4, 6, 7, 9, 11]",
+        "count": 1,
+        "harte": "D:(3,5,7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1]"
+    },
+    "Dbmaj7": {
+        "pitch_classes": "[0, 1, 5, 8]",
+        "count": 80,
+        "harte": "Db:(3,5,7)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "D#dim": {
+        "pitch_classes": "[3, 6, 9]",
+        "count": 2,
+        "harte": "D#:(b3,b5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "F6": {
+        "pitch_classes": "[0, 2, 5, 9]",
+        "count": 47,
+        "harte": "F:(3,5,6)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "G6(9)": {
+        "pitch_classes": "[2, 4, 7, 9, 11]",
+        "count": 11,
+        "harte": "G:(3,5,6,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "G9": {
+        "pitch_classes": "[2, 5, 7, 9, 11]",
+        "count": 23,
+        "harte": "G:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1]"
+    },
+    "F#9": {
+        "pitch_classes": "[1, 4, 6, 8, 10]",
+        "count": 2,
+        "harte": "F#:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Bbm7/Eb": {
+        "pitch_classes": "[1, 5, 8, 10]",
+        "count": 4,
+        "harte": "Bb:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Ebdim": {
+        "pitch_classes": "[3, 6, 9]",
+        "count": 16,
+        "harte": "Eb:(b3,b5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Bbm(maj7)": {
+        "pitch_classes": "[1, 5, 9, 10]",
+        "count": 7,
+        "harte": "Bb:(b3,5,7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0]"
+    },
+    "Cm6": {
+        "pitch_classes": "[0, 3, 7, 9]",
+        "count": 18,
+        "harte": "C:(b3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Ab7": {
+        "pitch_classes": "[0, 3, 6, 8]",
+        "count": 142,
+        "harte": "Ab:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "Cm7": {
+        "pitch_classes": "[0, 3, 7, 10]",
+        "count": 253,
+        "harte": "C:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Bmaj/F": {
+        "pitch_classes": "[3, 6, 11]",
+        "count": 2,
+        "harte": "B:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1]"
+    },
+    "D7(#5,#9)": {
+        "pitch_classes": "[0, 2, 5, 6, 10]",
+        "count": 1,
+        "harte": "D:(3,#5,b7,#9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0]"
+    },
+    "A6(9)": {
+        "pitch_classes": "[1, 4, 6, 9, 11]",
+        "count": 1,
+        "harte": "A:(3,5,6,9)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "B7/F#": {
+        "pitch_classes": "[3, 6, 9, 11]",
+        "count": 3,
+        "harte": "B:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "E7(b5,#9)": {
+        "pitch_classes": "[2, 4, 7, 8, 10]",
+        "count": 2,
+        "harte": "E:(3,b5,b7,#9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0]"
+    },
+    "Bb7/Ab": {
+        "pitch_classes": "[2, 5, 8, 10]",
+        "count": 1,
+        "harte": "Bb:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Cmaj7": {
+        "pitch_classes": "[0, 4, 7, 11]",
+        "count": 98,
+        "harte": "C:(3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Caug": {
+        "pitch_classes": "[0, 4, 8]",
+        "count": 5,
+        "harte": "C:(3,#5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]"
+    },
+    "Fmaj7": {
+        "pitch_classes": "[0, 4, 5, 9]",
+        "count": 77,
+        "harte": "F:(3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Fmaj9": {
+        "pitch_classes": "[0, 4, 5, 7, 9]",
+        "count": 5,
+        "harte": "F:(3,5,7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0]"
+    },
+    "Db9(#11)": {
+        "pitch_classes": "[1, 3, 5, 7, 8, 11]",
+        "count": 1,
+        "harte": "Db:(3,5,b7,9,#11)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1]"
+    },
+    "Ab9": {
+        "pitch_classes": "[0, 3, 6, 8, 10]",
+        "count": 21,
+        "harte": "Ab:(3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Ebmaj(9)": {
+        "pitch_classes": "[3, 5, 7, 10]",
+        "count": 1,
+        "harte": "Eb:(3,5,9)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Fmaj(#11)": {
+        "pitch_classes": "[0, 5, 9, 11]",
+        "count": 2,
+        "harte": "F:(3,5,#11)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "Ebsus4(7)": {
+        "pitch_classes": "[2, 3, 8, 10]",
+        "count": 8,
+        "harte": "Eb:(4,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "C#7(b5)": {
+        "pitch_classes": "[1, 5, 7, 11]",
+        "count": 3,
+        "harte": "C#:(3,b5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "F11": {
+        "pitch_classes": "[0, 3, 5, 7, 9, 10]",
+        "count": 2,
+        "harte": "F:(3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0]"
+    },
+    "Bbm9": {
+        "pitch_classes": "[0, 1, 5, 8, 10]",
+        "count": 3,
+        "harte": "Bb:(b3,5,b7,9)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "C13": {
+        "pitch_classes": "[0, 2, 4, 5, 7, 9, 10]",
+        "count": 5,
+        "harte": "C:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0]"
+    },
+    "Eb9": {
+        "pitch_classes": "[1, 3, 5, 7, 10]",
+        "count": 30,
+        "harte": "Eb:(3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Fm(maj7)": {
+        "pitch_classes": "[0, 4, 5, 8]",
+        "count": 8,
+        "harte": "F:(b3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Fm(#5)": {
+        "pitch_classes": "[1, 5, 8]",
+        "count": 4,
+        "harte": "F:(b3,#5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Gmaj7": {
+        "pitch_classes": "[2, 6, 7, 11]",
+        "count": 19,
+        "harte": "G:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1]"
+    },
+    "Bb7(#5)": {
+        "pitch_classes": "[2, 6, 8, 10]",
+        "count": 2,
+        "harte": "Bb:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "C7(#5,b9)": {
+        "pitch_classes": "[0, 1, 4, 8, 10]",
+        "count": 1,
+        "harte": "C:(3,#5,b7,b9)",
+        "pitch_classes_binary": "[1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0]"
+    },
+    "G7(b5)": {
+        "pitch_classes": "[1, 5, 7, 11]",
+        "count": 7,
+        "harte": "G:(3,b5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Ab7(#11)": {
+        "pitch_classes": "[0, 2, 3, 6, 8]",
+        "count": 2,
+        "harte": "Ab:(3,5,b7,#11)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "Baug7": {
+        "pitch_classes": "[3, 7, 9, 11]",
+        "count": 6,
+        "harte": "B:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "G7/D": {
+        "pitch_classes": "[2, 5, 7, 11]",
+        "count": 3,
+        "harte": "G:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Abmaj7(#11)": {
+        "pitch_classes": "[0, 2, 3, 7, 8]",
+        "count": 1,
+        "harte": "Ab:(3,5,7,#11)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0]"
+    },
+    "Gmaj9": {
+        "pitch_classes": "[2, 6, 7, 9, 11]",
+        "count": 1,
+        "harte": "G:(3,5,7,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1]"
+    },
+    "D#dim7": {
+        "pitch_classes": "[0, 3, 6, 9]",
+        "count": 2,
+        "harte": "D#:(b3,b5,bb7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "B7": {
+        "pitch_classes": "[3, 6, 9, 11]",
+        "count": 93,
+        "harte": "B:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "Ebdim7": {
+        "pitch_classes": "[0, 3, 6, 9]",
+        "count": 5,
+        "harte": "Eb:(b3,b5,bb7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "G7(5,b9,#9,#11,b13)": {
+        "pitch_classes": "[1, 2, 3, 5, 7, 10, 11]",
+        "count": 1,
+        "harte": "G:(3,5,b7,#9,#11,b13)",
+        "pitch_classes_binary": "[0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1]"
+    },
+    "Abmaj7/Eb": {
+        "pitch_classes": "[0, 3, 7, 8]",
+        "count": 6,
+        "harte": "Ab:(3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0]"
+    },
+    "Ebm/Ab": {
+        "pitch_classes": "[3, 6, 10]",
+        "count": 1,
+        "harte": "Eb:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Dmaj/C#": {
+        "pitch_classes": "[2, 6, 9]",
+        "count": 4,
+        "harte": "D:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Dmaj/B": {
+        "pitch_classes": "[2, 6, 9]",
+        "count": 1,
+        "harte": "D:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "B7(#5)": {
+        "pitch_classes": "[3, 7, 9, 11]",
+        "count": 1,
+        "harte": "B:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "Emaj/D": {
+        "pitch_classes": "[4, 8, 11]",
+        "count": 3,
+        "harte": "E:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Gm(maj7)/C": {
+        "pitch_classes": "[2, 6, 7, 10]",
+        "count": 1,
+        "harte": "G:(b3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0]"
+    },
+    "G9(#5)/A": {
+        "pitch_classes": "[3, 5, 7, 9, 11]",
+        "count": 1,
+        "harte": "G:(3,#5,b7,9)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]"
+    },
+    "E7/Eb": {
+        "pitch_classes": "[2, 4, 8, 11]",
+        "count": 1,
+        "harte": "E:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Ab9(b5)": {
+        "pitch_classes": "[0, 2, 6, 8, 10]",
+        "count": 2,
+        "harte": "Ab:(3,b5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Bm(#5)": {
+        "pitch_classes": "[2, 7, 11]",
+        "count": 2,
+        "harte": "B:(b3,#5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "G13(#11)": {
+        "pitch_classes": "[1, 2, 4, 5, 7, 9, 11]",
+        "count": 2,
+        "harte": "G:(3,5,b7,9,#11,13)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]"
+    },
+    "Cb7": {
+        "pitch_classes": "[3, 6, 9, 11]",
+        "count": 2,
+        "harte": "Cb:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "Abmaj7/Bb": {
+        "pitch_classes": "[0, 3, 7, 8]",
+        "count": 1,
+        "harte": "Ab:(3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0]"
+    },
+    "D7": {
+        "pitch_classes": "[0, 2, 6, 9]",
+        "count": 243,
+        "harte": "D:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Fmaj/G": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 3,
+        "harte": "F:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "G#9(b5)": {
+        "pitch_classes": "[0, 2, 6, 8, 10]",
+        "count": 1,
+        "harte": "G#:(3,b5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Gm/Bb": {
+        "pitch_classes": "[2, 7, 10]",
+        "count": 4,
+        "harte": "G:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "E7/B": {
+        "pitch_classes": "[2, 4, 8, 11]",
+        "count": 4,
+        "harte": "E:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Abm": {
+        "pitch_classes": "[3, 8, 11]",
+        "count": 12,
+        "harte": "Ab:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "F#m": {
+        "pitch_classes": "[1, 6, 9]",
+        "count": 15,
+        "harte": "F#:(b3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Dm7": {
+        "pitch_classes": "[0, 2, 5, 9]",
+        "count": 305,
+        "harte": "D:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Ebmaj/Bb": {
+        "pitch_classes": "[3, 7, 10]",
+        "count": 11,
+        "harte": "Eb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Cm6/Eb": {
+        "pitch_classes": "[0, 3, 7, 9]",
+        "count": 3,
+        "harte": "C:(b3,5,6)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Ab13(b9)": {
+        "pitch_classes": "[0, 1, 3, 5, 6, 8, 9]",
+        "count": 2,
+        "harte": "Ab:(3,5,b7,b9,11,13)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0]"
+    },
+    "Amaj9": {
+        "pitch_classes": "[1, 4, 8, 9, 11]",
+        "count": 7,
+        "harte": "A:(3,5,7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1]"
+    },
+    "Dmaj/F#": {
+        "pitch_classes": "[2, 6, 9]",
+        "count": 11,
+        "harte": "D:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "G11": {
+        "pitch_classes": "[0, 2, 5, 7, 9, 11]",
+        "count": 2,
+        "harte": "G:(3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1]"
+    },
+    "D6(9)": {
+        "pitch_classes": "[2, 4, 6, 9, 11]",
+        "count": 6,
+        "harte": "D:(3,5,6,9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1]"
+    },
+    "Edim7": {
+        "pitch_classes": "[1, 4, 7, 10]",
+        "count": 14,
+        "harte": "E:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Fm11": {
+        "pitch_classes": "[0, 3, 5, 7, 8, 10]",
+        "count": 6,
+        "harte": "F:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0]"
+    },
+    "Am(maj7)": {
+        "pitch_classes": "[0, 4, 8, 9]",
+        "count": 1,
+        "harte": "A:(b3,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0]"
+    },
+    "A7": {
+        "pitch_classes": "[1, 4, 7, 9]",
+        "count": 149,
+        "harte": "A:(3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "C9/E": {
+        "pitch_classes": "[0, 2, 4, 7, 10]",
+        "count": 1,
+        "harte": "C:(3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Dm/F#": {
+        "pitch_classes": "[2, 5, 9]",
+        "count": 1,
+        "harte": "D:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "F7(#5,b9)": {
+        "pitch_classes": "[1, 3, 5, 6, 9]",
+        "count": 1,
+        "harte": "F:(3,#5,b7,b9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0]"
+    },
+    "Em/D": {
+        "pitch_classes": "[4, 7, 11]",
+        "count": 1,
+        "harte": "E:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "F13(#11)": {
+        "pitch_classes": "[0, 2, 3, 5, 7, 9, 11]",
+        "count": 1,
+        "harte": "F:(3,5,b7,9,#11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1]"
+    },
+    "Dm11": {
+        "pitch_classes": "[0, 2, 4, 5, 7, 9]",
+        "count": 5,
+        "harte": "D:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0]"
+    },
+    "G#7": {
+        "pitch_classes": "[0, 3, 6, 8]",
+        "count": 1,
+        "harte": "G#:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "G7/F": {
+        "pitch_classes": "[2, 5, 7, 11]",
+        "count": 2,
+        "harte": "G:(3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "Gb11": {
+        "pitch_classes": "[1, 4, 6, 8, 10, 11]",
+        "count": 1,
+        "harte": "Gb:(3,5,b7,9,11)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1]"
+    },
+    "Emaj/G#": {
+        "pitch_classes": "[4, 8, 11]",
+        "count": 4,
+        "harte": "E:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "Bb7(#9)": {
+        "pitch_classes": "[1, 2, 5, 8, 10]",
+        "count": 9,
+        "harte": "Bb:(3,5,b7,#9)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Bbdim7/F": {
+        "pitch_classes": "[1, 4, 7, 10]",
+        "count": 3,
+        "harte": "Bb:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "F#7(b5)": {
+        "pitch_classes": "[0, 4, 6, 10]",
+        "count": 1,
+        "harte": "F#:(3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Gbm7": {
+        "pitch_classes": "[1, 4, 6, 9]",
+        "count": 4,
+        "harte": "Gb:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Ebm7(4)": {
+        "pitch_classes": "[1, 3, 6, 8, 10]",
+        "count": 1,
+        "harte": "Eb:(b3,4,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Bbm/Ab": {
+        "pitch_classes": "[1, 5, 10]",
+        "count": 2,
+        "harte": "Bb:(b3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "Amaj7": {
+        "pitch_classes": "[1, 4, 8, 9]",
+        "count": 14,
+        "harte": "A:(3,5,7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0]"
+    },
+    "B13(b9)": {
+        "pitch_classes": "[0, 3, 4, 6, 8, 9, 11]",
+        "count": 1,
+        "harte": "B:(3,5,b7,b9,11,13)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1]"
+    },
+    "Dm/C": {
+        "pitch_classes": "[2, 5, 9]",
+        "count": 7,
+        "harte": "D:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "D13": {
+        "pitch_classes": "[0, 2, 4, 6, 7, 9, 11]",
+        "count": 9,
+        "harte": "D:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1]"
+    },
+    "Gmaj7/A": {
+        "pitch_classes": "[2, 6, 7, 11]",
+        "count": 6,
+        "harte": "G:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1]"
+    },
+    "Fm9": {
+        "pitch_classes": "[0, 3, 5, 7, 8]",
+        "count": 5,
+        "harte": "F:(b3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0]"
+    },
+    "Csus4(7,9)": {
+        "pitch_classes": "[0, 2, 5, 7, 11]",
+        "count": 1,
+        "harte": "C:(4,5,7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1]"
+    },
+    "E7(b13)": {
+        "pitch_classes": "[0, 2, 4, 8, 11]",
+        "count": 1,
+        "harte": "E:(3,5,b7,b13)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "B7(b5)": {
+        "pitch_classes": "[3, 5, 9, 11]",
+        "count": 7,
+        "harte": "B:(3,b5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "Am9": {
+        "pitch_classes": "[0, 4, 7, 9, 11]",
+        "count": 5,
+        "harte": "A:(b3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1]"
+    },
+    "Fmaj/Bb": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 3,
+        "harte": "F:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "G7(#5,b9)": {
+        "pitch_classes": "[3, 5, 7, 8, 11]",
+        "count": 1,
+        "harte": "G:(3,#5,b7,b9)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1]"
+    },
+    "Fm/Ab": {
+        "pitch_classes": "[0, 5, 8]",
+        "count": 1,
+        "harte": "F:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Gm7b5": {
+        "pitch_classes": "[1, 5, 7, 10]",
+        "count": 38,
+        "harte": "G:(b3,b5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Bm7b5": {
+        "pitch_classes": "[2, 5, 9, 11]",
+        "count": 19,
+        "harte": "B:(b3,b5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1]"
+    },
+    "Em7": {
+        "pitch_classes": "[2, 4, 7, 11]",
+        "count": 114,
+        "harte": "E:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Eb7(#9)": {
+        "pitch_classes": "[1, 3, 6, 7, 10]",
+        "count": 21,
+        "harte": "Eb:(3,5,b7,#9)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0]"
+    },
+    "Bb6/Ab": {
+        "pitch_classes": "[2, 5, 7, 10]",
+        "count": 1,
+        "harte": "Bb:(3,5,6)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "G#m7": {
+        "pitch_classes": "[3, 6, 8, 11]",
+        "count": 2,
+        "harte": "G#:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1]"
+    },
+    "Gm/C": {
+        "pitch_classes": "[2, 7, 10]",
+        "count": 2,
+        "harte": "G:(b3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "E7(b9)": {
+        "pitch_classes": "[2, 4, 5, 8, 11]",
+        "count": 34,
+        "harte": "E:(3,5,b7,b9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Gmaj7/B": {
+        "pitch_classes": "[2, 6, 7, 11]",
+        "count": 4,
+        "harte": "G:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1]"
+    },
+    "Dmaj9": {
+        "pitch_classes": "[1, 2, 4, 6, 9]",
+        "count": 16,
+        "harte": "D:(3,5,7,9)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Gb13": {
+        "pitch_classes": "[1, 3, 4, 6, 8, 10, 11]",
+        "count": 3,
+        "harte": "Gb:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1]"
+    },
+    "Ebm11": {
+        "pitch_classes": "[1, 3, 5, 6, 8, 10]",
+        "count": 1,
+        "harte": "Eb:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0]"
+    },
+    "G7(#9)": {
+        "pitch_classes": "[2, 5, 7, 10, 11]",
+        "count": 1,
+        "harte": "G:(3,5,b7,#9)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1]"
+    },
+    "D7/A": {
+        "pitch_classes": "[0, 2, 6, 9]",
+        "count": 1,
+        "harte": "D:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Cm11": {
+        "pitch_classes": "[0, 2, 3, 5, 7, 10]",
+        "count": 6,
+        "harte": "C:(b3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "F#m9": {
+        "pitch_classes": "[1, 4, 6, 8, 9]",
+        "count": 1,
+        "harte": "F#:(b3,5,b7,9)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0]"
+    },
+    "Dm9": {
+        "pitch_classes": "[0, 2, 4, 5, 9]",
+        "count": 8,
+        "harte": "D:(b3,5,b7,9)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Ab11": {
+        "pitch_classes": "[0, 1, 3, 6, 8, 10]",
+        "count": 1,
+        "harte": "Ab:(3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]"
+    },
+    "Amaj": {
+        "pitch_classes": "[1, 4, 9]",
+        "count": 63,
+        "harte": "A:(3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0]"
+    },
+    "Fm6/Ab": {
+        "pitch_classes": "[0, 2, 5, 8]",
+        "count": 1,
+        "harte": "F:(b3,5,6)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Ab7(#9)": {
+        "pitch_classes": "[0, 3, 6, 8, 11]",
+        "count": 1,
+        "harte": "Ab:(3,5,b7,#9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1]"
+    },
+    "Am7/G": {
+        "pitch_classes": "[0, 4, 7, 9]",
+        "count": 1,
+        "harte": "A:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Fmaj/A": {
+        "pitch_classes": "[0, 5, 9]",
+        "count": 12,
+        "harte": "F:(3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Bbdim7": {
+        "pitch_classes": "[1, 4, 7, 10]",
+        "count": 4,
+        "harte": "Bb:(b3,b5,bb7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Emaj9(#11)": {
+        "pitch_classes": "[3, 4, 6, 8, 10, 11]",
+        "count": 1,
+        "harte": "E:(3,5,7,9,#11)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1]"
+    },
+    "Bb13(b9)": {
+        "pitch_classes": "[2, 3, 5, 7, 8, 10, 11]",
+        "count": 2,
+        "harte": "Bb:(3,5,b7,b9,11,13)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1]"
+    },
+    "Fm/Eb": {
+        "pitch_classes": "[0, 5, 8]",
+        "count": 4,
+        "harte": "F:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Am/C": {
+        "pitch_classes": "[0, 4, 9]",
+        "count": 2,
+        "harte": "A:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0]"
+    },
+    "F#m7b5": {
+        "pitch_classes": "[0, 4, 6, 9]",
+        "count": 15,
+        "harte": "F#:(b3,b5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0]"
+    },
+    "Gmaj13": {
+        "pitch_classes": "[0, 2, 4, 6, 7, 9, 11]",
+        "count": 9,
+        "harte": "G:(3,5,7,9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1]"
+    },
+    "C#dim": {
+        "pitch_classes": "[1, 4, 7]",
+        "count": 16,
+        "harte": "C#:(b3,b5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0]"
+    },
+    "Daug": {
+        "pitch_classes": "[2, 6, 10]",
+        "count": 6,
+        "harte": "D:(3,#5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0]"
+    },
+    "Ebmaj/F": {
+        "pitch_classes": "[3, 7, 10]",
+        "count": 2,
+        "harte": "Eb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Gm(maj7)": {
+        "pitch_classes": "[2, 6, 7, 10]",
+        "count": 1,
+        "harte": "G:(b3,5,7)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0]"
+    },
+    "D7(#11)": {
+        "pitch_classes": "[0, 2, 6, 8, 9]",
+        "count": 2,
+        "harte": "D:(3,5,b7,#11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0]"
+    },
+    "C7/E": {
+        "pitch_classes": "[0, 4, 7, 10]",
+        "count": 7,
+        "harte": "C:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Faug7": {
+        "pitch_classes": "[1, 3, 5, 9]",
+        "count": 8,
+        "harte": "F:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0]"
+    },
+    "Bbm7": {
+        "pitch_classes": "[1, 5, 8, 10]",
+        "count": 130,
+        "harte": "Bb:(b3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0]"
+    },
+    "Gsus4(7)": {
+        "pitch_classes": "[0, 2, 6, 7]",
+        "count": 4,
+        "harte": "G:(4,5,7)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0]"
+    },
+    "Eb7/Bb": {
+        "pitch_classes": "[1, 3, 7, 10]",
+        "count": 3,
+        "harte": "Eb:(3,5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Bbsus4(7,9)": {
+        "pitch_classes": "[0, 3, 5, 9, 10]",
+        "count": 3,
+        "harte": "Bb:(4,5,7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0]"
+    },
+    "Fm7b5/Ab": {
+        "pitch_classes": "[3, 5, 8, 11]",
+        "count": 2,
+        "harte": "F:(b3,b5,b7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1]"
+    },
+    "Em13": {
+        "pitch_classes": "[1, 2, 4, 6, 7, 9, 11]",
+        "count": 2,
+        "harte": "E:(b3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1]"
+    },
+    "Bmaj7": {
+        "pitch_classes": "[3, 6, 10, 11]",
+        "count": 18,
+        "harte": "B:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1]"
+    },
+    "Ebaug": {
+        "pitch_classes": "[3, 7, 11]",
+        "count": 2,
+        "harte": "Eb:(3,#5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Am/G": {
+        "pitch_classes": "[0, 4, 9]",
+        "count": 2,
+        "harte": "A:(b3,5)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0]"
+    },
+    "Ebaug7": {
+        "pitch_classes": "[1, 3, 7, 11]",
+        "count": 2,
+        "harte": "Eb:(3,#5,b7)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]"
+    },
+    "Emaj/G": {
+        "pitch_classes": "[4, 8, 11]",
+        "count": 1,
+        "harte": "E:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1]"
+    },
+    "A7(b5,#9)": {
+        "pitch_classes": "[0, 1, 3, 7, 9]",
+        "count": 2,
+        "harte": "A:(3,b5,b7,#9)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0]"
+    },
+    "Bbmaj/Ab": {
+        "pitch_classes": "[2, 5, 10]",
+        "count": 1,
+        "harte": "Bb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "B13": {
+        "pitch_classes": "[1, 3, 4, 6, 8, 9, 11]",
+        "count": 6,
+        "harte": "B:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1]"
+    },
+    "Fsus4(7)/C": {
+        "pitch_classes": "[0, 4, 5, 10]",
+        "count": 2,
+        "harte": "F:(4,5,7)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0]"
+    },
+    "F13": {
+        "pitch_classes": "[0, 2, 3, 5, 7, 9, 10]",
+        "count": 6,
+        "harte": "F:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0]"
+    },
+    "Cbmaj7": {
+        "pitch_classes": "[3, 6, 10, 11]",
+        "count": 8,
+        "harte": "Cb:(3,5,7)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1]"
+    },
+    "C#maj": {
+        "pitch_classes": "[1, 5, 8]",
+        "count": 1,
+        "harte": "C#:(3,5)",
+        "pitch_classes_binary": "[0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Eb13": {
+        "pitch_classes": "[0, 1, 3, 5, 7, 8, 10]",
+        "count": 13,
+        "harte": "Eb:(3,5,b7,9,11,13)",
+        "pitch_classes_binary": "[1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0]"
+    },
+    "D11": {
+        "pitch_classes": "[0, 2, 4, 6, 7, 9]",
+        "count": 3,
+        "harte": "D:(3,5,b7,9,11)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0]"
+    },
+    "Ebmaj": {
+        "pitch_classes": "[3, 7, 10]",
+        "count": 172,
+        "harte": "Eb:(3,5)",
+        "pitch_classes_binary": "[0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "Ebmaj9": {
+        "pitch_classes": "[2, 3, 5, 7, 10]",
+        "count": 3,
+        "harte": "Eb:(3,5,7,9)",
+        "pitch_classes_binary": "[0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0]"
+    },
+    "Fm6": {
+        "pitch_classes": "[0, 2, 5, 8]",
+        "count": 28,
+        "harte": "F:(b3,5,6)",
+        "pitch_classes_binary": "[1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]"
+    },
+    "Fm(maj7)(9)": {
+        "pitch_classes": "[0, 4, 5, 7, 8]",
+        "count": 2,
+        "harte": "F:(b3,5,7,9)",
+        "pitch_classes_binary": "[1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0]"
+    },
+    "Ab7/Gb": {
+        "pitch_classes": "[0, 3, 6, 8]",
+        "count": 1,
+        "harte": "Ab:(3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0]"
+    },
+    "F7(#9)": {
+        "pitch_classes": "[0, 3, 5, 8, 9]",
+        "count": 8,
+        "harte": "F:(3,5,b7,#9)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0]"
+    },
+    "Cm7/F": {
+        "pitch_classes": "[0, 3, 7, 10]",
+        "count": 2,
+        "harte": "C:(b3,5,b7)",
+        "pitch_classes_binary": "[1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0]"
+    },
+    "D7(b9)": {
+        "pitch_classes": "[0, 2, 3, 6, 9]",
+        "count": 18,
+        "harte": "D:(3,5,b7,b9)",
+        "pitch_classes_binary": "[1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0]"
+    }
+}

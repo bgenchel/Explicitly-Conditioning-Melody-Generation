@@ -1,0 +1,393 @@
+song: because of you | artist: dudley wilkinson, arthur hammerstein | error: Track not found
+song: dansero | artist: richard hayman, lee daniels, sol parker | error: Track not found
+song: wake the town and tell the people | artist: sammy gallop & jerry livingston | error: Track not found
+song: just a girl that men forget | artist: al dubin, fred rath & joe warren | error: Track not found
+song: toot, toot, tootsie | artist: ted fiorito, gus kahn, ernie erdman, dan russo | error: Track not found
+song: hillside in scotland | artist: ruth roberts, bill katz, stanley clayton | error: Track not found
+song: pennies from heaven | artist: arthur johnston, john burke | error: Track not found
+song: caribbean (down in the) | artist: mitchell torok | error: Track not found
+song: high noon | artist: dimitri tiomkin, ned washington | error: Track not found
+song: the high and the mighty | artist: dimitri tiomkin, ned washington | error: Track not found
+song: can i forget you, or will my heart remind me? | artist: jerome kern, oscar hammerstein ii | error: Track not found
+song: i've told ev'ry little star | artist: jerome kern, oscar hammerstein ii | error: Track not found
+song: make believe | artist: jerome kern, oscar hammerstein ii | error: Track not found
+song: the folks who live on the hill | artist: jerome kern, oscar hammerstein ii | error: Track not found
+song: the last time i saw paris | artist: jerome kern, oscar hammerstein ii | error: Track not found
+song: why was i born | artist: jerome kern, oscar hammerstein ii | error: Track not found
+song: a lovely way to spend an evening | artist: jimmy mchugh, harold adamson | error: Track not found
+song: coming in on a wing and a prayer | artist: jimmy mchugh, harold adamson | error: Track not found
+song: i couldn't sleep a wink last night | artist: jimmy mchugh, harold adamson | error: Track not found
+song: it's a most unusual day | artist: jimmy mchugh, harold adamson | error: Track not found
+song: where are you? | artist: jimmy mchugh, harold adamson | error: Track not found
+song: you are my hearts delight | artist: franz lehar, harry graham | error: Track not found
+song: it's no sin | artist: george hoven, chester r. shull | error: Track not found
+song: where are you christmas? ( piano accompaniment) | artist: will jennings, james horner, mariah carey | error: Track not found
+song: where are you christmas? (vocal) | artist: will jennings, james horner, mariah carey | error: Track not found
+song: i don't wanna play house | artist: billy sherrill & glenn sutton | error: Track not found
+song: our love | artist: l.clinton, b. bernier, b. emmerich | error: Track not found
+song: il ballerino | artist: g. giacomo gastoldi | error: Track not found
+song: you're my world | artist: umberto bindi, carl sigman | error: Track not found
+song: hey, soul sister | artist: amund bjorklund , espen lind, patrick monohan | error: Track not found
+song: you're gonna need someone by your side | artist: nevins, morrissey | error: Track not found
+song: you raise me up | artist: rolf lvland, brendan graham | error: Track not found
+song: detour ahead | artist: herb ellis, john frigo, lou carter | error: Track not found
+song: so firm, so round, so fully packed | artist: merle travis, cliffie stone, eddie kirk | error: Track not found
+song: my boy lollipop | artist: johnny roberts & morris levy | error: Track not found
+song: and so to sleep again | artist: joe marsala, sunny skylar | error: Track not found
+song: i'll walk beside you | artist: alan murray, edward lockton | error: Track not found
+song: you will never grow old | artist: ruth rand | error: Track not found
+song: everybody hurts continued | artist: rem | error: Track not found
+song: ... baby one more time | artist: max martin | error: Track not found
+song: turkey in the straw | artist: otto bonnell | error: Track not found
+song: long, long and lonely nights | artist: lee andrews, bernice davis | error: Track not found
+song: bobby's girl | artist: gary klein, hank hoffman | error: Track not found
+song: music to watch girls by | artist: sid ramin, tony velona | error: Track not found
+song: the song of songs | artist: moya, clarence lucas | error: Track not found
+song: a beautiful friendship | artist: donald kahn, stanley styne | error: Track not found
+song: all? maman bobo | artist: alain souchon, laurent voulzy | error: Track not found
+song: satin sheets | artist: john e. volinkaty | error: Track not found
+song: it's a wonderful world | artist: jan savitt, johnny watson, harold adamson | error: Track not found
+song: summer wind | artist: henry mayer, johnny  mercer | error: Track not found
+song: the white dove | artist: franz  lehar, clifford grey | error: Track not found
+song: i'm getting sentimental over you | artist: george bassman, ned washington | error: Track not found
+song: auf wiedersehen my dear | artist: al goodhart, al hoffman, ed nelson, milton ager | error: Track not found
+song: chloe | artist: gus kahn & neil moret | error: Track not found
+song: man of constant sorrow | artist: traditional american folk tune, traditional american | error: Track not found
+song: do you know the way to san jose | artist: benny anderson, stig anderson  and  bjorn ulvaeus | error: Track not found
+song: rejoice, the lord is king | artist: john darwall, charles wesley | error: Track not found
+song: you don't know me | artist: eddy arnold, cindy walker | error: Track not found
+song: diga, diga, doo | artist: jimmy mchugh, dorothy fields | error: Track not found
+song: i can't give you anything but love, baby | artist: jimmy mchugh, dorothy fields | error: Track not found
+song: i can't give you anything but love | artist: jimmy mchugh, dorothy fields | error: Track not found
+song: on the sunny side of the street.m | artist: jimmy mchugh, dorothy fields | error: Track not found
+song: at the balalaika | artist: george posford(adapted by herbert stothart, bob wright & chet forrest | error: Track not found
+song: a second chance | artist: andre previn, dory langdon | error: Track not found
+song: black and blue | artist: thomas , harry  brooks, andy razaf | error: Track not found
+song: little arrows | artist: albert hammond, mike hazlewood | error: Track not found
+song: nocturne | artist: rolf lvland, petter skavlan | error: Track not found
+song: moonlight cocktail | artist: lucky roberts, kim gannon | error: Track not found
+song: celebre mazurka variata | artist: augusto migliavacca | error: Track not found
+song: wishing | artist: b.g.de sylva | error: Track not found
+song: wake up, little susie | artist: boudleaux bryand, felice bryant | error: Track not found
+song: a mess of blues | artist: doc pomus & mort shuman | error: Track not found
+song: juke box saturday night | artist: paul mcgrane, al stillman | error: Track not found
+song: monster banana | artist: nadida carryne | error: Track not found
+song: just before the battle, mother | artist: george f. root | error: Track not found
+song: summer samba | artist: marcos valle  | error: Track not found
+song: mon amant de saint-jean | artist: emile carrara, l?on agel | error: Track not found
+song: i found a friend | artist: barclay allen, roc hillman | error: Track not found
+song: please mr. sun  | artist: ray getzov, sid frank  | error: Track not found
+song: viva la vida | artist: chris martin, guy berryman, jon buckland, will champion | error: Track not found
+song: the greatest gift of all | artist: john jarvis | error: Track not found
+song: isa lei | artist: lieut.a.w.caten (bandmaster fiji defence force) | error: Track not found
+song: black velvet | artist: christopher ward, david tyson | error: Track not found
+song: a scottish soldier | artist: alpine folk tune (adapted by rossini), andy stewart | error: Track not found
+song: do you hear the people sing? | artist: claude-michel schonberg, herbert kretzmer | error: Track not found
+song: i dreamed a  dream | artist: claude-michel schonberg, herbert kretzmer | error: Track not found
+song: on my own | artist: claude-michel schonberg, herbert kretzmer | error: Track not found
+song: centerpiece | artist: sweets edison | error: Track not found
+song: bay of biscay o | artist: john davy, andrew cherry | error: Track not found
+song: autumn concerto | artist: c. bargoni, p. siegel, j.turner, g. parsons | error: Track not found
+song: va' pensiero (slave song) | artist: verdi, temistocle solera | error: Track not found
+song: if that isn't love | artist: dottie rambo, 1969 | error: Track not found
+song: the statue of liberty | artist: neil enlow 1974, neil enlow | error: Track not found
+song: lady love | artist: marshall sherman, von gray | error: Track not found
+song: let it be me | artist: gilbert becaud, mann curtis, pierre delanoe | error: Track not found
+song: guess i'll hang my tears out to dry | artist: jules styne, sammy cahn | error: Track not found
+song: the things we did last summer | artist: jules styne, sammy cahn | error: Track not found
+song: time after time | artist: jules styne, sammy cahn | error: Track not found
+song: i should have been crucified | artist: gordon jensen, 1973 | error: Track not found
+song: der holle rache: arie der konigin der nacht. | artist: w. a. mozart | error: Track not found
+song: 10,000 reasons | artist: jonas myrin & matt redman 2011 | error: Track not found
+song: girl of my dreams (i love you) | artist: sunny clapp | error: Track not found
+song: there's yes! yes! in your eyes | artist: jos. h. santly, cliff friend | error: Track not found
+song: look what you've done | artist: johnny cooper | error: Track not found
+song: the lion sleeps tonight (transcribed) | artist: solomon linda, george david weiss | error: Track not found
+song: yesterday's roses | artist: gene autry, fred rose | error: Track not found
+song: the poor people of paris | artist: marguerite monnot, jack lawrence, rene rouzaud | error: Track not found
+song: happy heart | artist: hans last, jackie rae | error: ('Connection aborted.', error(54, 'Connection reset by peer'))
+song: waiting for the robert e. lee | artist: lewis f. muir, l.wolfe gilbert | error: Track not found
+song: '50 ways to leave your lover' | artist: paul simon | error: Track not found
+song: the things i love | artist: lewis harris, harold barlow | error: Track not found
+song: god of our fathers | artist: george w. warren, daniel c. roberts | error: Track not found
+song: all about ronnie | artist: joe greene | error: Track not found
+song: the house i live in | artist: earl robinson, lewis allan | error: Track not found
+song: up jumped spring | artist: freddie hubbard, sheila jordan | error: Track not found
+song: believe | artist: alan silvestri, glen ballard | error: Track not found
+song: when christmas comes to town | artist: alan silvestri, glen ballard | error: Track not found
+song: round and round | artist: joe shapiro, lou stallman | error: Track not found
+song: those lazy, hazy, crazy days of summer | artist: hans carste, chatrles tobias | error: Track not found
+song: tuff (transcribed blues sax) | artist: john henry cannon, jr. | error: Track not found
+song: gonna build a mountain | artist: leslie bricusse, anthony newley | error: Track not found
+song: who can i turn to | artist: leslie bricusse, anthony newley | error: Track not found
+song: ninety nine ways | artist: anthony september | error: Track not found
+song: ain't misbehavin' | artist: fats waller, harry brooks, andy razaf | error: Track not found
+song: time to say goodbye | artist: francesco sartori, lucio quarantotto | error: Track not found
+song: (sittin' on) the dock of the bay | artist: otis reading, steve cropper | error: Track not found
+song: picnic | artist: george w. duning, steve allen | error: Track not found
+song: you're my thrill | artist: jay gorney, sidney clare | error: Track not found
+song: in derry vale | artist: traditional irish air, w.g. rothery | error: Track not found
+song: poor little angeline | artist: will grosz, jimmy kennedy | error: Track not found
+song: ten pretty girls | artist: will grosz, jimmy kennedy | error: Track not found
+song: by love possessed | artist: elmer bernstein, sammy cahn | error: Track not found
+song: nothing's gonna change my love for you | artist: gerry goffin, michael masser | error: Track not found
+song: dancing | artist: john w wright, john w wright | error: Track not found
+song: twilight time | artist: al nevins, morty nevins, buck ram | error: Track not found
+song: if you're irish, come into the parlour | artist: frank miller, shaun glenville | error: Track not found
+song: sweet sue, just you | artist: victor young, will j. harris | error: Track not found
+song: still got the blues (transcribed) | artist: gary moore | error: Track not found
+song: marianne | artist: terry gilkyson, frank miller, richard dehr | error: Track not found
+song: are you lonesome to-night? | artist: lou handman, roy turk | error: Track not found
+song: are you lonesome tonight | artist: lou handman, roy turk | error: Track not found
+song: are you lonesome tonight? | artist: lou handman, roy turk | error: Track not found
+song: the godfather waltz (come live your life with me) | artist: nino rota, billy meshel, larry kusik | error: Track not found
+song: nancy | artist: jimmy van heusen, phil silvers | error: Track not found
+song: who were you with last night? | artist: fred godfrey, mark sheridan | error: Track not found
+song: sentimental me | artist: jim morehead, jimmy cassin | error: Track not found
+song: old shep | artist: clyde (red)  foley | error: Track not found
+song: rockin' chair.m | artist: hoagy carmichael | error: Track not found
+song: champion of love | artist: phil & carolyn cross 1995 | error: Track not found
+song: pensons ? l'avenir babe | artist: cali | error: Track not found
+song: from this moment on | artist: cole porter  1951 | error: Track not found
+song: it's been so long | artist: walter donaldson, harold adamson | error: Track not found
+song: you | artist: walter donaldson, harold adamson | error: Track not found
+song: the happy wanderer | artist: friedr.w.moller, antonia ridge | error: Track not found
+song: the gypsy | artist: billy reid 1945 | error: Track not found
+song: lover man (oh where can you be?) | artist: jimmy davis, jimmy sherman, roger ram ramirez | error: Track not found
+song: beautiful ohio | artist: mary earl, ballard  macdonald | error: Track not found
+song: pal of my cradle days | artist: al piantadosi, marshall montgomery | error: Track not found
+song: hey little hen | artist: noel gay, ralph butler | error: Track not found
+song: run rabbit, run rabbit | artist: noel gay, ralph butler | error: Track not found
+song: il silenzio | artist: guglielmo brezza, nini rosso | error: Track not found
+song: too beautiful to last | artist: bennett, webster | error: Track not found
+song: love is a beautiful song | artist: terry dempsey | error: Track not found
+song: santa bring my baby back (to me) | artist: aaron schroeder, claude demetrius, bruce sussman, jack feldman | error: Track not found
+song: on the manchurian hills | artist: ilya alekseevich shatrov | error: Track not found
+song: the donkey serenade | artist: george forrest, herbert stothart, robert wright, rudolph frinl | error: Track not found
+song: git along little dogies | artist: traditional cowboy ballad,   | error: Track not found
+song: the little boy that santa claus forgot | artist: jimmy leach, michael carr, tommie connor | error: Track not found
+song: the happy wanderer | artist: friedrich wilhelm moeller, antonia ridge | error: Track not found
+song: a world of our own | artist: tom springfield | error: Track not found
+song: peggy o neill | artist: harry pease, ed g. nelson, gilbert dodge | error: Track not found
+song: peggy o'neal | artist: harry pease, ed g. nelson, gilbert dodge | error: Track not found
+song: to god be the glory | artist: w.h. doane, fanny j. crosby | error: Track not found
+song: the teddy bears' picnic | artist: john w. bratton, jimmy kennedy | error: Track not found
+song: ballade pour adeline | artist: paul de senneville, olivier toussaint | error: Track not found
+song: vilia | artist: franz  lehar | error: Track not found
+song: to where you are | artist: linda thompson, richard marx | error: Track not found
+song: hands across the table | artist: mitchell parish & john delettre | error: Track not found
+song: i don't know why (i just do) | artist: fred ahlert, roy turk | error: Track not found
+song: if you love me, really love me | artist: marguerite monnot, english: geoffrey parsons, french: edith piaf | error: Track not found
+song: eileen o' grady | artist: traditional irish | error: Track not found
+song: gan ainm | artist: traditional irish | error: Track not found
+song: killarney | artist: traditional irish | error: Track not found
+song: the ass in the graveyard | artist: traditional irish | error: Track not found
+song: the boys from the county armagh | artist: traditional irish | error: Track not found
+song: wo menschen sich vergessen | artist: christoph lehmann | error: Track not found
+song: i wont cry anymore | artist: al frisch, fred wise | error: Track not found
+song: travelin' light | artist: sid tepper, roy c.bennett | error: Track not found
+song: lay down your arms | artist: leon land, ake gerhard, paddy roberts | error: Track not found
+song: if i fell.m | artist: john lennon and paul mccartney | error: Track not found
+song: les lacs du connemara | artist: j.revaux, m. sadou, p. delanoe | error: Track not found
+song: rule britannia! | artist: dr. thomas a. arne | error: Track not found
+song: a nightingale sang in berkeley square (with verse) | artist: manning sherwin, eric maschwitz | error: ('Connection aborted.', error(54, 'Connection reset by peer'))
+song: aba daba honeymoon | artist: arthur fields, walter donovan | error: Track not found
+song: tell me why | artist: marty gold, al albert | error: Track not found
+song: i've never been this homesick before | artist: dottie rambo 1977 | error: Track not found
+song: frim fram sauce | artist: red evans | error: Track not found
+song: if i had a hammer | artist: lee hays, pete seeger, lee hay | error: Track not found
+song: my heart stood still | artist: richard rodgers, lorenz hart  | error: Track not found
+song: jingle-bell rock | artist: joe beal and jim boothe | error: Track not found
+song: when i look into your holiness | artist: wayne perrin & kathy perrin 1981 | error: Track not found
+song: piano concerto no.1 in bb minor, op. 23 | artist: tchaikovsky | error: Track not found
+song: el condor pasa | artist: daniel a. robles,   | error: Track not found
+song: a villa negra romanca | artist: ranki gyorgy, garai gabor | error: Track not found
+song: in a persian market (arr. complete) | artist: albert w. ketelbey | error: Track not found
+song: les feuilles mortes | artist: joseph kosma, jacques prevert | error: Track not found
+song: am i blue? | artist: harry akst, grant clarke | error: Track not found
+song: ein bichen frieden | artist: ralph siegel, bernd meinunger | error: Track not found
+song: down st. thomas way | artist: sonny rollins (caribbean traditional), ray passman + herb wasserman  | error: Track not found
+song: harbor lights | artist: hugh williams, jimmy kennedy | error: Track not found
+song: an die ferne geliebte (page 1) | artist: ludwig van beethoven, aloys jeitteles | error: Track not found
+song: you never say yes, you never say no | artist: rafael duchesne, art kassel, irving caesar | error: Track not found
+song: just say i love her (dicitencello vuie) | artist: rodolfo falvo, enzo fusco | error: Track not found
+song: this world is not my home | artist: albert e. brumley 1937 | error: Track not found
+song: ella | artist: a. moss | error: Track not found
+song: ye banks and braes | artist: james miller, robert burns | error: Track not found
+song: starting with you | artist: johnny hodges, duke ellington, pat stewart | error: Track not found
+song: mes?k m?ty?s kir?lyr?l | artist: kal?ka | error: Track not found
+song: tristeza | artist: haroldo lobo ,  niltinho | error: Track not found
+song: faith can move mountains | artist: ben raleigh & guy wood | error: Track not found
+song: razzle dazzle | artist: charles e. calhoun (aka jesse stone) | error: Track not found
+song: parking lot blues | artist: ray brown | error: Track not found
+song: lonesome town (transcribed) | artist: baker knight | error: Track not found
+song: the wild blue yonder | artist: robert crawford | error: Track not found
+song: start a revival | artist: hank zeck | error: Track not found
+song: my future just passed | artist: george marion jr., richard whiting | error: Track not found
+song: lahaina luna | artist: kui lee | error: Track not found
+song: one paddle, two paddle | artist: kui lee | error: Track not found
+song: forget domani | artist: riz ortolani, norman newell | error: Track not found
+song: waltz in ab op.39,no.15 | artist: johannes brahms | error: Track not found
+song: wie melodien zieht es mir (page 1) | artist: johannes brahms | error: Track not found
+song: you can't be true dear | artist: hans otten, ken griffin, hal cotton, gerhard ebeler | error: Track not found
+song: i'll see you in my dreams | artist: isham jones, gus kahn | error: Track not found
+song: it had to be you  | artist: isham jones, gus kahn | error: Track not found
+song: it had to be you | artist: isham jones, gus kahn | error: Track not found
+song: on the alamo | artist: isham jones, gus kahn | error: Track not found
+song: swingin' down the lane | artist: isham jones, gus kahn | error: Track not found
+song: the one i love belongs to somebody else | artist: isham jones, gus kahn | error: Track not found
+song: luckenbach, texas | artist: bobby emmons, chips moman | error: Track not found
+song: il est cinq heures, paris s'?veille | artist: jacques dutronc, jacques lanzmann, anne segalen | error: Track not found
+song: always on my mind | artist: wayne thomps | error: Track not found
+song: i wouldn't have missed it for the world | artist: kye fleming, dennis morgan, charles quillen | error: Track not found
+song: dungaree doll | artist: ben  raleigh, sherman edwards | error: Track not found
+song: song from moulin rouge | artist: georges auric, william engvick | error: Track not found
+song: honeysuckle and the bee | artist: albert h. fitz & william h. penn | error: Track not found
+song: deep night | artist: charlie henderson, rudy vallee | error: Track not found
+song: deep purple | artist: peter de rose, mitchel paarish | error: Track not found
+song: my dreams are getting better all the time | artist: vic mizzy, mann curtis | error: Track not found
+song: aan de voet van die mooie wester | artist: arr. h. laukens | error: Track not found
+song: ik heb unne spijker in munne kop | artist: arr. h. laukens | error: Track not found
+song: ik hou dr zo van | artist: arr. h. laukens | error: Track not found
+song: ik wil je elke dag een beetje meer | artist: arr. h. laukens | error: Track not found
+song: on tourne | artist: arr. h. laukens | error: Track not found
+song: poeme | artist: z. fibich | error: Track not found
+song: dicitencello vuie | artist: rudolfo falvo, enzo fusco (english by martin kalmanoff & sam ward) | error: Track not found
+song: itsi bitsi petit bikini | artist: lee pockriss, paul j. vance, dalida | error: Track not found
+song: am i losing you (transcribed) | artist: jim reeves | error: Track not found
+song: hot diggity | artist: dick manning, al hoffman | error: Track not found
+song: mi casa, su casa | artist: dick manning, al hoffman | error: Track not found
+song: if we can't be the same old sweethearts | artist: james vincent monaco, joe mccarthy | error: Track not found
+song: greensleeves | artist: traditional english, broadside ballad 1850 | error: Track not found
+song: lavender blue | artist: larry morey, eliot daniel | error: Track not found
+song: wedding march | artist: f. mendelssohn | error: ('Connection aborted.', error(54, 'Connection reset by peer'))
+song: awesome in this place | artist: david billington 1992 | error: Track not found
+song: dindi | artist: antonio carlos jobim, ray gilbert (english lyrics) | error: Track not found
+song: music! music! music! | artist: bernie baum, stephan weiss | error: Track not found
+song: i left my heart in san francisco | artist: george cory, douglass cross | error: Track not found
+song: it all depends on you | artist: ray henderson, b.g. desylva, lew brown | error: Track not found
+song: together | artist: ray henderson, b.g. desylva, lew brown | error: Track not found
+song: sweet adeline | artist: richard h gerard, henry w. armstrong | error: Track not found
+song: the party's over | artist: jules styne, adolph green | error: Track not found
+song: oh, them golden slippers | artist: james a. bland | error: Track not found
+song: peanut vendor,the(el manisero) | artist: moises simons, l.wolfe gilbert & marion sunshine | error: Track not found
+song: melody of love | artist: hans engelmann, tom glazer  | error: Track not found
+song: maybellene | artist: chuck berry, russ fratto.alan freed | error: Track not found
+song: valencia | artist: jose padilla, lucien boyer, jacques charles, eric valentine | error: Track not found
+song: wanted | artist: jack fulton, lois steele | error: Track not found
+song: take five | artist: paul desmond, carmen mcrae | error: Track not found
+song: cheryl  moana  maree | artist: john rowles | error: Track not found
+song: adagio | artist: rolf lvland | error: Track not found
+song: serenade to spring | artist: rolf lvland | error: Track not found
+song: song from a secret garden | artist: rolf lvland | error: Track not found
+song: daddy's little girl | artist: horace gerlach, bobby burke | error: Track not found
+song: it is no secret | artist: carl stuart hamblen | error: Track not found
+song: i want a girl  | artist: harry tilzer, william dillon | error: Track not found
+song: i want a girl just like the girl | artist: harry tilzer, william dillon | error: Track not found
+song: paloma blanca | artist: hans bouwens | error: Track not found
+song: tis midnight and on olive's brow | artist: william b. bradbury, william b. tappan | error: Track not found
+song: don't rain on my parade | artist: jule styne, bob merril | error: Track not found
+song: i don't mind if you forget me | artist: stephen street, morrissey | error: Track not found
+song: it's a blue world | artist: chet forrest, bob wright | error: Track not found
+song: sometimes i feel like a motherless child | artist: traditional american spiritual | error: Track not found
+song: find your time | artist: morante jose | error: Track not found
+song: love will keep us together | artist: neil sedaka, howard greenfield | error: Track not found
+song: stupid cupid | artist: neil sedaka, howard greenfield | error: Track not found
+song: you oughta be in pictures | artist: dana  suesse, edward heyman | error: Track not found
+song: valse de manchourie | artist: aucun | error: Track not found
+song: anchors aweigh | artist: capt. alfred h. miles u.s.n. (retired) , charles a. zimmermann | error: Track not found
+song: song of india (swing version) | artist: nicolai rimsky-korsakoff | error: Track not found
+song: p. s. i love you | artist: gordon jenkins, johnny mercer | error: Track not found
+song: the sheik of araby | artist: ted snyder, francis wheeler, harry b. smith | error: Track not found
+song: looking for a city | artist: marvin p. daltin & oliver cooper 1943 | error: Track not found
+song: afterdark | artist: kevin cavanaugh | error: Track not found
+song: fantastic circle | artist: kevin cavanaugh | error: Track not found
+song: i broke my arm to meet you | artist: kevin cavanaugh | error: Track not found
+song: it doesn't rain anymore | artist: kevin cavanaugh | error: Track not found
+song: monday | artist: kevin cavanaugh | error: Track not found
+song: never ever | artist: kevin cavanaugh | error: Track not found
+song: out to lunch | artist: kevin cavanaugh | error: Track not found
+song: po box 117 | artist: kevin cavanaugh | error: Track not found
+song: the lost and found | artist: kevin cavanaugh | error: Track not found
+song: the planes land downtown in san diego | artist: kevin cavanaugh | error: Track not found
+song: you smile | artist: kevin cavanaugh | error: Track not found
+song: the theme from pink panther | artist: henry mancini | error: ('Connection aborted.', error(54, 'Connection reset by peer'))
+song: in dreams | artist: howard barnes | error: Track not found
+song: sing you sinners | artist: franke harling, sam coslow | error: Track not found
+song:  diz que fui por ai | artist: ze keti & hortencio rocha | error: Track not found
+song: oye como va | artist: tito puente  | error: Track not found
+song: twenty-four hours from tulsa | artist: hal david and burt bacharach | error: Track not found
+song: the holy city | artist: stephen adams, f.e.weatherly | error: Track not found
+song: a hundred years from today | artist: victor young, joe young, ned washington | error: Track not found
+song: abide with me | artist: william henry monk (eventide)  1861, henry francis lyte  1847 | error: Track not found
+song: all right, okay, you win | artist: mayme watts, sid wyche | error: Track not found
+song: black coffee | artist: sonny burke, paul francis webster | error: Track not found
+song: the merry christmas polka | artist: sonny burke, paul francis webster | error: Track not found
+song: sleepwalk | artist: ann farina, johnny farina, santo farina | error: Track not found
+song: sleepy time gal | artist: ange lorenzo, raymond b. egan, jos. r. alden, richard a. whiting | error: Track not found
+song: o sacred head now wounded | artist: hans leo hassler, from the latin | error: Track not found
+song: irgendwie, irgendwo, irgendwann | artist: jorn-uwe fahrenkrog-petersen, carlo karges | error: Track not found
+song: chattanoogie shoe shine boy | artist: harry stone, jack stapp | error: Track not found
+song: breathless | artist: corinne bailey rae & marc nelkin | error: Track not found
+song: the last mile home | artist: walter kent & walton farrar | error: Track not found
+song: nobody knows thetrouble i've seen | artist: traditional negro spiritual | error: Track not found
+song: one day at a time | artist: marijohn williams, kris kristofferson | error: Track not found
+song: all things bright and beautiful (1848) | artist: william h. monk, cecil f. alexander | error: Track not found
+song: a petal from a faded rose | artist: leon rusk, merle travis | error: Track not found
+song: waterloo | artist: john loudermilk and marijohn wilkin | error: Track not found
+song: i got a wife | artist: erwin herbert dutch wenzlaff, edward c. mascari | error: Track not found
+song: sunrise serenade | artist: frankie carle, jack lawrence | error: Track not found
+song: my monday date | artist: earl hines, sid robin | error: Track not found
+song: perhaps, perhaps, perhaps | artist: osvaldo farres, joe davis (english lyrics) | error: Track not found
+song: the south american way | artist: jimmy mchugh, al dubin | error: Track not found
+song: vienna,city of my dreams (vienna dreams) | artist: rudolf sieczynski, richard tauber | error: Track not found
+song: unless it's you | artist: johnny mandel, morgan ames | error: Track not found
+song: lover, come back to me | artist: sigmund romberg, oscar hammerstein ii | error: Track not found
+song: one kiss | artist: sigmund romberg, oscar hammerstein ii | error: Track not found
+song: wanting you | artist: sigmund romberg, oscar hammerstein ii | error: Track not found
+song: when i grow too old to dream | artist: sigmund romberg, oscar hammerstein ii | error: Track not found
+song: a night to remember | artist: celestine akins | error: Track not found
+song: believe in me | artist: celestine akins | error: Track not found
+song: foolish pride | artist: celestine akins | error: Track not found
+song: heart beat tango | artist: celestine akins | error: Track not found
+song: never again | artist: celestine akins | error: Track not found
+song: our magic night | artist: celestine akins | error: Track not found
+song: pardon me if i break your heart | artist: celestine akins | error: Track not found
+song: summer romance  | artist: celestine akins | error: Track not found
+song: the angels started singing | artist: celestine akins | error: Track not found
+song: the story of my life | artist: celestine akins | error: Track not found
+song: waltz of love | artist: celestine akins | error: Track not found
+song: the most beautiful girl | artist: billy sherrill, norris wilson, rory bourke | error: Track not found
+song: the white dove | artist: franz lehar, clifford grey | error: Track not found
+song: fill me now | artist: elweed h. stokes &  john r. sweeney 1879 | error: Track not found
+song: misirlou | artist: traditional greck | error: Track not found
+song: nana para alicia | artist: juanma belda | error: Track not found
+song: highland cathedral | artist: ulrich roever, michael korb | error: Track not found
+song: time after time | artist: jule styne, sammie cahn | error: Track not found
+song: la spagnola | artist: v. di chiara, claude aveling | error: Track not found
+song: why don't you believe me? | artist: lew douglas, king laney and roy roode | error: Track not found
+song: it's the most wonderful time of the year | artist: eddie pola, geroge wylie | error: Track not found
+song: say it (over and over again) horrible chart by wikifonia ... why did you change so many things tha | artist: frank loesser, jimmy mchugh | error: Track not found
+song: say it over and over again | artist: frank loesser, jimmy mchugh | error: Track not found
+song: the wonder of it all | artist: george beverly shea 1957 | error: Track not found
+song: avoir un bon copain | artist: w.r. heymann, jean boyer | error: Track not found
+song: snow flake | artist: ned miller | error: Track not found
+song: i should care | artist: alex stordalh, paul weston, sammy cahn | error: Track not found
+song: on the road to mandalay | artist: oley speaks, rudyard kipling | error: Track not found
+song: a girl like you | artist: jerry lordan | error: Track not found
+song: have yourself a merry little christmas.m | artist: hugh martin, ralph blane | error: Track not found
+song: time was | artist: miguel prado, s. k. russell | error: Track not found
+song: praise the lord, ye heavens adore him | artist: franz joseph haydn | error: Track not found
+song: walk away | artist: udo jurgens, don black | error: Track not found
+song: the dream of olwen | artist: charles williams, winifred may | error: Track not found
+song: too marvelous for words | artist: richard a whiting, johnny mercer | error: Track not found
+song: yes, indeed! | artist: sy oliver | error: ('Connection aborted.', error(54, 'Connection reset by peer'))
+song: the blue room | artist: richard rogers, lorenz hart | error: Track not found
+song: the last waltz | artist: barry mason, les reed | error: Track not found
+song: sing we now of christmas | artist: traditional french carol | error: Track not found
+song: songbird | artist: loonis mcglohon | error: Track not found
+song: the naughty lady of shady lane | artist: sid tepper, roy c. bennett | error: Track not found
+song: the young ones | artist: sid tepper, roy c. bennett | error: Track not found
+song: dardanella | artist: feliz bernard & johnny s. black, fred fisher | error: Track not found
+song: jealous | artist: jack little, tommie malie & dick finch | error: Track not found
+song: daddy wouldn't buy me a bow wow | artist: joseph tabrar | error: Track not found

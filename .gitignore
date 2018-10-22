@@ -1,5 +1,5 @@
 .idea/
-data/
+/data
 midi/
 .DS_store
 *.zip
