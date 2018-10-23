@@ -1,4 +1,5 @@
 import json
+import math
 import os.path as op
 import os
 import sys
@@ -62,7 +63,7 @@ class Parser:
         if json_dir and not op.exists(json_dir):
             raise Exception("JSON directory not found.")
         else:
-            json_dir = op.join(root_dir, 'data', 'raw', 'json')
+            json_dir = op.join(root_dir, 'data', 'interim')
             if not op.exists(json_dir):
                 raise Exception("JSON directory not found.")
 
@@ -76,7 +77,7 @@ class Parser:
 
         # Directory where datasets as a whole get saved to
         if dataset_dir and not op.exists(dataset_dir):
-            os.makedirs(song_dir)
+            os.makedirs(dataset_dir)
         else:
             dataset_dir = op.join(root_dir, 'data', 'processed', 'datasets')
             if not op.exists(dataset_dir):
@@ -359,7 +360,7 @@ class Parser:
                 "harmony": {},
                 "pitch_numbers": [],
                 "duration_tags": [],
-                "bar_position": []
+                "bar_positions": []
             }
             harmony = Harmony(group["harmony"])
             parsed_group["harmony"]["root"] = harmony.get_one_hot_root()
@@ -375,8 +376,8 @@ class Parser:
                     parsed_group["duration_tags"].append(dur_tag)
                     dur_ticks_list.append(dur_ticks)
             dur_ticks_list = [sum(dur_ticks_list[:i]) for i in range(len(dur_ticks_list))]
-            dur_to_next_bar = [4 * divisions - dur_ticks for dur_ticks in dur_ticks_list]
-            parsed_group["bar_position"] = dur_to_next_bar
+            bar_positions = [int(((4 * divisions - dur_ticks) / (4 * divisions)) * 100) for dur_ticks in dur_ticks_list]
+            parsed_group["bar_positions"] = bar_positions
             parsed_measure["groups"].append(parsed_group)
         return parsed_measure
 
@@ -475,7 +476,8 @@ def get_divisions(song_dict):
     :param song_dict: a song dict in the format created by src/processing/conversion/xml_to_json.py
     :return: the number of divisions a quarter note is split into in this song's MusicXML representation
     """
-    return int(song_dict["part"]["measures"][0]["attributes"]["divisions"]["text"])
+    divisions = int(song_dict["part"]["measures"][0]["attributes"]["divisions"]["text"])
+    return divisions
 
 
 def get_note_index(note):
@@ -599,12 +601,16 @@ def get_note_duration(note_dict, divisions=24):
 
     if "type" in note_dict.keys():
         note_type = note_dict["type"]["text"]
+
         if note_type == "eighth":
             note_type = "8th"
+
         label = note_type
-        if note_dur == (3 * dur_dict[note_type] / 2):
+        dot_dur = 3 * dur_dict[note_type] / 2
+        triplet_dur = 2 * dur_dict[note_type] / 3
+        if note_dur in (dot_dur, math.ceil(dot_dur), math.floor(dot_dur)):
             label = '-'.join([label, 'dot'])
-        elif note_dur == (dur_dict[note_type] * 2 / 3):
+        elif note_dur in (triplet_dur, math.ceil(triplet_dur), math.floor(triplet_dur)):
             label = '-'.join([label, 'triplet'])
         elif note_dur != dur_dict[note_type]:
             print("Undefined %s duration. Entering as regular %s." % (note_type, note_type))
@@ -689,9 +695,10 @@ def rotate(l, x):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", default="pitch_duration_tokens",
+    parser.add_argument("--output", default="pitch_duration_tokens", 
+                        choices=("pitch_duration_tokens", "midi_ticks", "pitch_num_ticks"),  
                         help="The output format of the processed data.")
-    parser.add_argument("--transpose", default=False,
+    parser.add_argument("--transpose", default=True,
                         help="Whether or not to transpose the parsed songs into all 12 keys.")
     args = parser.parse_args()
 

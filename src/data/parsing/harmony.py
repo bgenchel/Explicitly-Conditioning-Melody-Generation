@@ -199,7 +199,10 @@ class Harmony(object):
     _seventh_pitch_classes_binary = None
 
     def __init__(self, harmony_dict):
-        self.harmony_dict = harmony_dict
+        if not len(harmony_dict):
+            self.harmony_dict = None
+        else:
+            self.harmony_dict = harmony_dict
 
     def _get_alter_label(self, alter):
         label = ''

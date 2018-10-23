@@ -1,97 +1,109 @@
-from torch.utils.data.dataset import Dataset
-import torch
+import copy
 import numpy as np
 import os
 import os.path as op
 import pickle
+import torch
+from pathlib import Path
+from torch.utils.data.dataset import Dataset
 
-NOTE_TICK_LENGTH = 37
-HARMONY_ROOT_LENGTH = 12
-HARMONY_PITCH_CLASSES_LENGTH = 12
+PITCH_KEY = "pitch_numbers"
+DUR_KEY = "duration_tags"
+CHORD_KEY = "harmony"
+POS_KEY = "bar_positions"
 
-class MidiTicksDataset(Dataset):
+DEFAULT_DATA_PATH = op.join(Path(op.abspath(__file__)).parents[3], 'data', 'processed', 'songs')
+
+class BebopPitchDurDataset(Dataset):
     """
-    This defines the loading and organizing of parsed MusicXML data into a MIDI tick database.
+    This defines the loading and organizing of parsed MusicXML data into a dataset of note pitch and note duration
+    values.
     """
 
-    def __init__(self, load_dir, measures_per_seq=8, hop_size=4, target_type="full_sequence"):
+    def __init__(self, load_dir=DEFAULT_DATA_PATH, seq_len=32, train_type="next_step"):
         """
         Loads the MIDI tick information, groups into sequences based on measures.
         :param load_dir: location of parsed MusicXML data
-        :param measures_per_seq: how many measures of ticks should be considered a sequence
-        :param hop_size: how many measures to move in time when creating sequences
-        :param target_type: if "full_sequence" the target is the full input sequence, if "next_step" the target is
-                the last tick of the input sequence
+        :param seq_len: how long a single training sequence is
+        :param data: this dataset will be used to get either the pitch tokens or the duration tokens from the data, this
+            parameter specifies which of the two to get. Valid options are "pitch" and "duration".
+        :param train_type: this param specifies the format of the target and thus the way in which the network will be
+            trained. Valid arguments are "full_sequence" (which specifies that the target will be a sequence the same
+            length as the input, but will be taken to be shifted forward one step in time), and "next_step" (in which
+            the targets are only the next step after the input, and only the last output of the network is considered).
+        :param chord_cond: "chord conditioning" - include harmony, in the form of a 24 length binary vector. The first 12 bits specify the root
+            note in one hot format, while the latter 12 specify the included pitch classes.
+        :param inter_cond: "interconditioning" - if data is "pitch", also give duration tokens; if data is "duration"
+            also give pitch numbers. 
+        :param bar_pos_cond: "bar position conditioning" - give a bar position number which specifies the position of 
+            each note in a bar. 
         """
 
         if not op.exists(load_dir):
             raise Exception("Data directory does not exist.")
 
-        self.sequences = []
-        self.targets = []
-
-        for file in os.listdir(load_dir):
-            if op.splitext(file)[1] != ".pkl":
-                print("Skipping %s..." % file)
+        self.seq_len = seq_len
+        self.train_type = train_type
+        
+        self.sequences = self._create_data_dict()
+        self.targets = self._create_data_dict()
+        print('Loading files from %s ...' % load_dir)
+        for fname in os.listdir(load_dir):
+            if op.splitext(fname)[1] != ".pkl":
+                print("Skipping %s..." % fname)
                 continue
 
-            song = pickle.load(open(op.join(load_dir, file), "rb"))
+            song = pickle.load(open(op.join(load_dir, fname), "rb"))
 
-            if song["metadata"]["ticks_per_measure"] != 96:
-                print("Skipping %s because it isn't in 4/4." % file)
+            if song["metadata"]["time_signature"] != "4/4":
+                print("Skipping %s because it isn't in 4/4." % fname)
 
-            sequence_start = 0
-            while sequence_start < len(song["measures"]):
-                sequence = []
-                for sequence_index in range(measures_per_seq):
-                    measure_index = sequence_start + sequence_index
-                    if measure_index < len(song["measures"]):
-                        measure = song["measures"][sequence_start + sequence_index]
+            full_sequence = self._create_data_dict()
+            for i, measure in enumerate(song["measures"]):
+                for j, group in enumerate(measure["groups"]):
+                    assert len(group[PITCH_KEY]) == len(group[DUR_KEY]) == len(group[POS_KEY])
+                    full_sequence[PITCH_KEY].extend(group[PITCH_KEY])
+                    full_sequence[DUR_KEY].extend(group[DUR_KEY])
+                    full_sequence[POS_KEY].extend(group[POS_KEY])
 
-                        formatted_measure = []
+                    chord_vec = group["harmony"]["root"] + group["harmony"]["pitch_classes"]
+                    # right now each element is actual just pointers to one list, which is really bad
+                    # however, this problem will be resolved when converted to tensor/np array
+                    for _ in range(len(group[PITCH_KEY])): 
+                        full_sequence[CHORD_KEY].append(chord_vec)
 
-                        # Append harmony root and pitch classes to each tick
-                        for group in measure["groups"]:
-                            for tick in group["ticks"]:
-                                if group["harmony"]:
-                                    formatted_tick = group["harmony"]["root"] + group["harmony"]["pitch_classes"] + tick
-                                else:
-                                    formatted_tick = self._get_none_harmony() + tick
-                                formatted_measure.append(formatted_tick)
+            full_sequence = {k: np.array(v) for k, v in full_sequence.items()}
+            for k, full_seq in full_sequence.items():
+                seqs, targets = self._get_seqs_and_targets(full_seq)
+                self.sequences[k].extend(seqs)
+                self.targets[k].extend(targets)
 
-                        # Ensure measure has enough ticks
-                        if measure["num_ticks"] < 96:
-                            empty_ticks = self._get_empty_ticks(96 - measure["num_ticks"])
-
-                            # If first measure, prepend padding to the measure
-                            if measure_index == 0:
-                                formatted_measure = empty_ticks + formatted_measure
-                            # Otherwise, it should be the last measure, so append padding to the measure
-                            else:
-                                formatted_measure += empty_ticks
-
-                        sequence += formatted_measure
-
-                    else:
-                        formatted_measure = self._get_empty_ticks(96)
-                        sequence += formatted_measure
-
-                if target_type == "full_sequence":
-                    target = sequence
-                else: # target_type == "next_step"
-                    target = sequence[-1]
-
-                self.sequences.append(sequence)
-                self.targets.append(target)
-
-                sequence_start += hop_size
+    def _create_data_dict(self):
+        return {PITCH_KEY: [], DUR_KEY: [], CHORD_KEY: [], POS_KEY: []}
+                
+    def _get_seqs_and_targets(self, sequence):
+        seqs, targets = [], []
+        if len(sequence.shape) == 1:
+            padding = np.zeros((self.seq_len))
+            sequence = np.concatenate((padding, sequence), axis=0)
+        else:
+            padding = np.zeros((self.seq_len, sequence.shape[1]))
+            sequence = np.concatenate((padding, sequence), axis=0)
+        # sequence = np.concatenate((padding, sequence), axis=1)
+        for i in range(sequence.shape[0] - self.seq_len):
+            seqs.append(sequence[i:(i + self.seq_len)])
+            if self.train_type == 'next_step':
+                targets.append(sequence[i + self.seq_len])
+            elif self.train_type == 'full_sequence': 
+                targets.append(sequence[(i + 1):(i + self.seq_len + 1)])
+        return seqs, targets
 
     def __len__(self):
         """
         The length of the dataset.
         :return: the number of sequences in the dataset
         """
-        return len(self.sequences)
+        return len(self.sequences['pitch_numbers'])
 
     def __getitem__(self, index):
         """
@@ -99,26 +111,6 @@ class MidiTicksDataset(Dataset):
         :param index: the index of the sequence and target to fetch
         :return: the sequence and target at the specified index
         """
-        return torch.from_numpy(np.array(self.sequences[index])), torch.from_numpy(np.array(self.targets[index]))
-
-    def _get_none_harmony(self):
-        """
-        Gets a representation of no harmony.
-        :return: a HARMONY_ROOT_LENGTH + HARMONY_PITCH_CLASSES_LENGTH x 1 list of zeroes
-        """
-        return [0 for _ in range(HARMONY_ROOT_LENGTH + HARMONY_PITCH_CLASSES_LENGTH)]
-
-    def _get_empty_ticks(self, num_ticks):
-        """
-        Gets a representation of a rest with no harmony for a given number of ticks.
-        :param num_ticks: how many ticks of rest with no harmony desired
-        :return: a list of num_ticks x 61
-        """
-        ticks = []
-
-        for _ in range(num_ticks):
-            tick = [0 for _ in range(HARMONY_ROOT_LENGTH + HARMONY_PITCH_CLASSES_LENGTH + NOTE_TICK_LENGTH)]
-            tick[-1] = 1
-            ticks.append(tick)
-
-        return ticks
+        seqs = {k: torch.from_numpy(seqs[index]) for k, seqs in self.sequences.items()}
+        targets = {k: torch.from_numpy(np.array(targs[index])) for k, targs in self.targets.items()}
+        return (seqs, targets)
