@@ -28,11 +28,14 @@ dependencies:
     - pathlib==1.0.1
     - pillow==5.3.0
     - pretty-midi==0.2.8
+    - protobuf==3.6.1
     - pyparsing==2.2.2
     - python-dateutil==2.7.3
     - six==1.11.0
+    - tensorboardx==1.4
     - torch==0.4.1
     - torchvision==0.2.1
+    - tqdm==4.28.1
     - typing==3.6.6
 prefix: /Users/benjamingenchel/anaconda/envs/min-leadsheet
 
