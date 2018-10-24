@@ -6,8 +6,8 @@ import os.path as op
 import torch
 from datetime import datetime
 from torch.autograd import Variable
-from .constants import DEFAULT_PRINT_EVERY
 
+DEFAULT_PRINT_EVERY = 400
 STOCHASTIC_SAMPLE_SIZE = 30
 
 ################################################################################
@@ -23,10 +23,10 @@ def write_loss(train_loss, valid_loss, writer, step):
 ################################################################################
 # Loss Calculation Functions
 ################################################################################
-def compute_avg_loss(net, loss_fn, batched_seqs, batched_targets):
+def compute_avg_loss(net, loss_fn, loader):
     total_loss = 0.0
     batch_count = 0
-    batch_groups = list(zip(batched_seqs, batched_targets))
+    batch_groups = list(loader)
     random.shuffle(batch_groups)
     for seq_batch, target_batch in batch_groups[:STOCHASTIC_SAMPLE_SIZE]:  # stochastic check?
         inpt = Variable(torch.LongTensor(seq_batch))
@@ -295,22 +295,14 @@ def get_args(default_title=""):
                         help="custom title for run data directory")
     parser.add_argument('-cp', '--charlie_parker', action="store_true",
                         help="use the charlie parker dataset.")
-    parser.add_argument('-n', '--num_songs', default=None, type=int,
-                        help="number of songs to include in training")
     parser.add_argument('-e', '--epochs', default=10, type=int,
                         help="number of training epochs")
-    parser.add_argument('-b', '--batch_size', default=5, type=int,
+    parser.add_argument('-b', '--batch_size', default=16, type=int,
                         help="number of training epochs")
     parser.add_argument('-sl', '--seq_len', default=1, type=int,
                         help="number of previous steps to consider in prediction.")
-    parser.add_argument('-ped', '--pitch_embedding_dim', default=32, type=int,
-                        help="size of note embeddings.")
-    parser.add_argument('-ded', '--dur_embedding_dim', default=8, type=int,
-                        help="size of note embeddings.")
     parser.add_argument('-hd', '--hidden_dim', default=128, type=int,
                         help="size of hidden state.")
-    parser.add_argument('-nl', '--num_layers', default=2, type=int,
-                        help="number of lstm layers to use.")
     parser.add_argument('-lr', '--learning_rate', default=1e-3, type=float,
                         help="learning rate for sgd")
     parser.add_argument('-do', '--dropout', default=0.0, type=float,
@@ -319,8 +311,6 @@ def get_args(default_title=""):
                         help="use batch normalization.")
     parser.add_argument('-nc', '--no_cuda', action="store_true",
                         help="don't allow the use of CUDA, even if it's available.")
-    parser.add_argument('-pe', '--print_every', default=DEFAULT_PRINT_EVERY, type=int,
-                        help="how often to print the loss during training.")
     parser.add_argument('-k', '--keep', action='store_true',
                         help="save model files and other about this run")
     return parser.parse_args()

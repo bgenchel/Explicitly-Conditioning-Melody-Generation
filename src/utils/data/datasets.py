@@ -111,6 +111,6 @@ class BebopPitchDurDataset(Dataset):
         :param index: the index of the sequence and target to fetch
         :return: the sequence and target at the specified index
         """
-        seqs = {k: torch.from_numpy(seqs[index]) for k, seqs in self.sequences.items()}
-        targets = {k: torch.from_numpy(np.array(targs[index])) for k, targs in self.targets.items()}
+        seqs = {k: torch.LongTensor(seqs[index]) for k, seqs in self.sequences.items()}
+        targets = {k: torch.LongTensor(np.array(targs[index])) for k, targs in self.targets.items()}
         return (seqs, targets)
