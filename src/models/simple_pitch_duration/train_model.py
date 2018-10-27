@@ -8,15 +8,16 @@ import torch.optim as optim
 from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
-from tensorboardX import SummaryWriter
 
 from model_classes import PitchLSTM, DurationLSTM
-from training import train_epoch, eval_epoch
+
 sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
 import utils.constants as const
+import utils.helpers as hlp
+import utils.training as trn
 from utils.data.datasets import BebopPitchDurDataset
 from utils.data.dataloaders import SplitDataLoader
-from utils import training as tr
+from utils.logging import TensorBoardWriter
 
 torch.cuda.device(0)
 
@@ -24,7 +25,7 @@ run_datetime_str = datetime.now().strftime('%b%d-%y_%H:%M:%S')
 info_dict = OrderedDict()
 info_dict['run_datetime'] = run_datetime_str
 
-args = tr.get_args(default_title=run_datetime_str)
+args = hlp.get_args(default_title=run_datetime_str)
 if args.title != run_datetime_str:
     args.title = '_'.join([run_datetime_str, args.title])
 info_dict.update(vars(args))
@@ -61,7 +62,7 @@ if args.keep:
     dirpath = op.join(dirpath, args.title)
 else:
     dirpath = op.join(dirpath, "test_runs", args.title)
-writer = SummaryWriter(op.join(dirpath, 'tensorboard'))
+writer = TensorBoardWriter(op.join(dirpath, 'tensorboard'))
 
 interrupted = False
 train_losses, valid_losses = [], []
@@ -69,23 +70,24 @@ print("Beginning Training - %s model" % args.model)
 print("Cuda available: ", torch.cuda.is_available())
 try:
     # write the initial loss
-    init_train_loss = eval_epoch(model, train_loader, assembler, loss_fn)  
+    init_train_loss = trn.eval_epoch(model, train_loader, assembler, loss_fn)  
     train_losses.append(init_train_loss)
     print("Initial Training Loss: %.5f" % (init_train_loss))
-    init_valid_loss = eval_epoch(model, valid_loader, assembler, loss_fn)
+    init_valid_loss = trn.eval_epoch(model, valid_loader, assembler, loss_fn)
     valid_losses.append(init_valid_loss)
     print("Initial Validation Loss: %.5f" % (init_valid_loss))
-    tr.write_loss(train_losses[0], valid_losses[0], writer, 0)
+    writer.write_loss({'training': init_train_loss, 'validation': init_valid_loss}, 0)
     # train
     for epoch in range(args.epochs):
-        print("="*20 + "\nEpoch %d / %d\n" % (epoch + 1, args.epochs) + "="*20)
-        train_loss = train_epoch(model, train_loader, assembler, loss_fn, optimizer)
+        epoch_label = epoch + 1
+        print("="*20 + "\nEpoch %d / %d\n" % (epoch_label, args.epochs) + "="*20)
+        train_loss = trn.train_epoch(model, train_loader, assembler, loss_fn, optimizer)
         train_losses.append(train_loss)
-        print("Epoch %d Training Loss: %.5f" % (epoch + 1, train_loss))
-        valid_loss = eval_epoch(model, valid_loader, assembler, loss_fn)
+        print("Epoch %d Training Loss: %.5f" % (epoch_label, train_loss))
+        valid_loss = trn.eval_epoch(model, valid_loader, assembler, loss_fn)
         valid_losses.append(valid_loss)
-        print("Epoch %d Validation Loss: %.5f" % (epoch + 1, valid_loss))
-        tr.write_loss(train_loss, valid_loss, writer, epoch + 1)
+        print("Epoch %d Validation Loss: %.5f" % (epoch_label, valid_loss))
+        writer.write_loss({'training': train_loss, 'validation': valid_loss}, epoch + 1)
     print("Finished Training.")
 except KeyboardInterrupt:
     print("Training Interrupted.")
@@ -94,7 +96,7 @@ except KeyboardInterrupt:
 writer.close()
 info_dict['interrupted'] = interrupted
 info_dict['epochs_completed'] = len(train_losses)
-info_dict['final_tr.loss'] = train_losses[-1]
+info_dict['final_train_loss'] = train_losses[-1]
 info_dict['final_valid_loss'] = valid_losses[-1]
 
 model_inputs = {'hidden_dim': args.hidden_dim,
@@ -104,4 +106,4 @@ model_inputs = {'hidden_dim': args.hidden_dim,
                 'batch_norm': args.batch_norm,
                 'no_cuda': args.no_cuda}
 
-tr.save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model, args.keep)
+hlp.save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model, args.keep)
