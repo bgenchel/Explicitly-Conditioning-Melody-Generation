@@ -10,8 +10,10 @@ POS_KEY = "bar_positions"
 # Model Params
 PITCH_DIM = 128
 DUR_DIM = 19
+CHORD_DIM = 24
 PITCH_EMBED_DIM = 36
 DUR_EMBED_DIM = 10
+CHORD_EMBED_DIM = 18
 NUM_RNN_LAYERS = 2
 
 # Dictionaries

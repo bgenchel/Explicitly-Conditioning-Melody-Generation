@@ -16,8 +16,6 @@ STOCHASTIC_SAMPLE_SIZE = 30
 def write_loss(train_loss, valid_loss, writer, step):
     writer.add_scalars('loss', {"training": train_loss, 
         "validation": valid_loss}, step)
-    print('Step %i Average Training Loss: %f'%(step, train_loss))
-    print('Step %i Average Validation Loss: %f'%(step, valid_loss))
     return
 
 ################################################################################
@@ -309,6 +307,8 @@ def get_args(default_title=""):
                         help="drop out rate for LSTM")
     parser.add_argument('-bn', '--batch_norm', action="store_true",
                         help="use batch normalization.")
+    parser.add_argument('-m', '--model', required=True, choices=("pitch", "duration"), 
+                        type=str, help="which model to train.")
     parser.add_argument('-nc', '--no_cuda', action="store_true",
                         help="don't allow the use of CUDA, even if it's available.")
     parser.add_argument('-k', '--keep', action='store_true',

@@ -1,31 +1,34 @@
-import pdb
-import numpy as np
+import os.path as op
+import sys
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from pathlib import Path
 from torch.autograd import Variable
+
+sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
+import utils.constants as const
 
 torch.manual_seed(1)
 
 class ChordCondLSTM(nn.Module):
-    def __init__(self, input_dict_size, chord_dim, embedding_dim, hidden_dim, 
-            output_dim, seq_len, batch_size, num_layers=2, dropout=0.5, 
-            batch_norm=True, no_cuda=False, **kwargs):
-        super(ChordCondLSTM, self).__init__(**kwargs)
+    def __init__(self, vocab_size=None, embed_dim=None, hidden_dim=None, output_dim=None, seq_len=None, 
+            batch_size=None, dropout=0.5, batch_norm=True, no_cuda=False, **kwargs):
+        super().__init__(**kwargs)
         self.hidden_dim = hidden_dim
-        self.num_layers = num_layers
+        self.num_layers = const.NUM_RNN_LAYERS
         self.batch_norm = batch_norm
         self.no_cuda = no_cuda
 
-        chord_encoding_dim = (3*chord_dim)//4
-        self.chord_fc1 = nn.Linear(chord_dim, chord_encoding_dim)
+        self.chord_fc1 = nn.Linear(const.CHORD_DIM, const.CHORD_EMBED_DIM)
         self.chord_bn = nn.BatchNorm1d(seq_len)
-        self.chord_fc2 = nn.Linear(chord_encoding_dim, chord_encoding_dim)
-        self.embedding = nn.Embedding(input_dict_size, embedding_dim)
-        self.encoder = nn.Linear(embedding_dim + chord_encoding_dim, hidden_dim)
+        self.chord_fc2 = nn.Linear(const.CHORD_EMBED_DIM, const.CHORD_EMBED_DIM)
+
+        self.embedding = nn.Embedding(vocab_size, embed_dim)
+        self.encoder = nn.Linear(embed_dim + const.CHORD_EMBED_DIM, hidden_dim)
         self.encode_bn = nn.BatchNorm1d(seq_len)
-        self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=num_layers, 
-            batch_first=True)
+        self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=self.num_layers, 
+            batch_first=True, dropout=dropout)
         mid_dim = (hidden_dim + output_dim) // 2
         self.decode1 = nn.Linear(hidden_dim, mid_dim)
         self.decode_bn = nn.BatchNorm1d(seq_len)
@@ -41,15 +44,12 @@ class ChordCondLSTM(nn.Module):
         return 
 
     def init_hidden_and_cell(self, batch_size):
-        hidden = Variable(torch.FloatTensor(np.zeros([self.num_layers, batch_size, 
-            self.hidden_dim])))
-        cell = Variable(torch.FloatTensor(np.zeros([self.num_layers, batch_size,
-            self.hidden_dim])))
+        hidden = Variable(torch.zeros(self.num_layers, batch_size, self.hidden_dim))
+        cell = Variable(torch.zeros(self.num_layers, batch_size, self.hidden_dim))
         if torch.cuda.is_available() and (not self.no_cuda):
             hidden = hidden.cuda()
             cell = cell.cuda()
         self.hidden_and_cell = (hidden, cell)
-        return
 
     def repackage_hidden_and_cell(self):
         new_hidden = Variable(self.hidden_and_cell[0].data)
@@ -58,27 +58,35 @@ class ChordCondLSTM(nn.Module):
             new_hidden = new_hidden.cuda()
             new_cell = new_cell.cuda()
         self.hidden_and_cell = (new_hidden, new_cell)
-        return
 
-    def forward(self, chords, data):
+    def forward(self, data):
+        x, chords = data
+
+        chord_embeds = self.fc1(chords)
         if self.batch_norm:
-            encoded_chords = self.chord_fc2(F.relu(
-                self.chord_bn(self.chord_fc1(chords))))
-        else:
-            encoded_chords = self.chord_fc2(F.relu(self.chord_fc1(chords)))
+            chord_embeds = self.chord_bn(chord_embeds)
+        chord_embeds = self.chord_fc2(F.relu(chord_embeds))
 
-        embedded_pitches = self.embedding(data)
-        inpt = torch.cat([encoded_chords, embedded_pitches], 2) # Concatenate along 3rd dimension
+        x_embeds = self.embedding(x)
+        encoding = self.encoder(torch.cat([chord_embeds, x_embeds], 2)) # Concatenate along 3rd dimension
         if self.batch_norm:
-            encoded_inpt = F.relu(self.encode_bn(self.encoder(inpt)))
-        else:
-            encoded_inpt = F.relu(self.encoder(inpt))
+            encoding = self.encode_bn(encoding)
 
-        lstm_out, self.hidden_and_cell = self.lstm(encoded_inpt, self.hidden_and_cell)
+        lstm_out, self.hidden_and_cell = self.lstm(encoding, self.hidden_and_cell)
+        decoding = self.decode1(lstm_out)
         if self.batch_norm:
-            decoded = self.decode2(F.relu(self.decode_bn(self.decode1(lstm_out))))
-        else:
-            decoded = self.decode2(F.relu(self.decode1(lstm_out)))
+            decoding = self.decode_bn(decoding)
+        decoding = self.decode2(decoding)
 
-        output = self.softmax(decoded)
+        output = self.softmax(decoding)
         return output
+
+class PitchLSTM(ChordCondLSTM):
+    def __init__(self, **kwargs):
+        super().__init__(vocab_size=const.PITCH_DIM, embed_dim=const.PITCH_EMBED_DIM,
+                         output_dim=const.PITCH_DIM, **kwargs)
+
+class DurationLSTM(ChordCondLSTM):
+    def __init__(self, **kwargs):
+        super().__init__(vocab_size=const.DUR_DIM, embed_dim=const.DUR_EMBED_DIM,
+                         output_dim=const.DUR_DIM, **kwargs)

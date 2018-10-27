@@ -1,5 +1,3 @@
-import numpy as np
-import os
 import os.path as op
 import sys
 import torch
@@ -37,18 +35,14 @@ class BaselineLSTM(nn.Module):
 
         if torch.cuda.is_available() and (not self.no_cuda):
             self.cuda()
-        return 
 
     def init_hidden_and_cell(self, batch_size):
-        hidden = Variable(torch.FloatTensor(np.zeros([self.num_layers, batch_size, 
-            self.hidden_dim])))
-        cell = Variable(torch.FloatTensor(np.zeros([self.num_layers, batch_size, 
-            self.hidden_dim])))
+        hidden = Variable(torch.zeros(self.num_layers, batch_size, self.hidden_dim))
+        cell = Variable(torch.zeros(self.num_layers, batch_size, self.hidden_dim))
         if torch.cuda.is_available() and (not self.no_cuda):
             hidden = hidden.cuda()
             cell = cell.cuda()
         self.hidden_and_cell = (hidden, cell)
-        return
 
     def repackage_hidden_and_cell(self):
         new_hidden = Variable(self.hidden_and_cell[0].data)
@@ -57,9 +51,8 @@ class BaselineLSTM(nn.Module):
             new_hidden = new_hidden.cuda()
             new_cell = new_cell.cuda()
         self.hidden_and_cell = (new_hidden, new_cell)
-        return
 
-    def forward(self, data, **kwargs):
+    def forward(self, data):
         embedded = self.embedding(data)
         lstm_out, self.hidden_and_cell = self.lstm(embedded, self.hidden_and_cell)
         decoded = self.decode1(lstm_out)

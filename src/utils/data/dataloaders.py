@@ -9,6 +9,7 @@ class SplitDataLoader(DataLoader):
     def __init__(self, dataset, batch_size=32, **kwargs):
         self.dataset = dataset
         self.batch_size = batch_size
+        self.kwargs = kwargs
         super().__init__(dataset, batch_size=batch_size, **kwargs)
 
     def split(self, split=0.15, shuffle=True, random_seed=42):
@@ -24,8 +25,8 @@ class SplitDataLoader(DataLoader):
         split1_sampler = SubsetRandomSampler(split1_indices)
         split2_sampler = SubsetRandomSampler(split2_indices)
 
-        split1_loader = SplitDataLoader(self.dataset, batch_size=self.batch_size, sampler=split1_sampler)
-        split2_loader = SplitDataLoader(self.dataset, batch_size=self.batch_size, sampler=split2_sampler)        
+        split1_loader = SplitDataLoader(self.dataset, batch_size=self.batch_size, sampler=split1_sampler, **self.kwargs)
+        split2_loader = SplitDataLoader(self.dataset, batch_size=self.batch_size, sampler=split2_sampler, **self.kwargs)        
 
         return split1_loader, split2_loader
 
