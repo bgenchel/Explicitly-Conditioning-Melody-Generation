@@ -1,9 +1,0 @@
-{
-    "batch_size": 16,
-    "hidden_dim": 25,
-    "num_layers": 2,
-    "output_dim": 128,
-    "input_dict_size": 128,
-    "embedding_dim": 20,
-    "harmony_dim": 12
-}

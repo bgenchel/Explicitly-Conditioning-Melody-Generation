@@ -376,7 +376,7 @@ class Parser:
                     parsed_group["duration_tags"].append(dur_tag)
                     dur_ticks_list.append(dur_ticks)
             dur_ticks_list = [sum(dur_ticks_list[:i]) for i in range(len(dur_ticks_list))]
-            bar_positions = [int(((4 * divisions - dur_ticks) / (4 * divisions)) * 100) for dur_ticks in dur_ticks_list]
+            bar_positions = [int(((dur_ticks) / (4 * divisions)) * 96) for dur_ticks in dur_ticks_list]
             parsed_group["bar_positions"] = bar_positions
             parsed_measure["groups"].append(parsed_group)
         return parsed_measure
