@@ -1,0 +1,15 @@
+{
+    "chord_dim": 12,
+    "batch_size": 64,
+    "seq_len": 32,
+    "embedding_dim": 32,
+    "dropout": 0.0,
+    "cond_dict_size": 19,
+    "cond_embedding_dim": 8,
+    "hidden_dim": 32,
+    "input_dict_size": 128,
+    "num_layers": 2,
+    "batch_norm": true,
+    "output_dim": 128,
+    "no_cuda": false
+}
