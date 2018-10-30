@@ -11,7 +11,7 @@ import utils.constants as const
 
 torch.manual_seed(1)
 
-class ChordInterCondLSTM(nn.Module):
+class ChordInterBarPosCondLSTM(nn.Module):
     def __init__(self, vocab_size, embed_dim, cond_vocab_size, cond_embed_dim, output_dim, hidden_dim=128,
             seq_len=32, batch_size=64, dropout=0.5, batch_norm=True, no_cuda=False, **kwargs):
         super().__init__(**kwargs)
@@ -26,8 +26,10 @@ class ChordInterCondLSTM(nn.Module):
 
         self.embedding = nn.Embedding(vocab_size, embed_dim)
         self.cond_embedding = nn.Embedding(cond_vocab_size, cond_embed_dim)
+        self.barpos_embedding = nn.Embedding(const.BARPOS_DIM, const.BARPOS_EMBED_DIM)
 
-        self.encoder = nn.Linear(embed_dim + cond_embed_dim + const.CHORD_EMBED_DIM, hidden_dim)
+        encoder_input_dim = embed_dim + cond_embed_dim + const.CHORD_EMBED_DIM + const.BARPOS_EMBED_DIM
+        self.encoder = nn.Linear(encoder_input_dim, hidden_dim)
         self.encoder_bn = nn.BatchNorm1d(seq_len)
 
         self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=self.num_layers, batch_first=True, dropout=dropout)
@@ -66,7 +68,7 @@ class ChordInterCondLSTM(nn.Module):
         return
 
     def forward(self, data):
-        x, conds, chords = data
+        x, conds, barpos, chords = data
 
         chord_embeds = self.chord_fc1(chords)
         if self.batch_norm:
@@ -75,14 +77,16 @@ class ChordInterCondLSTM(nn.Module):
 
         x_embeds = self.embedding(x)
         cond_embeds = self.cond_embedding(conds)
+        barpos_embeds = self.barpos_embedding(barpos)
 
-        encoding = self.encoder(torch.cat([x_embeds, cond_embeds, chord_embeds], 2)) # Concatenate along 3rd dimension
+        # Concatenating along 3rd dimension
+        encoding = self.encoder(torch.cat([x_embeds, cond_embeds, barpos_embeds, chord_embeds], 2)) 
         if self.batch_norm:
             encoding = self.encode_bn(encoding)
         encoding = F.relu(encoding)
 
         lstm_out, self.hidden_and_cell = self.lstm(encoding, self.hidden_and_cell)
-        decoding = self.decod1(lstm_out)
+        decoding = self.decode1(lstm_out)
         if self.batch_norm:
             decoding = self.decode_bn(decoding)
         decoding = self.decode2(F.relu(decoding))

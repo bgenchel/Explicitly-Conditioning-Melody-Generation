@@ -47,6 +47,7 @@ def data_assembler(data_dict):
     x = data_dict[X_KEY]
     cond = data_dict[COND_KEY]
     harmony = data_dict[const.CHORD_KEY]
+    barpos = data_dict[const.BARPOS_DIM]
     if torch.cuda.is_available() and (not args.no_cuda):
         data = data.cuda()
         cond = cond.cuda()

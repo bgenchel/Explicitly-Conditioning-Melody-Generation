@@ -82,7 +82,7 @@ class ChordInterCondLSTM(nn.Module):
         encoding = F.relu(encoding)
 
         lstm_out, self.hidden_and_cell = self.lstm(encoding, self.hidden_and_cell)
-        decoding = self.decod1(lstm_out)
+        decoding = self.decode1(lstm_out)
         if self.batch_norm:
             decoding = self.decode_bn(decoding)
         decoding = self.decode2(F.relu(decoding))
