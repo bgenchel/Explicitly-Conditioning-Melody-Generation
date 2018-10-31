@@ -1,4 +1,3 @@
-import argparse
 import os
 import os.path as op
 import pickle
@@ -48,7 +47,7 @@ def data_assembler(data_dict):
     cond = data_dict[COND_KEY]
     harmony = data_dict[const.CHORD_KEY]
     if torch.cuda.is_available() and (not args.no_cuda):
-        data = data.cuda()
+        x = x.cuda()
         cond = cond.cuda()
         harmony = harmony.cuda()
     return (x, cond, harmony)
@@ -77,7 +76,8 @@ else:
     dirpath = op.join(dirpath, "test_runs", args.title)
 writer = TensorBoardWriter(op.join(dirpath, 'tensorboard'))
 
-interrupted = False
+min_valid_loss = float('inf')
+best_model = (None, None, None)
 train_losses, valid_losses = [], []
 print("Beginning Training - %s model" % args.model)
 print("Cuda available: ", torch.cuda.is_available())
@@ -94,29 +94,26 @@ try:
     for epoch in range(args.epochs):
         epoch_label = epoch + 1
         print("="*20 + "\nEpoch %d / %d\n" % (epoch_label, args.epochs) + "="*20)
+
         train_loss = trn.train_epoch(model, train_loader, data_assembler, target_assembler, loss_fn, optimizer)
         train_losses.append(train_loss)
         print("Epoch %d Training Loss: %.5f" % (epoch_label, train_loss))
+
         valid_loss = trn.eval_epoch(model, valid_loader, data_assembler, target_assembler, loss_fn)
         valid_losses.append(valid_loss)
         print("Epoch %d Validation Loss: %.5f" % (epoch_label, valid_loss))
+
+        if valid_loss < min_valid_loss:
+            min_valid_loss = valid_loss
+            best_model = (epoch, train_loss, valid_loss)
+            save_model(dirpath, info_dict, train_losses, valid_losses, model, args)
+
         writer.write_loss({'training': train_loss, 'validation': valid_loss}, epoch + 1)
     print("Finished Training.")
 except KeyboardInterrupt:
     print("Training Interrupted.")
-    interrupted = True
+    save_run(dirpath, info_dict, train_losses, valid_losses, args)
 
 writer.close()
-info_dict['interrupted'] = interrupted
-info_dict['epochs_completed'] = len(train_losses)
-info_dict['final_training_loss'] = train_losses[-1]
-info_dict['final_valid_loss'] = valid_losses[-1]
-
-model_inputs = {'hidden_dim': args.hidden_dim,
-                'seq_len': args.seq_len,
-                'batch_size': args.batch_size, 
-                'dropout': args.dropout,
-                'batch_norm': args.batch_norm,
-                'no_cuda': args.no_cuda}
-
-hlp.save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model, args.keep)
+print("Best Model - [ Epoch %d, Training Loss: %.5f, Validation Loss: %.5f ]" % best_model)
+save_run(dirpath, info_dict, best_model, train_losses, valid_losses, args)

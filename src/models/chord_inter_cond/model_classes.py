@@ -19,6 +19,7 @@ class ChordInterCondLSTM(nn.Module):
         self.num_layers = const.NUM_RNN_LAYERS
         self.batch_norm = batch_norm
         self.no_cuda = no_cuda
+        self.batch_size = batch_size
 
         self.chord_fc1 = nn.Linear(const.CHORD_DIM, const.CHORD_EMBED_DIM)
         self.chord_bn = nn.BatchNorm1d(seq_len)
@@ -81,13 +82,14 @@ class ChordInterCondLSTM(nn.Module):
             encoding = self.encode_bn(encoding)
         encoding = F.relu(encoding)
 
+        self.init_hidden_and_cell(self.batch_size)
         lstm_out, self.hidden_and_cell = self.lstm(encoding, self.hidden_and_cell)
         decoding = self.decode1(lstm_out)
         if self.batch_norm:
             decoding = self.decode_bn(decoding)
         decoding = self.decode2(F.relu(decoding))
 
-        output = self.softmax(decoded)
+        output = self.softmax(decoding)
         return output
 
 class PitchLSTM(ChordInterCondLSTM):

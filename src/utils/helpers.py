@@ -32,9 +32,30 @@ def get_args(default_title=""):
                         help="save model files and other about this run")
     return parser.parse_args()
 
-def save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model, keep=False):
+def save_model(dirpath, model, args):
     if not op.exists(dirpath):
         os.makedirs(dirpath)
+
+    if args.keep:
+        print('Saving model ...')
+        if not op.exists(op.join(dirpath, 'model_inputs.json')):
+            model_inputs = {'hidden_dim': args.hidden_dim,
+                            'seq_len': args.seq_len,
+                            'batch_size': args.batch_size,
+                            'dropout': args.dropout,
+                            'batch_norm': args.batch_norm,
+                            'no_cuda': args.no_cuda}
+            json.dump(model_inputs, open(op.join(dirpath, 'model_inputs.json'), 'w'), indent=4)
+        torch.save(model.state_dict(), op.join(dirpath, 'model_state.pt'))
+
+def save_run(dirpath, info_dict, best_model, train_losses, valid_losses, args):
+    if not op.exists(dirpath):
+        os.makedirs(dirpath)
+    
+    info_dict['best_model'] = {'epoch': best_model[0], 'train_loss': best_model[1], 'valid_loss': best_model[2]}
+    info_dict['epochs_completed'] = len(train_losses)
+    info_dict['final_training_loss'] = train_losses[-1]
+    info_dict['final_valid_loss'] = valid_losses[-1]
 
     print('Writing run info file ...')
     with open(op.join(dirpath, 'info.txt'), 'w') as fp:
@@ -44,14 +65,10 @@ def save_run(dirpath, info_dict, train_losses, valid_losses, model_inputs, model
             fp.write('%s:%s\t %s\n'%(str(k), space_buffer, str(v)))
         fp.close()
 
-    if keep:
+    if args.keep:
         print('Writing training losses ...') 
         json.dump(train_losses, open(op.join(dirpath, 'train_losses.json'), 'w'), indent=4)
 
         print('Writing validation losses ...') 
         json.dump(valid_losses, open(op.join(dirpath, 'valid_losses.json'), 'w'), indent=4)
-
-        print('Saving model ...')
-        json.dump(model_inputs, open(op.join(dirpath, 'model_inputs.json'), 'w'), indent=4)
-        torch.save(model.state_dict(), op.join(dirpath, 'model_state.pt'))
     return
