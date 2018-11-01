@@ -58,6 +58,10 @@ class ChordInterCondLSTM(nn.Module):
         return
 
     def repackage_hidden_and_cell(self):
+        """
+        potentially not gonna have to use this anymore, at least in this project training is randomly 
+        ordered.
+        """
         new_hidden = Variable(self.hidden_and_cell[0].data)
         new_cell = Variable(self.hidden_and_cell[1].data)
         if torch.cuda.is_available() and (not self.no_cuda):
@@ -92,14 +96,60 @@ class ChordInterCondLSTM(nn.Module):
         output = self.softmax(decoding)
         return output
 
+    def data_assembler(self, data_dict):
+        """
+        abstract method, implement in inheretor.
+        """
+        pass
+
+    def target_assembler(self, target_dict):
+        """
+        abstract method, implement in inheretor.
+        """
+        pass
+
+
 class PitchLSTM(ChordInterCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.PITCH_DIM, embed_dim=const.PITCH_EMBED_DIM,
                          cond_vocab_size=const.DUR_DIM, cond_embed_dim=const.DUR_EMBED_DIM,
                          output_dim=const.PITCH_DIM, **kwargs)
 
+    def data_assembler(self, data_dict):
+        x = data_dict[const.PITCH_KEY]
+        cond = data_dict[const.DUR_KEY]
+        harmony = data_dict[const.CHORD_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            x = x.cuda()
+            cond = cond.cuda()
+            harmony = harmony.cuda()
+        return (x, cond, harmony)
+
+    def target_assembler(self, target_dict):
+        target = target_dict[X_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            target = target.cuda()
+        return target
+
+
 class DurationLSTM(ChordInterCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.DUR_DIM, embed_dim=const.DUR_EMBED_DIM,
                          cond_vocab_size=const.PITCH_DIM, cond_embed_dim=const.PITCH_EMBED_DIM,
                          output_dim=const.DUR_DIM, **kwargs)
+
+    def data_assembler(self, data_dict):
+        x = data_dict[const.DUR_KEY]
+        cond = data_dict[const.PITCH_KEY]
+        harmony = data_dict[const.CHORD_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            x = x.cuda()
+            cond = cond.cuda()
+            harmony = harmony.cuda()
+        return (x, cond, harmony)
+
+    def target_assembler(self, target_dict):
+        target = target_dict[X_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            target = target.cuda()
+        return target

@@ -4,4 +4,5 @@ midi/
 .DS_store
 *.zip
 *.rtf
+*.pyc
 __pycache__
