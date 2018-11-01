@@ -105,7 +105,7 @@ class PitchLSTM(ChordInterCondLSTM):
         cond = data_dict[const.DUR_KEY]
         barpos = data_dict[const.BARPOS_DIM]
         harmony = data_dict[const.CHORD_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
             cond = cond.cuda()
             barpos = barpos.cuda()
@@ -114,7 +114,7 @@ class PitchLSTM(ChordInterCondLSTM):
 
     def target_assembler(self, target_dict):
         target = target_dict[const.PITCH_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             target = target.cuda()
         return target
 
@@ -129,7 +129,7 @@ class DurationLSTM(ChordInterCondLSTM):
         cond = data_dict[const.PITCH_KEY]
         barpos = data_dict[const.BARPOS_DIM]
         harmony = data_dict[const.CHORD_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
             cond = cond.cuda()
             barpos = barpos.cuda()
@@ -138,6 +138,6 @@ class DurationLSTM(ChordInterCondLSTM):
 
     def target_assembler(self, target_dict):
         target = target_dict[const.DUR_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             target = target.cuda()
         return target

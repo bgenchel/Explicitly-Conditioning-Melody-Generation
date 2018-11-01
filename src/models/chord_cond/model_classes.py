@@ -89,14 +89,14 @@ class PitchLSTM(ChordCondLSTM):
     def data_assembler(self, data_dict):
         data = data_dict[const.PITCH_KEY]
         harmony = data_dict[const.CHORD_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
             harmony = harmony.cuda()
         return (data, harmony)
 
     def target_assembler(self, target_dict):
         target = target_dict[const.PITCH_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             target = target.cuda()
         return target
 
@@ -108,13 +108,13 @@ class DurationLSTM(ChordCondLSTM):
     def data_assembler(self, data_dict):
         data = data_dict[const.DUR_KEY]
         harmony = data_dict[const.CHORD_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
             harmony = harmony.cuda()
         return (data, harmony)
 
     def target_assembler(self, target_dict):
         target = target_dict[const.DUR_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             target = target.cuda()
         return target
