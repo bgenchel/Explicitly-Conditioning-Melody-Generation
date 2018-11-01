@@ -86,7 +86,35 @@ class PitchLSTM(ChordCondLSTM):
         super().__init__(vocab_size=const.PITCH_DIM, embed_dim=const.PITCH_EMBED_DIM,
                          output_dim=const.PITCH_DIM, **kwargs)
 
+    def data_assembler(self, data_dict):
+        data = data_dict[const.PITCH_KEY]
+        harmony = data_dict[const.CHORD_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            data = data.cuda()
+            harmony = harmony.cuda()
+        return (data, harmony)
+
+    def target_assembler(self, target_dict):
+        target = target_dict[const.PITCH_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            target = target.cuda()
+        return target
+
 class DurationLSTM(ChordCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.DUR_DIM, embed_dim=const.DUR_EMBED_DIM,
                          output_dim=const.DUR_DIM, **kwargs)
+
+    def data_assembler(self, data_dict):
+        data = data_dict[const.DUR_KEY]
+        harmony = data_dict[const.CHORD_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            data = data.cuda()
+            harmony = harmony.cuda()
+        return (data, harmony)
+
+    def target_assembler(self, target_dict):
+        target = target_dict[const.DUR_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            target = target.cuda()
+        return target

@@ -11,7 +11,7 @@ import utils.constants as const
 
 torch.manual_seed(1) 
 
-class BaselineLSTM(nn.Module):
+class NoCondLSTM(nn.Module):
     def __init__(self, vocab_size=None, embed_dim=None, output_dim=None, hidden_dim=None, seq_len=None, 
             batch_size=None, dropout=0.5, batch_norm=True, no_cuda=False, **kwargs):
         super().__init__(**kwargs)
@@ -63,12 +63,37 @@ class BaselineLSTM(nn.Module):
         return output
 
 
-class PitchLSTM(BaselineLSTM):
+class PitchLSTM(NoCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.PITCH_DIM, embed_dim=const.PITCH_EMBED_DIM, 
                          output_dim=const.PITCH_DIM, **kwargs)
 
-class DurationLSTM(BaselineLSTM):
+    def data_assembler(self, data_dict):
+        data = data_dict[const.PITCH_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            data = data.cuda()
+        return data
+
+    def target_assembler(self, target_dict):
+        data = target_dict[const.PITCH_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            data = data.cuda()
+        return data
+
+
+class DurationLSTM(NoCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.DUR_DIM, embed_dim=const.DUR_EMBED_DIM, 
-                         output_dim=const.PITCH_DIM, **kwargs)
+                         output_dim=const.DUR_DIM, **kwargs)
+
+    def data_assembler(self, data_dict):
+        data = data_dict[const.DUR_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            data = data.cuda()
+        return data
+
+    def target_assembler(self, target_dict):
+        data = target_dict[const.DUR_KEY]
+        if torch.cuda.is_available() and (not args.no_cuda):
+            data = data.cuda()
+        return data
