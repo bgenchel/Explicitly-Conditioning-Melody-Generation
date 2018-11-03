@@ -5,7 +5,7 @@ Constant Values
 PITCH_KEY = "pitch_numbers"
 DUR_KEY = "duration_tags"
 CHORD_KEY = "harmony"
-POS_KEY = "bar_positions"
+BARPOS_KEY = "bar_positions"
 
 # Model Params
 PITCH_DIM = 128

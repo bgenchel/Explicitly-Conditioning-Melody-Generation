@@ -14,7 +14,7 @@ torch.manual_seed(1)
 class ChordInterBarPosCondLSTM(nn.Module):
     def __init__(self, vocab_size, embed_dim, cond_vocab_size, cond_embed_dim, output_dim, hidden_dim=128,
             seq_len=32, batch_size=64, dropout=0.5, batch_norm=True, no_cuda=False, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(**kwargs) 
         self.hidden_dim = hidden_dim
         self.num_layers = const.NUM_RNN_LAYERS
         self.batch_norm = batch_norm
@@ -91,10 +91,10 @@ class ChordInterBarPosCondLSTM(nn.Module):
             decoding = self.decode_bn(decoding)
         decoding = self.decode2(F.relu(decoding))
 
-        output = self.softmax(decoded)
+        output = self.softmax(decoding)
         return output
 
-class PitchLSTM(ChordInterCondLSTM):
+class PitchLSTM(ChordInterBarPosCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.PITCH_DIM, embed_dim=const.PITCH_EMBED_DIM,
                          cond_vocab_size=const.DUR_DIM, cond_embed_dim=const.DUR_EMBED_DIM,
@@ -103,10 +103,10 @@ class PitchLSTM(ChordInterCondLSTM):
     def data_assembler(self, data_dict):
         x = data_dict[const.PITCH_KEY]
         cond = data_dict[const.DUR_KEY]
-        barpos = data_dict[const.BARPOS_DIM]
+        barpos = data_dict[const.BARPOS_KEY]
         harmony = data_dict[const.CHORD_KEY]
         if torch.cuda.is_available() and (not self.no_cuda):
-            data = data.cuda()
+            x = x.cuda()
             cond = cond.cuda()
             barpos = barpos.cuda()
             harmony = harmony.cuda()
@@ -118,7 +118,7 @@ class PitchLSTM(ChordInterCondLSTM):
             target = target.cuda()
         return target
 
-class DurationLSTM(ChordInterCondLSTM):
+class DurationLSTM(ChordInterBarPosCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.DUR_DIM, embed_dim=const.DUR_EMBED_DIM,
                          cond_vocab_size=const.PITCH_DIM, cond_embed_dim=const.PITCH_EMBED_DIM,
@@ -127,10 +127,10 @@ class DurationLSTM(ChordInterCondLSTM):
     def data_assembler(self, data_dict):
         x = data_dict[const.DUR_KEY]
         cond = data_dict[const.PITCH_KEY]
-        barpos = data_dict[const.BARPOS_DIM]
+        barpos = data_dict[const.BARPOS_KEY]
         harmony = data_dict[const.CHORD_KEY]
         if torch.cuda.is_available() and (not self.no_cuda):
-            data = data.cuda()
+            x = x.cuda()
             cond = cond.cuda()
             barpos = barpos.cuda()
             harmony = harmony.cuda()
