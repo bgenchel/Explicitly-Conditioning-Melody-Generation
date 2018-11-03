@@ -70,13 +70,13 @@ class PitchLSTM(NoCondLSTM):
 
     def data_assembler(self, data_dict):
         data = data_dict[const.PITCH_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
         return data
 
     def target_assembler(self, target_dict):
         data = target_dict[const.PITCH_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
         return data
 
@@ -88,12 +88,12 @@ class DurationLSTM(NoCondLSTM):
 
     def data_assembler(self, data_dict):
         data = data_dict[const.DUR_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
         return data
 
     def target_assembler(self, target_dict):
         data = target_dict[const.DUR_KEY]
-        if torch.cuda.is_available() and (not args.no_cuda):
+        if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
         return data

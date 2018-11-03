@@ -14,10 +14,10 @@ from utils.training import Trainer
 torch.cuda.device(0)
 
 run_datetime_str = datetime.now().strftime('%b%d-%y_%H:%M:%S')
-self.args = args
-if self.args.title != run_datetime_str:
-    self.args.title = '_'.join([run_datetime_str, self.args.title])
 args = hlp.get_args(default_title=run_datetime_str)
+if args.title != run_datetime_str:
+    args.title = '_'.join([run_datetime_str, args.title])
+args.run_datetime_str = run_datetime_str
 
 if args.model == "pitch":
     Model = PitchLSTM

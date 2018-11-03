@@ -7,10 +7,10 @@ import torch.nn as nn
 import torch.optim as optim
 from collections import OrderedDict
 
-import constants as const
-from data.datasets import BebopPitchDurDataset
-from data.dataloaders import SplitDataLoader
-from logging import TensorBoardWriter
+from . import constants as const
+from .data.datasets import BebopPitchDurDataset
+from .data.dataloaders import SplitDataLoader
+from .logging import TensorBoardWriter
 
 
 class Trainer:
@@ -19,15 +19,17 @@ class Trainer:
         """
         :param args: an argparse object from the argparse class
         """
+        self.model = model
+        self.args = args
+
         self.info_dict = OrderedDict()
-        self.info_dict['run_datetime'] = run_datetime_str
+        self.info_dict['run_datetime'] = self.args.run_datetime_str
         self.info_dict.update(vars(self.args))
 
         dataset = BebopPitchDurDataset(seq_len=self.args.seq_len)
         self.train_loader, self.valid_loader = SplitDataLoader(dataset, batch_size=self.args.batch_size, 
                                                                drop_last=True).split()
 
-        self.model = model
         params = self.model.parameters()
         self.optimizer = optim.Adam(params, lr=self.args.learning_rate)
         self.loss_fn = nn.NLLLoss()
@@ -54,7 +56,7 @@ class Trainer:
             train_losses.append(init_train_loss)
             print("Initial Training Loss: %.5f" % (init_train_loss))
 
-            init_valid_loss = trn.eval_epoch(self.valid_loader)
+            init_valid_loss = self.eval_epoch(self.valid_loader)
             valid_losses.append(init_valid_loss)
             print("Initial Validation Loss: %.5f" % (init_valid_loss))
 
@@ -74,7 +76,7 @@ class Trainer:
 
                 if valid_loss < min_valid_loss:
                     min_valid_loss = valid_loss
-                    best_model = (epoch, train_loss, valid_loss)
+                    best_model = (epoch_label, train_loss, valid_loss)
                     self.save_model()
 
                 writer.write_loss({'training': train_loss, 'validation': valid_loss}, epoch + 1)
@@ -95,7 +97,7 @@ class Trainer:
             data_batch = self.model.data_assembler(data_batch)
             target_batch = self.model.target_assembler(target_batch)
             # detach hidden state
-            self.model.init_hidden_and_cell()
+            self.model.init_hidden_and_cell(self.args.batch_size)
             # zero the parameter gradients
             self.optimizer.zero_grad()
             # forward pass
@@ -121,7 +123,8 @@ class Trainer:
             for data_batch, target_batch in data_iter:
                 data_batch = self.model.data_assembler(data_batch)
                 target_batch = self.model.target_assembler(target_batch)
-                output = model(data_batch)[:, -1, :]
+                self.model.init_hidden_and_cell(self.args.batch_size)
+                output = self.model(data_batch)[:, -1, :]
                 loss = self.loss_fn(output, target_batch)
                 total_loss += float(loss.item())
                 batch_count += 1
@@ -129,10 +132,10 @@ class Trainer:
         return avg_loss
 
     def save_model_inputs(self):
-        if not op.exists(self.dirpath):
-            os.makedirs(self.dirpath)
-
         if self.args.keep:
+            if not op.exists(self.dirpath):
+                os.makedirs(self.dirpath)
+
             print('Saving model inputs ...')
             if not op.exists(op.join(self.dirpath, 'model_inputs.json')):
                 model_inputs = {'hidden_dim': self.args.hidden_dim,
@@ -144,10 +147,10 @@ class Trainer:
                 json.dump(model_inputs, open(op.join(self.dirpath, 'model_inputs.json'), 'w'), indent=4)
 
     def save_model(self):
-        if not op.exists(self.dirpath):
-            os.makedirs(self.dirpath)
-
         if self.args.keep:
+            if not op.exists(self.dirpath):
+                os.makedirs(self.dirpath)
+
             print('Saving model ...')
             torch.save(self.model.state_dict(), op.join(self.dirpath, 'model_state.pt'))
 
