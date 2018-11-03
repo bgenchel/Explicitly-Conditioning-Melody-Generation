@@ -48,6 +48,33 @@ DURATIONS_MAP = {
     'none': 22
 }
 
+# 96 ticks per bar
+DUR_TICKS_MAP = {
+    '32nd-triplet': 2, 
+    '32nd': 3, 
+    '16th-triplet': 4,
+    '32nd-dot': 5,
+    '16th': 6,
+    '8th-triplet': 8,
+    '16th-dot': 9,
+    '8th': 12,
+    'quarter-triplet': 16,
+    '8th-dot': 18,
+    'quarter': 24,
+    'half-triplet': 32,
+    'quarter-dot': 36,
+    'half': 48,
+    'whole-triplet': 64,
+    'half-dot': 72,
+    'whole': 96,
+    'double-triplet': 128,
+    'whole-dot': 144,
+    'double': 192,
+    'double-dot': 288,
+    'none': 0
+}
+
+REV_DURATIONS_MAP = {v: k for k, v in DURATIONS_MAP.items()}
 
 KEYS_DICT = {"major": {'0': 'C', '1': 'G', '2': 'D', '3': 'A', '4': 'E', '5': 'B', '6': 'F#', 
                   '-1': 'F', '-2': 'Bb', '-3': 'Eb', '-4': 'Ab', '-5': 'Db', '-6': 'Gb'},

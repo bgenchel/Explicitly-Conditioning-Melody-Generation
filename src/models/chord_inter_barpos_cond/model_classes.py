@@ -94,7 +94,7 @@ class ChordInterBarPosCondLSTM(nn.Module):
         output = self.softmax(decoded)
         return output
 
-class PitchLSTM(ChordInterCondLSTM):
+class PitchLSTM(ChordInterBarPosCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.PITCH_DIM, embed_dim=const.PITCH_EMBED_DIM,
                          cond_vocab_size=const.DUR_DIM, cond_embed_dim=const.DUR_EMBED_DIM,
@@ -118,7 +118,7 @@ class PitchLSTM(ChordInterCondLSTM):
             target = target.cuda()
         return target
 
-class DurationLSTM(ChordInterCondLSTM):
+class DurationLSTM(ChordInterBarPosCondLSTM):
     def __init__(self, **kwargs):
         super().__init__(vocab_size=const.DUR_DIM, embed_dim=const.DUR_EMBED_DIM,
                          cond_vocab_size=const.PITCH_DIM, cond_embed_dim=const.PITCH_EMBED_DIM,
