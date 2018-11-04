@@ -25,28 +25,30 @@ NOTES_MAP = {'rest': 127, 'B#': 0, 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'E
 
 DURATIONS_MAP = {
     '32nd-triplet': 0, 
-    '32nd': 2, 
-    '16th-triplet': 3,
-    '32nd-dot': 4,
-    '16th': 5,
-    '8th-triplet': 6,
-    '16th-dot': 7,
-    '8th': 9,
-    'quarter-triplet': 10,
-    '8th-dot': 11,
-    'quarter': 12,
-    'half-triplet': 13,
-    'quarter-dot': 14,
-    'half': 15,
-    'whole-triplet': 16,
-    'half-dot': 17,
-    'whole': 18,
-    'double-triplet': 19,
-    'whole-dot': 20,
-    'double': 20,
-    'double-dot': 21,
-    'none': 22
+    '32nd': 1, 
+    '16th-triplet': 2,
+    '32nd-dot': 3,
+    '16th': 4,
+    '8th-triplet': 5,
+    '16th-dot': 6,
+    '8th': 7,
+    'quarter-triplet': 8,
+    '8th-dot': 9,
+    'quarter': 10,
+    'half-triplet': 11,
+    'quarter-dot': 12,
+    'half': 13,
+    'whole-triplet': 14,
+    'half-dot': 15,
+    'whole': 16,
+    'double-triplet': 17,
+    'whole-dot': 18,
+    'double': 19,
+    'double-dot': 20,
+    'none': 21
 }
+
+REV_DURATIONS_MAP = {v: k for k, v in DURATIONS_MAP.items()}
 
 # 96 ticks per bar
 DUR_TICKS_MAP = {
@@ -73,8 +75,6 @@ DUR_TICKS_MAP = {
     'double-dot': 288,
     'none': 0
 }
-
-REV_DURATIONS_MAP = {v: k for k, v in DURATIONS_MAP.items()}
 
 KEYS_DICT = {"major": {'0': 'C', '1': 'G', '2': 'D', '3': 'A', '4': 'E', '5': 'B', '6': 'F#', 
                   '-1': 'F', '-2': 'Bb', '-3': 'Eb', '-4': 'Ab', '-5': 'Db', '-6': 'Gb'},

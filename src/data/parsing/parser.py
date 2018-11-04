@@ -85,7 +85,7 @@ class Parser:
 
         return root_dir, json_dir, song_dir, dataset_dir
 
-    def parse_metadata(self, filename, song_dict):
+    def parse_metadata(self, fpath, song_dict):
         """
         Given the JSON input as a dict, returns.
         :param filename: name of the file from which song_dict is loaded, used as a backup for title/artist
@@ -99,7 +99,7 @@ class Parser:
         }
         """
         # Strip filename of path and file extension (.json)
-        filename = filename.split('/')[-1][:-5]
+        filename = op.basename(fpath).split('.')[0]
 
         # Key
         key, multiple = get_key(song_dict)
@@ -591,14 +591,21 @@ def get_note_duration(note_dict, divisions=24):
     :param divisions: the number of divisions a quarter note is split into in this song's MusicXML representation
     :return: a string representing the duration, and the duration in divisions
     """
-    dur_dict = {'double': divisions * 8, 'whole': divisions * 4, 'half': divisions * 2,
-                'quarter': divisions, '8th': divisions / 2, '16th': divisions / 4, '32nd': divisions / 8}
+    init_dur_dict = {'double': divisions * 8, 'whole': divisions * 4, 'half': divisions * 2,
+                     'quarter': divisions, '8th': divisions / 2, '16th': divisions / 4, '32nd': divisions / 8}
+
+    dur_dict = {}
+    for k, v in init_dur_dict.items():
+        dur_dict[k] = v
+        dur_dict[k + '-triplet'] = (2 * v / 3, math.floor(2 * v / 3), math.ceil(2 * v / 3))
+        dur_dict[k + '-dot'] = (3 * v / 2, math.floor(3 * v / 2), math.ceil(3 * v / 2))
 
     if "duration" not in note_dict.keys():
         note_dur = -1
     else:
         note_dur = float(note_dict["duration"]["text"])
 
+    label = None
     if "type" in note_dict.keys():
         note_type = note_dict["type"]["text"]
 
@@ -608,57 +615,28 @@ def get_note_duration(note_dict, divisions=24):
         label = note_type
         dot_dur = 3 * dur_dict[note_type] / 2
         triplet_dur = 2 * dur_dict[note_type] / 3
-        if note_dur in (dot_dur, math.ceil(dot_dur), math.floor(dot_dur)):
+        if note_dur == dur_dict[note_type]:
+            pass
+        elif note_dur in dur_dict[note_type + '-dot']:
             label = '-'.join([label, 'dot'])
-        elif note_dur in (triplet_dur, math.ceil(triplet_dur), math.floor(triplet_dur)):
+        elif note_dur in dur_dict[note_type + '-triplet']:
             label = '-'.join([label, 'triplet'])
-        elif note_dur != dur_dict[note_type]:
+        else:
             print("Undefined %s duration. Entering as regular %s." % (note_type, note_type))
-    elif note_dur == dur_dict["double"]:
-        label = "double"
-    elif note_dur == (3 * dur_dict["double"] / 2):
-        label = "double-dot"
-    elif note_dur == (2 * dur_dict["double"] / 3):
-        label = "double-triplet"
-    elif note_dur == dur_dict["whole"]:
-        label = "whole"
-    elif note_dur == (3 * dur_dict["whole"] / 2):
-        label = "whole-dot"
-    elif note_dur == (2 * dur_dict["whole"] / 3):
-        label = "whole-triplet"
-    elif note_dur == dur_dict["half"]:
-        label = "half"
-    elif note_dur == (3 * dur_dict["half"] / 2):
-        label = "half-dot"
-    elif note_dur == (2 * dur_dict["half"] / 3):
-        label = "half-triplet"
-    elif note_dur == dur_dict["quarter"]:
-        label = "quarter"
-    elif note_dur == (3 * dur_dict["quarter"] / 2):
-        label = "quarter-dot"
-    elif note_dur == (2 * dur_dict["quarter"] / 3):
-        label = "quarter-triplet"
-    elif note_dur == dur_dict["8th"]:
-        label = "8th"
-    elif note_dur == (3 * dur_dict["8th"] / 2):
-        label = "8th-dot"
-    elif note_dur == (2 * dur_dict["8th"] / 3):
-        label = "8th-triplet"
-    elif note_dur == dur_dict["16th"]:
-        label = "16th"
-    elif note_dur == (3 * dur_dict["16th"] / 2):
-        label = "16th-dot"
-    elif note_dur == (2 * dur_dict["16th"] / 3):
-        label = "16th-triplet"
-    elif note_dur == dur_dict["32nd"]:
-        label = "32nd"
-    elif note_dur == (3 * dur_dict["32nd"] / 2):
-        label = "32nd-dot"
-    elif note_dur == (3 * dur_dict["32nd"] / 3):
-        label = "32nd-triplet"
     else:
+        for k, v in dur_dict.items():
+            if type(v) == tuple:
+                if note_dur in v:
+                    label = k
+                    break
+            elif note_dur == v:
+                label = k
+                break
+
+    if label is None:
         print("Undefined duration %.2f. Labeling 'other'." % (note_dur / divisions))
-        label = "other"
+        label = "none"
+
     return DURATIONS_MAP[label], note_dur
 
 

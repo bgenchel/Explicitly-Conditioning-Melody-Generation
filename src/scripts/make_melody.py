@@ -96,7 +96,7 @@ def convert_chords_to_piano_roll_mat(song_structure):
         ticks = i*const.DUR_TICKS_MAP['whole']
         for j, group in enumerate(measure):
             chord_vec, begin, end = group
-            chord_block = np.array(chord_vec).reshape((chord_vec.shape[0], 1)).repeat(end - begin, axis=1)
+            chord_block = np.array(chord_vec).reshape((len(chord_vec), 1)).repeat(end - begin, axis=1)
             output_mat[CHORD_OFFSET:CHORD_OFFSET + len(chord_vec), ticks + begin:ticks + end] = chord_block
     return output_mat
 
@@ -113,7 +113,7 @@ pitch_model_inputs['dropout'] = 0
 pitch_model_inputs['no_cuda'] = True
 pitch_model_state = torch.load(op.join(pitch_dir, 'model_state.pt'), map_location='cpu')
 
-PitchModel = NUM_TO_MODEL[args.model]['model'](**pitch_model_inputs)
+PitchModel = NUM_TO_MODEL[args.model]['pitch_model'](**pitch_model_inputs)
 PitchModel.load_state_dict(pitch_model_state)
 PitchModel.eval()
 
@@ -123,7 +123,7 @@ dur_model_inputs['dropout'] = 0
 dur_model_inputs['no_cuda'] = True
 dur_model_state = torch.load(op.join(dur_dir, 'model_state.pt'), map_location='cpu')
 
-DurModel = NUM_TO_MODEL[args.model]['model'](**dur_model_inputs)
+DurModel = NUM_TO_MODEL[args.model]['duration_model'](**dur_model_inputs)
 DurModel.load_state_dict(dur_model_state)
 DurModel.eval()
 
@@ -146,7 +146,7 @@ for i, measure in enumerate(gen_song["measures"]):
         # right now each element is actual just pointers to one list, which is really bad
         # however, this problem will be resolved when converted to tensor/np array
         seed_data[const.CHORD_KEY].extend([chord_vec]*len(group[const.PITCH_KEY]))
-seed_data = {k: np.array(v[:args.seed_len]) for k, v in seed_data}
+seed_data = {k: np.array(v[:args.seed_len]) for k, v in seed_data.items()}
 # shuffle the chords and harmonies for a somewhat random seed with accurate timing info
 seed_data_groups = list(zip(seed_data[const.PITCH_KEY], seed_data[const.CHORD_KEY]))
 random.shuffle(seed_data_groups)
@@ -161,10 +161,10 @@ for i, measure in enumerate(gen_song["measures"]):
         # my worrying assumption about this is that there will be places where a chord floats above, but
         # no notes are actually present. Also, what about tied notes that tie to a place that's longer
         # not just the first beat of the first bar? Just gonna not worry about that for now.
-        chord_vec = ["harmony"]["root"] + group["harmony"]["pitch_classes"]
-        begin = np.argmax[group[const.BARPOS_KEY][0]]
-        end = np.argmax[group[const.BARPOS_KEY][-1]] + const.DUR_TICKS_MAP[const.REV_DURATIONS_MAP[group[const.DUR_KEY][-1]]]
-        
+        chord_vec = group["harmony"]["root"] + group["harmony"]["pitch_classes"]
+        begin = group[const.BARPOS_KEY][0]
+        end = group[const.BARPOS_KEY][-1] + const.DUR_TICKS_MAP[const.REV_DURATIONS_MAP[group[const.DUR_KEY][-1]]]
+       
         measure_groups.append((chord_vec, begin, end))
     song_structure.append(measure_groups)
 
@@ -175,7 +175,7 @@ harmony_inpt = torch.FloatTensor(seed_data[const.CHORD_KEY]).view(1, -1, const.C
 
 pitch_seq = []
 dur_seq = []
-barpos_dir = []
+barpos_seq = []
 harmony_seq = []
 for _ in range(args.num_repeats):
     for i, measure in enumerate(song_structure):
@@ -198,16 +198,16 @@ for _ in range(args.num_repeats):
                     pitch_out = PitchModel((pitch_inpt, dur_inpt, barpos_inpt, harmony_inpt))
                     dur_out = DurModel((dur_inpt, pitch_inpt, barpos_inpt, harmony_inpt))
 
-                pitch_seq.append(np.argmax(pitch_out.data[:, -1, :]))
-                dur_seq.append(np.argmax(dur_out.data[:, -1, :]))
+                pitch_seq.append(int(np.argmax(pitch_out.data[:, -1, :])))
+                dur_seq.append(int(np.argmax(dur_out.data[:, -1, :])))
                 barpos_seq.append(curr_barpos)
-                chord_seq.append(chord)
+                harmony_seq.append(chord)
 
                 curr_barpos += const.DUR_TICKS_MAP[const.REV_DURATIONS_MAP[dur_seq[-1]]]
                 pitch_inpt = torch.LongTensor(pitch_seq).view(1, -1)
                 dur_inpt = torch.LongTensor(dur_seq).view(1, -1)
                 barpos_inpt = torch.LongTensor(barpos_seq).view(1, -1)
-                harmony_inpt = torch.FloatTensor(chord_seq).view(1, -1, const.CHORD_DIM)
+                harmony_inpt = torch.FloatTensor(harmony_seq).view(1, -1, const.CHORD_DIM)
         
 melody_pr_mat = convert_melody_to_piano_roll_mat(pitch_seq, dur_seq)
 chords_pr_mat = convert_chords_to_piano_roll_mat(song_structure)
