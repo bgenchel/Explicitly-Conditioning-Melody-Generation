@@ -1,0 +1,18 @@
+run_datetime:       	 Nov05-18_13:29:25
+title:              	 Nov05-18_13:29:25_Chord_BarPos_Inter_2nd
+charlie_parker:     	 False
+epochs:             	 100
+batch_size:         	 128
+seq_len:            	 32
+hidden_dim:         	 128
+learning_rate:      	 0.001
+dropout:            	 0.0
+batch_norm:         	 False
+model:              	 pitch
+no_cuda:            	 False
+keep:               	 True
+run_datetime_str:   	 Nov05-18_13:29:25
+best_model:         	 {'epoch': 97, 'train_loss': 0.20614655509542337, 'valid_loss': 0.571632281143406}
+epochs_completed:   	 101
+final_training_loss:	 0.1990244132285923
+final_valid_loss:   	 0.6064553735901254
