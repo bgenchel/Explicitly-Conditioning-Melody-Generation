@@ -96,6 +96,9 @@ def convert_chords_to_piano_roll_mat(song_structure):
         ticks = i*const.DUR_TICKS_MAP['whole']
         for j, group in enumerate(measure):
             chord_vec, begin, end = group
+            print('chord: {}, begin: {}, end: {}'.format(chord_vec, begin, end))
+            if sum(chord_vec) == 0:
+                print('measure: {}, group: {}, hmmm'.format(i, j))
             chord_block = np.array(chord_vec).reshape((len(chord_vec), 1)).repeat(end - begin, axis=1)
             output_mat[CHORD_OFFSET:CHORD_OFFSET + len(chord_vec), ticks + begin:ticks + end] = chord_block
     return output_mat
@@ -163,6 +166,7 @@ for i, measure in enumerate(gen_song["measures"]):
         # not just the first beat of the first bar? Just gonna not worry about that for now.
         chord_vec = group["harmony"]["root"] + group["harmony"]["pitch_classes"]
         begin = group[const.BARPOS_KEY][0]
+        print(group[const.BARPOS_KEY])
         end = group[const.BARPOS_KEY][-1] + const.DUR_TICKS_MAP[const.REV_DURATIONS_MAP[group[const.DUR_KEY][-1]]]
        
         measure_groups.append((chord_vec, begin, end))
