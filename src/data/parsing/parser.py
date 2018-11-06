@@ -376,8 +376,8 @@ class Parser:
                     parsed_group["pitch_numbers"].append(pitch_num)
                     parsed_group["duration_tags"].append(dur_tag)
                     dur_ticks_list.append(dur_ticks)
-            dur_ticks_list = [tick_idx + sum(dur_ticks_list[:i-1]) for i in range(len(dur_ticks_list))]
-            bar_positions = [int(((dur_ticks) / (4 * divisions)) * 96) for dur_ticks in dur_ticks_list]
+            unnorm_barpos = [tick_idx + sum(dur_ticks_list[:i]) for i in range(len(dur_ticks_list))]
+            bar_positions = [int(((dur_ticks) / (4 * divisions)) * 96) for dur_ticks in unnorm_barpos]
             parsed_group["bar_positions"] = bar_positions
             parsed_measure["groups"].append(parsed_group)
             tick_idx += sum(dur_ticks_list)
