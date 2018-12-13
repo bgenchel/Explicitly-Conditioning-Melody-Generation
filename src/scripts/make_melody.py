@@ -23,19 +23,6 @@ from models.chord_inter_barpos_cond.model_classes import (
 import utils.constants as const
 from utils.reverse_pianoroll import piano_roll_to_pretty_midi
 
-##### MONKEY PATCH #####
-# import torch._utils
-# try:
-#     torch._utils._rebuild_tensor_v2
-# except AttributeError:
-#     def _rebuild_tensor_v2(storage, storage_offset, size, stride, requires_grad, backward_hooks):
-#         tensor = torch._utils._rebuild_tensor(storage, storage_offset, size, stride)
-#         tensor.requires_grad = requires_grad
-#         tensor._backward_hooks = backward_hooks
-#         return tensor
-#     torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
-########## 
-
 NUM_TO_MODEL = {1: {'name': 'no_cond',
                     'pitch_model': NoCondPitch,
                     'duration_model': NoCondDur}, 
@@ -48,8 +35,6 @@ NUM_TO_MODEL = {1: {'name': 'no_cond',
                 4: {'name': 'chord_inter_barpos_cond',
                     'pitch_model': ChordInterBarPosCondPitch,
                     'duration_model': ChordInterBarPosCondDur}}
-
-# FILLER = {PITCH_KEY: NOTES_MAP['rest'], DUR_KEY: DURATIONS_MAP['none']}
 
 CHORD_OFFSET = 48 # chords will be in octave 3
 # BUFF_LEN = 32
@@ -96,9 +81,6 @@ def convert_chords_to_piano_roll_mat(song_structure):
         ticks = i*const.DUR_TICKS_MAP['whole']
         for j, group in enumerate(measure):
             chord_vec, begin, end = group
-            print('chord: {}, begin: {}, end: {}'.format(chord_vec, begin, end))
-            if sum(chord_vec) == 0:
-                print('measure: {}, group: {}, hmmm'.format(i, j))
             chord_block = np.array(chord_vec).reshape((len(chord_vec), 1)).repeat(end - begin, axis=1)
             output_mat[CHORD_OFFSET:CHORD_OFFSET + len(chord_vec), ticks + begin:ticks + end] = chord_block
     return output_mat
@@ -165,8 +147,10 @@ for i, measure in enumerate(gen_song["measures"]):
         # no notes are actually present. Also, what about tied notes that tie to a place that's longer
         # not just the first beat of the first bar? Just gonna not worry about that for now.
         chord_vec = group["harmony"]["root"] + group["harmony"]["pitch_classes"]
+        print('group[const.BARPOS_KEY]: {}'.format(group[const.BARPOS_KEY]))
+        print('group[const.PITCH_KEY]: {}'.format(group[const.PITCH_KEY]))
+        print('group[const.DUR_KEY]: {}'.format(group[const.DUR_KEY]))
         begin = group[const.BARPOS_KEY][0]
-        print(group[const.BARPOS_KEY])
         end = group[const.BARPOS_KEY][-1] + const.DUR_TICKS_MAP[const.REV_DURATIONS_MAP[group[const.DUR_KEY][-1]]]
        
         measure_groups.append((chord_vec, begin, end))

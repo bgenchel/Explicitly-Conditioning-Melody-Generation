@@ -206,9 +206,7 @@ class Parser:
         :param last_harmony: a reference to the last harmony used in case a measure has none
         :return: a dict containing a list of groups that contains a harmony and the midi ticks associated with that harmony
         """
-        parsed_measure = {
-            "groups": []
-        }
+        parsed_measure = {"groups": []}
         new_last_harmony = last_harmony
 
         num_ticks = 0
