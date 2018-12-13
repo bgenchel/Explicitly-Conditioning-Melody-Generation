@@ -11,11 +11,6 @@ from torch.utils.data.dataset import Dataset
 sys.path.append(str(Path(op.abspath(__file__)).parents[1]))
 import constants as const
 
-PITCH_KEY = "pitch_numbers"
-const.DUR_KEY = "duration_tags"
-const.CHORD_KEY = "harmony"
-const.POS_KEY = "bar_positions"
-
 DEFAULT_DATA_PATH = op.join(Path(op.abspath(__file__)).parents[3], 'data', 'processed', 'songs')
 
 class BebopPitchDurDataset(Dataset):
@@ -65,10 +60,10 @@ class BebopPitchDurDataset(Dataset):
             full_sequence = self._create_data_dict()
             for i, measure in enumerate(song["measures"]):
                 for j, group in enumerate(measure["groups"]):
-                    assert len(group[const.PITCH_KEY]) == len(group[const.DUR_KEY]) == len(group[const.POS_KEY])
+                    assert len(group[const.PITCH_KEY]) == len(group[const.DUR_KEY]) == len(group[const.BARPOS_KEY])
                     full_sequence[const.PITCH_KEY].extend(group[const.PITCH_KEY])
                     full_sequence[const.DUR_KEY].extend(group[const.DUR_KEY])
-                    full_sequence[const.POS_KEY].extend(group[const.POS_KEY])
+                    full_sequence[const.BARPOS_KEY].extend(group[const.BARPOS_KEY])
 
                     chord_vec = group["harmony"]["root"] + group["harmony"]["pitch_classes"]
                     # right now each element is actual just pointers to one list, which is really bad
@@ -83,7 +78,7 @@ class BebopPitchDurDataset(Dataset):
                 self.targets[k].extend(targets)
 
     def _create_data_dict(self):
-        return {const.PITCH_KEY: [], const.DUR_KEY: [], const.CHORD_KEY: [], const.POS_KEY: []}
+        return {const.PITCH_KEY: [], const.DUR_KEY: [], const.CHORD_KEY: [], const.BARPOS_KEY: []}
                 
     def _get_seqs_and_targets(self, sequence):
         seqs, targets = [], []

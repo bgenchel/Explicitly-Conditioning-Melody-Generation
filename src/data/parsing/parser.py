@@ -521,7 +521,6 @@ def transpose_song_midi_ticks(song, steps):
     :param steps: a positive or negative number representing how many steps to transpose
     :return: a transposed song in MIDI ticks form
     """
-
     sign = lambda x: (1, -1)[x < 0]
 
     transposed = deepcopy(song)

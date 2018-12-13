@@ -1,0 +1,18 @@
+run_datetime:       	 Dec13-18_12:19:14
+title:              	 Dec13-18_12:19:14
+charlie_parker:     	 False
+epochs:             	 100
+batch_size:         	 128
+seq_len:            	 32
+hidden_dim:         	 128
+learning_rate:      	 0.001
+dropout:            	 0.0
+batch_norm:         	 False
+model:              	 duration
+no_cuda:            	 False
+keep:               	 True
+run_datetime_str:   	 Dec13-18_12:19:14
+best_model:         	 {'epoch': 6, 'train_loss': 0.20240613448077854, 'valid_loss': 0.16845333481340888}
+epochs_completed:   	 7
+final_training_loss:	 0.20240613448077854
+final_valid_loss:   	 0.16845333481340888
