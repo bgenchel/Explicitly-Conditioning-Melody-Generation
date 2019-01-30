@@ -69,7 +69,7 @@ class BarPosCondLSTM(nn.Module):
         barpos_embeds = self.barpos_embedding(barpos)
 
         # Concatenating along 3rd dimension
-        encoding = self.encoder(torch.cat([x_embeds, chord_embeds], 2)) 
+        encoding = self.encoder(torch.cat([x_embeds, barpos_embeds], 2)) 
         if self.batch_norm:
             encoding = self.encode_bn(encoding)
         encoding = F.relu(encoding)

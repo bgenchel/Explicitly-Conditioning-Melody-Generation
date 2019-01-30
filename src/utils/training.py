@@ -31,8 +31,8 @@ class Trainer:
                                                                drop_last=True).split()
 
         params = self.model.parameters()
-        self.optimizer = optim.Adam(params, lr=self.args.learning_rate)
-        self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, 'min', factor=0.9, patience=3, verbose=True)
+        self.optimizer = optim.Adam(params, lr=self.args.learning_rate, amsgrad=True)
+        # self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, 'min', factor=0.9, patience=3, verbose=True)
         self.loss_fn = nn.NLLLoss()
 
         self.dirpath = op.join(os.getcwd(), "runs", args.model)
@@ -80,7 +80,7 @@ class Trainer:
                     best_model = (epoch_label, train_loss, valid_loss)
                     self.save_model()
 
-                self.scheduler.step(valid_loss)
+                # self.scheduler.step(valid_loss)
                 writer.write_loss({'training': train_loss, 'validation': valid_loss}, epoch + 1)
             print("Finished Training.")
         except KeyboardInterrupt:

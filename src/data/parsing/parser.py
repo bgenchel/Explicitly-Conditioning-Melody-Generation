@@ -576,6 +576,7 @@ class PitchDurParser(Parser):
             "groups": []
         }
 
+        tick_idx = 0
         for group in measure["groups"]:
             parsed_group = {
                 "harmony": {},
@@ -596,10 +597,11 @@ class PitchDurParser(Parser):
                     parsed_group["pitch_numbers"].append(pitch_num)
                     parsed_group["duration_tags"].append(dur_tag)
                     dur_ticks_list.append(dur_ticks)
-            dur_ticks_list = [sum(dur_ticks_list[:i]) for i in range(len(dur_ticks_list))]
-            dur_to_next_bar = [4 * divisions - dur_ticks for dur_ticks in dur_ticks_list]
-            parsed_group["bar_positions"].extend(dur_to_next_bar)
+            unnorm_barpos = [tick_idx + sum(dur_ticks_list[:i]) for i in range(len(dur_ticks_list))]
+            bar_positions = [int((dur_ticks / (4 * divisions)) * 96)  for dur_ticks in unnorm_barpos]
+            parsed_group["bar_positions"] = bar_positions
             parsed_measure["groups"].append(parsed_group)
+            tick_idx += sum(dur_ticks_list)
         return parsed_measure
 
     def parse_note(self, note_dict, divisions):
@@ -669,6 +671,8 @@ class PitchDurParser(Parser):
             dur_dict[k + '-triplet'] = (2 * v / 3, math.floor(2 * v / 3), math.ceil(2 * v / 3))
             dur_dict[k + '-dot'] = (3 * v / 2, math.floor(3 * v / 2), math.ceil(3 * v / 2))
 
+        # print('divisions: %d' % divisions)
+        # print('dur_dict: {}'.format(dur_dict))
         if "duration" not in note_dict.keys():
             note_dur = -1
         else:
