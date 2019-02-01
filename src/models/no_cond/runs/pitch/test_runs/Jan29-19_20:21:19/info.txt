@@ -1,0 +1,18 @@
+run_datetime:       	 Jan29-19_20:21:19
+title:              	 Jan29-19_20:21:19
+charlie_parker:     	 False
+epochs:             	 50
+batch_size:         	 64
+seq_len:            	 64
+hidden_dim:         	 128
+learning_rate:      	 0.01
+dropout:            	 0.0
+batch_norm:         	 False
+model:              	 pitch
+no_cuda:            	 False
+keep:               	 False
+run_datetime_str:   	 Jan29-19_20:21:19
+best_model:         	 {'epoch': 4, 'train_loss': 2.4159269612028793, 'valid_loss': 2.426672630158125}
+epochs_completed:   	 5
+final_training_loss:	 2.4159269612028793
+final_valid_loss:   	 2.426672630158125

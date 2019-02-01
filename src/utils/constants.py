@@ -8,20 +8,20 @@ CHORD_KEY = "harmony"
 BARPOS_KEY = "bar_positions"
 
 # Model Params
-PITCH_DIM = 128
+PITCH_DIM = 89
 DUR_DIM = 19
 CHORD_DIM = 24
 BARPOS_DIM = 96
-PITCH_EMBED_DIM = 36
-DUR_EMBED_DIM = 10
-CHORD_EMBED_DIM = 18
-BARPOS_EMBED_DIM = 24
+PITCH_EMBED_DIM = 16
+DUR_EMBED_DIM = 4
+CHORD_EMBED_DIM = 8
+BARPOS_EMBED_DIM = 16
 NUM_RNN_LAYERS = 2
 
 # Dictionaries
-NOTES_MAP = {'rest': 127, 'B#': 0, 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 
-             'E': 4, 'Fb': 4, 'E#': 5, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 
-             'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11, 'Cb': 11}
+NOTES_MAP = {'rest': 88, 'B#': 0, 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 
+             'Eb': 3, 'E': 4, 'Fb': 4, 'E#': 5, 'F': 5, 'F#': 6, 'Gb': 6, 
+             'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11, 'Cb': 11}
 
 DURATIONS_MAP = {
     '32nd-triplet': 0, 

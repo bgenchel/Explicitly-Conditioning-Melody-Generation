@@ -66,11 +66,6 @@ class InterBarPosCondLSTM(nn.Module):
     def forward(self, data):
         x, conds, barpos = data
 
-        chord_embeds = self.chord_fc1(chords)
-        if self.batch_norm:
-            chord_embeds = self.chord_bn(chord_embeds)
-        chord_embeds = self.chord_fc2(F.relu(chord_embeds))
-
         x_embeds = self.embedding(x)
         cond_embeds = self.cond_embedding(conds)
         barpos_embeds = self.barpos_embedding(barpos)
