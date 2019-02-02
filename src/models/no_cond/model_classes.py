@@ -52,7 +52,7 @@ class NoCondLSTM(nn.Module):
             new_cell = new_cell.cuda()
         self.hidden_and_cell = (new_hidden, new_cell)
 
-    def forward(self, data):
+    def forward(self, data, *args, **kwargs):
         embedded = self.embedding(data)
         lstm_out, self.hidden_and_cell = self.lstm(embedded, self.hidden_and_cell)
         decoded = self.decode1(lstm_out)

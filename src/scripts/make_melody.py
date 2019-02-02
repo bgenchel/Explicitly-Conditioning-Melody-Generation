@@ -10,12 +10,22 @@ import torch
 from torch.autograd import Variable
 from pathlib import Path
 
+PITCH_NUM_OFFSET = 21 # A0
+
 sys.path.append(str(Path(op.abspath(__file__)).parents[1]))
 from models.no_cond.model_classes import PitchLSTM as NoCondPitch, DurationLSTM as NoCondDur
+from models.inter_cond.model_classes import PitchLSTM as InterCondPitch, DurationLSTM as InterCondDur
 from models.chord_cond.model_classes import PitchLSTM as ChordCondPitch, DurationLSTM as ChordCondDur
+from models.barpos_cond.model_classes import PitchLSTM as BarPosCondPitch, DurationLSTM as BarPosCondDur
 from models.chord_inter_cond.model_classes import (
         PitchLSTM as ChordInterCondPitch, 
         DurationLSTM as ChordInterCondDur)
+from models.chord_barpos_cond.model_classes import (
+        PitchLSTM as ChordBarPosCondPitch, 
+        DurationLSTM as ChordBarPosCondDur)
+from models.inter_barpos_cond.model_classes import (
+        PitchLSTM as InterBarPosCondPitch, 
+        DurationLSTM as InterBarPosCondDur)
 from models.chord_inter_barpos_cond.model_classes import (
         PitchLSTM as ChordInterBarPosCondPitch, 
         DurationLSTM as ChordInterBarPosCondDur)
@@ -23,18 +33,30 @@ from models.chord_inter_barpos_cond.model_classes import (
 import utils.constants as const
 from utils.reverse_pianoroll import piano_roll_to_pretty_midi
 
-NUM_TO_MODEL = {1: {'name': 'no_cond',
-                    'pitch_model': NoCondPitch,
-                    'duration_model': NoCondDur}, 
-                2: {'name': 'chord_cond', 
-                    'pitch_model': ChordCondPitch,
-                    'duration_model': ChordCondDur},
-                3: {'name': 'chord_inter_cond',
-                    'pitch_model': ChordInterCondPitch,
-                    'duration_model': ChordInterCondDur},
-                4: {'name': 'chord_inter_barpos_cond',
-                    'pitch_model': ChordInterBarPosCondPitch,
-                    'duration_model': ChordInterBarPosCondDur}}
+INIT_TO_MODEL = {'nc': {'name': 'no_cond',
+                        'pitch_model': NoCondPitch,
+                        'duration_model': NoCondDur}, 
+                 'ic': {'name': 'inter_cond',
+                        'pitch_model': InterCondPitch,
+                        'duration_model': InterCondDur},
+                 'cc': {'name': 'chord_cond', 
+                        'pitch_model': ChordCondPitch,
+                        'duration_model': ChordCondDur},
+                 'bc': {'name': 'barpos_cond', 
+                        'pitch_model': BarPosCondPitch,
+                        'duration_model': BarPosCondDur},
+                 'cic': {'name': 'chord_inter_cond',
+                        'pitch_model': ChordInterCondPitch,
+                        'duration_model': ChordInterCondDur},
+                 'cbc': {'name': 'chord_barpos_cond',
+                        'pitch_model': ChordBarPosCondPitch,
+                        'duration_model': ChordBarPosCondDur},
+                 'ibc': {'name': 'inter_barpos_cond',
+                        'pitch_model': InterBarPosCondPitch,
+                        'duration_model': InterBarPosCondDur},
+                 'cibc': {'name': 'chord_inter_barpos_cond',
+                        'pitch_model': ChordInterBarPosCondPitch,
+                        'duration_model': ChordInterBarPosCondDur}}
 
 CHORD_OFFSET = 48 # chords will be in octave 3
 # BUFF_LEN = 32
@@ -42,9 +64,11 @@ CHORD_OFFSET = 48 # chords will be in octave 3
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--title', default="generated", type=str,
                     help="what to name the output")
-parser.add_argument('-m', '--model', type=int, choices=(1, 2, 3, 4), 
+parser.add_argument('-m', '--model', type=str, choices=("nc", "ic", "cc", "bc", "cic", "cbc", "ibc", "cibc"), 
                     help="which model to use for generation.\n \
-                          \t\t1 - no_cond, 2 - chord_cond, 3 - chord_inter_cond, 4 - chord_inter_barpos_cond")
+                          \t\tnc - no_cond, ic - inter_cond, cc - chord_inter_cond, bc - barpos_cond \n \
+                          \t\tcic - chord_inter_barpos_cond, cbc - chord_barpos_Cond, ibc - inter_barpos_cond \n \
+                          \t\tcibc - chord_inter_barpos_cond.")
 parser.add_argument('-pn', '--pitch_run_name', type=str,
                     help="select which pitch run to use")
 parser.add_argument('-dn', '--dur_run_name', type=str,
@@ -70,8 +94,8 @@ def convert_melody_to_piano_roll_mat(pitches, dur_nums):
             continue
         else:
             # include the -1 for now because stuff is out of key
-            output_mat[int(pitches[i - 1]), int(onsets[i]):int(onsets[i+1])] = 1.0
-    output_mat[int(pitches[-1] - 1), int(onsets[-1]):] = 1.0
+            output_mat[int(pitches[i - 1]) + PITCH_NUM_OFFSET, int(onsets[i]):int(onsets[i+1])] = 1.0
+    output_mat[int(pitches[-1] - 1) + PITCH_NUM_OFFSET, int(onsets[-1]):] = 1.0
     return output_mat
 
 
@@ -87,7 +111,7 @@ def convert_chords_to_piano_roll_mat(song_structure):
 
 
 root_dir = str(Path(op.abspath(__file__)).parents[2])
-model_dir = op.join(root_dir, 'src', 'models', NUM_TO_MODEL[args.model]['name'])
+model_dir = op.join(root_dir, 'src', 'models', INIT_TO_MODEL[args.model]['name'])
 
 pitch_dir = op.join(model_dir, 'runs', 'pitch', args.pitch_run_name)
 dur_dir = op.join(model_dir, 'runs', 'duration', args.dur_run_name)
@@ -98,7 +122,7 @@ pitch_model_inputs['dropout'] = 0
 pitch_model_inputs['no_cuda'] = True
 pitch_model_state = torch.load(op.join(pitch_dir, 'model_state.pt'), map_location='cpu')
 
-PitchModel = NUM_TO_MODEL[args.model]['pitch_model'](**pitch_model_inputs)
+PitchModel = INIT_TO_MODEL[args.model]['pitch_model'](**pitch_model_inputs)
 PitchModel.load_state_dict(pitch_model_state)
 PitchModel.eval()
 
@@ -108,9 +132,12 @@ dur_model_inputs['dropout'] = 0
 dur_model_inputs['no_cuda'] = True
 dur_model_state = torch.load(op.join(dur_dir, 'model_state.pt'), map_location='cpu')
 
-DurModel = NUM_TO_MODEL[args.model]['duration_model'](**dur_model_inputs)
+DurModel = INIT_TO_MODEL[args.model]['duration_model'](**dur_model_inputs)
 DurModel.load_state_dict(dur_model_state)
 DurModel.eval()
+
+PitchModel.init_hidden_and_cell(1)
+DurModel.init_hidden_and_cell(1)
 
 data_dir = op.join(root_dir, 'data', 'processed', 'songs')
 if args.gen_song is None:
@@ -147,9 +174,9 @@ for i, measure in enumerate(gen_song["measures"]):
         # no notes are actually present. Also, what about tied notes that tie to a place that's longer
         # not just the first beat of the first bar? Just gonna not worry about that for now.
         chord_vec = group["harmony"]["root"] + group["harmony"]["pitch_classes"]
-        print('group[const.BARPOS_KEY]: {}'.format(group[const.BARPOS_KEY]))
-        print('group[const.PITCH_KEY]: {}'.format(group[const.PITCH_KEY]))
-        print('group[const.DUR_KEY]: {}'.format(group[const.DUR_KEY]))
+        # print('group[const.BARPOS_KEY]: {}'.format(group[const.BARPOS_KEY]))
+        # print('group[const.PITCH_KEY]: {}'.format(group[const.PITCH_KEY]))
+        # print('group[const.DUR_KEY]: {}'.format(group[const.DUR_KEY]))
         begin = group[const.BARPOS_KEY][0]
         end = group[const.BARPOS_KEY][-1] + const.DUR_TICKS_MAP[const.REV_DURATIONS_MAP[group[const.DUR_KEY][-1]]]
        
@@ -171,9 +198,7 @@ for _ in range(args.num_repeats):
         for j, group in enumerate(measure):
             chord, begin, end = group
             while curr_barpos < end:
-                PitchModel.init_hidden_and_cell(1)
-                DurModel.init_hidden_and_cell(1)
-                if args.model == 1:
+                if args.model == 'nc':
                     pitch_out = PitchModel(pitch_inpt)
                     dur_out = DurModel(dur_inpt)
                 elif args.model == 2:
@@ -186,16 +211,16 @@ for _ in range(args.num_repeats):
                     pitch_out = PitchModel((pitch_inpt, dur_inpt, barpos_inpt, harmony_inpt))
                     dur_out = DurModel((dur_inpt, pitch_inpt, barpos_inpt, harmony_inpt))
 
-                pitch_seq.append(int(np.argmax(pitch_out.data[:, -1, :])))
-                dur_seq.append(int(np.argmax(dur_out.data[:, -1, :])))
+                pitch_seq.append(int(torch.exp(pitch_out.data[:, -1, :]).multinomial(1)))
+                dur_seq.append(int(torch.exp(dur_out.data[:, -1, :]).multinomial(1)))
                 barpos_seq.append(curr_barpos)
                 harmony_seq.append(chord)
 
                 curr_barpos += const.DUR_TICKS_MAP[const.REV_DURATIONS_MAP[dur_seq[-1]]]
-                pitch_inpt = torch.LongTensor(pitch_seq).view(1, -1)
-                dur_inpt = torch.LongTensor(dur_seq).view(1, -1)
-                barpos_inpt = torch.LongTensor(barpos_seq).view(1, -1)
-                harmony_inpt = torch.FloatTensor(harmony_seq).view(1, -1, const.CHORD_DIM)
+                pitch_inpt = torch.LongTensor([pitch_seq[-1]]).view(1, -1)
+                dur_inpt = torch.LongTensor([dur_seq[-1]]).view(1, -1)
+                barpos_inpt = torch.LongTensor([barpos_seq[-1]]).view(1, -1)
+                harmony_inpt = torch.FloatTensor(harmony_seq[-1]).view(1, -1, const.CHORD_DIM)
         
 melody_pr_mat = convert_melody_to_piano_roll_mat(pitch_seq, dur_seq)
 chords_pr_mat = convert_chords_to_piano_roll_mat(song_structure)

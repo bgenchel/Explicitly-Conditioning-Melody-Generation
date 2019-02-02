@@ -14,7 +14,6 @@ from .logging import TensorBoardWriter
 
 
 class Trainer:
-    
     def __init__(self, model, args):
         """
         :param args: an argparse object from the argparse class
