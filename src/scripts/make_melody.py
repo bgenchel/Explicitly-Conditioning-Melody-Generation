@@ -198,16 +198,28 @@ for _ in range(args.num_repeats):
         for j, group in enumerate(measure):
             chord, begin, end = group
             while curr_barpos < end:
-                if args.model == 'nc':
+                if args.model == "nc":
                     pitch_out = PitchModel(pitch_inpt)
                     dur_out = DurModel(dur_inpt)
-                elif args.model == 2:
+                elif args.model == "ic":
+                    pitch_out = PitchModel((pitch_inpt, dur_inpt))
+                    dur_out = DurModel((dur_inpt, pitch_inpt))
+                elif args.model == "cc":
                     pitch_out = PitchModel((pitch_inpt, harmony_inpt))
                     dur_out = DurModel((dur_inpt, harmony_inpt))
-                elif args.model == 3:
+                elif args.model == "bc":
+                    pitch_out = PitchModel((pitch_inpt, barpos_inpt))
+                    dur_out = DurModel((dur_inpt, barpos_inpt))
+                elif args.model == "cic":
                     pitch_out = PitchModel((pitch_inpt, dur_inpt, harmony_inpt))
                     dur_out = DurModel((dur_inpt, pitch_inpt, harmony_inpt))
-                elif args.model == 4:
+                elif args.model == "cbc":
+                    pitch_out = PitchModel((pitch_inpt, barpos_inpt, harmony_inpt))
+                    dur_out = DurModel((dur_inpt, barpos_inpt, harmony_inpt))
+                elif args.model == "ibc":
+                    pitch_out = PitchModel((pitch_inpt, dur_inpt, barpos_inpt))
+                    dur_out = DurModel((dur_inpt, pitch_inpt, barpos_inpt))
+                elif args.model == "cibc":
                     pitch_out = PitchModel((pitch_inpt, dur_inpt, barpos_inpt, harmony_inpt))
                     dur_out = DurModel((dur_inpt, pitch_inpt, barpos_inpt, harmony_inpt))
 
