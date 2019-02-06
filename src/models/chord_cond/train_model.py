@@ -11,7 +11,8 @@ sys.path.append(str(Path(op.abspath(__file__)).parents[2]))
 import utils.helpers as hlp
 from utils.training import Trainer
 
-torch.cuda.set_device(0)
+if torch.cuda.is_available():
+    torch.cuda.set_device(0)
 
 run_datetime_str = datetime.now().strftime('%b%d-%y_%H:%M:%S')
 args = hlp.get_args(default_title=run_datetime_str)
