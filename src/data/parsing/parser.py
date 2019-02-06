@@ -556,6 +556,20 @@ class PitchDurParser(Parser):
 
             if max_harmonies_per_measure == 0:
                 continue
+            
+            # add next harmony 
+            for i, measure in enumerate(measures):
+                for j, group in enumerate(measure["groups"]):
+                    group["next_harmony"] = {}
+                    if j < len(measure["groups"]) - 1:
+                        group["next_harmony"]["root"] = measure["groups"][j + 1]["harmony"]["root"]
+                        group["next_harmony"]["pitch_classes"] = measure["groups"][j + 1]["harmony"]["pitch_classes"]
+                    elif j == len(measure["groups"]) - 1 and i < len(measures) - 1:
+                        group["next_harmony"]["root"] = measures[i + 1]["groups"][0]["harmony"]["root"]
+                        group["next_harmony"]["pitch_classes"] = measures[i + 1]["groups"][0]["harmony"]["pitch_classes"]
+                    elif j == len(measure["groups"]) - 1 and i == len(measures) - 1:
+                        group["next_harmony"]["root"] = measures[0]["groups"][0]["harmony"]["root"]
+                        group["next_harmony"]["pitch_classes"] = measures[0]["groups"][0]["harmony"]["pitch_classes"]
 
             songs.append({
                 "metadata": metadata,
@@ -652,6 +666,7 @@ class PitchDurParser(Parser):
                     "_".join(song["metadata"]["artist"].split(" "))]) + ".pkl"
                 filename = filename.replace("/", ",")
                 outpath = op.join(self.song_dir, filename)
+                print("dumping to: %s" % outpath)
                 pickle.dump(song, open(outpath, 'wb'))
 
     @staticmethod
