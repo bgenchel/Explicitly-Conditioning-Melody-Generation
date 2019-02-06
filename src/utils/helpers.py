@@ -16,7 +16,7 @@ def get_args(default_title=""):
                         help="number of training epochs")
     parser.add_argument('-sl', '--seq_len', default=1, type=int,
                         help="number of previous steps to consider in prediction.")
-    parser.add_argument('-hd', '--hidden_dim', default=128, type=int,
+    parser.add_argument('-hd', '--hidden_dim', default=256, type=int,
                         help="size of hidden state.")
     parser.add_argument('-lr', '--learning_rate', default=1e-3, type=float,
                         help="learning rate for sgd")

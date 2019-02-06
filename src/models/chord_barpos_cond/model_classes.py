@@ -80,7 +80,7 @@ class ChordBarPosCondLSTM(nn.Module):
         # Concatenating along 3rd dimension
         encoding = self.encoder(torch.cat([x_embeds, barpos_embeds, chord_embeds], 2)) 
         if self.batch_norm:
-            encoding = self.encode_bn(encoding)
+            encoding = self.encoder_bn(encoding)
         encoding = F.relu(encoding)
 
         lstm_out, self.hidden_and_cell = self.lstm(encoding, self.hidden_and_cell)

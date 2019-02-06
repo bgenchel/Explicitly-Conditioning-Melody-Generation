@@ -55,6 +55,9 @@ class metrics(object):
         pattern = feature['midi_pattern']
         pattern.make_ticks_abs()
         resolution = pattern.resolution
+        # some of my midi doesn't have a status track
+        if len(pattern) == 1 and track_num == 1:
+            track_num = 0
         for i in range(0, len(pattern[track_num])):
             if type(pattern[track_num][i]) == midi.events.TimeSignatureEvent:
                 time_sig = pattern[track_num][i].data
@@ -87,7 +90,8 @@ class metrics(object):
                         else:
                             note_list = []
                     note_list.append(pattern[track_num][i].data[0])
-                    used_notes[pattern[track_num][i].tick // bar_length] += 1
+                    idx = min(pattern[track_num][i].tick // bar_length, len(used_notes) - 1)
+                    used_notes[idx] += 1
 
         used_pitch = np.zeros((num_bar, 1))
         current_note = 0
@@ -110,6 +114,8 @@ class metrics(object):
         """
         pattern = feature['midi_pattern']
         used_notes = 0
+        if len(pattern) == 1 and track_num == 1:
+            track_num = 0
         for i in range(0, len(pattern[track_num])):
             if type(pattern[track_num][i]) == midi.events.NoteOnEvent and pattern[track_num][i].data[1] != 0:
                 used_notes += 1
@@ -129,6 +135,8 @@ class metrics(object):
         pattern = feature['midi_pattern']
         pattern.make_ticks_abs()
         resolution = pattern.resolution
+        if len(pattern) == 1 and track_num == 1:
+            track_num = 0
         for i in range(0, len(pattern[track_num])):
             if type(pattern[track_num][i]) == midi.events.TimeSignatureEvent:
                 time_sig = pattern[track_num][i].data
@@ -153,7 +161,8 @@ class metrics(object):
                         used_notes[pattern[track_num][i].tick // bar_length] += 1
 
                 else:
-                    used_notes[pattern[track_num][i].tick // bar_length] += 1
+                    idx = min(pattern[track_num][i].tick // bar_length, len(used_notes) - 1)
+                    used_notes[idx] += 1
         return used_notes
 
     def total_pitch_class_histogram(self, feature):
@@ -188,6 +197,8 @@ class metrics(object):
 
         # todo: deal with more than one time signature cases
         pm_object = feature['pretty_midi']
+        if len(pm_object.instruments) == 1 and track_num == 1:
+            track_num = 0
         if num_bar is None:
             numer = pm_object.time_signature_changes[-1].numerator
             deno = pm_object.time_signature_changes[-1].denominator
@@ -207,9 +218,11 @@ class metrics(object):
             bar_length = int(math.ceil(bar_length))
 
         if actual_bar > num_bar:
-            piano_roll = piano_roll[:-np.mod(len(piano_roll), bar_length)].reshape((num_bar, -1, 128))  # make exact bar
+            piano_roll = piano_roll[:-np.mod(len(piano_roll), bar_length)].reshape((-1, bar_length, 128))  # make exact bar
+            piano_roll = piano_roll[:-np.mod(len(piano_roll), num_bar)].reshape((num_bar, -1, 128))
         elif actual_bar == num_bar:
-            piano_roll = piano_roll.reshape((num_bar, -1, 128))
+            piano_roll = piano_roll[:-np.mod(len(piano_roll), bar_length)].reshape((num_bar, -1, 128))  # make exact bar
+            # piano_roll = piano_roll.reshape((num_bar, -1, 128))
         else:
             piano_roll = np.pad(piano_roll, ((0, int(num_bar * bar_length - len(piano_roll))), (0, 0)), mode='constant', constant_values=0)
             piano_roll = piano_roll.reshape((num_bar, -1, 128))
@@ -283,9 +296,12 @@ class metrics(object):
         'pitch_shift': a scalar for each sample.
         """
         pattern = feature['midi_pattern']
+        if len(pattern) == 1 and track_num == 1:
+            track_num = 0
         pattern.make_ticks_abs()
         resolution = pattern.resolution
-        total_used_note = self.total_used_note(pattern, track_num=track_num)
+        # total_used_note = self.total_used_note(pattern, track_num=track_num)
+        total_used_note = self.total_used_note(feature, track_num=track_num)
         d_note = np.zeros((total_used_note - 1))
         current_note = 0
         counter = 0
@@ -334,6 +350,8 @@ class metrics(object):
         """
 
         pattern = feature['midi_pattern']
+        if len(pattern) == 1 and track_num == 1:
+            track_num = 0
         if pause_event is False:
             note_length_hist = np.zeros((12))
             pattern.make_ticks_abs()

@@ -74,7 +74,7 @@ class InterCondLSTM(nn.Module):
 
         encoding = self.encoder(torch.cat([x_embeds, cond_embeds], 2)) # Concatenate along 3rd dimension
         if self.batch_norm:
-            encoding = self.encode_bn(encoding)
+            encoding = self.encoder_bn(encoding)
         encoding = F.relu(encoding)
 
         self.init_hidden_and_cell(self.batch_size)
