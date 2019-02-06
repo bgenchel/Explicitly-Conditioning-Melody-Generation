@@ -1,16 +1,32 @@
+import argparse
+import glob
+import itertools
+import json
+import numpy as np
+import os
+import os.path as op
+import pickle
 from nltk.translate.bleu_score import corpus_bleu, sentence_bleu
+from pathlib import Path
 from tqdm import tqdm
 
 TICKS_PER_BEAT = 24
 TICKS_PER_MEASURE = 4 * TICKS_PER_BEAT
 TICKS_PER_SENTENCE = 8 * TICKS_PER_MEASURE
 
+ABRV_TO_MODEL = {'nc': 'no_cond',
+                 'ic': 'inter_cond',
+                 'cc': 'chord_cond',
+                 'bc': 'barpos_cond',
+                 'cic': 'chord_inter_cond',
+                 'cbc': 'chord_barpos_cond',
+                 'ibc': 'inter_barpos_cond',
+                 'cibc': 'chord_inter_barpos_cond'}
+
 class BleuScore:
 
-    def __init__(self, sequence_len):
-        self.seq_len = sequence_len
-
-    def evaluate_bleu_score(self, predictions, targets, ticks=False, corpus=True):
+    @classmethod
+    def evaluate_bleu_score(cls, predictions, targets, ticks=False, corpus=True):
         """
         Given an array of predicted sequences and ground truths, compute the BLEU score across the sequences.
         :param predictions: an num_sequences x seq_length numpy matrix
@@ -18,8 +34,8 @@ class BleuScore:
         :return: the BLEU score across the corpus of predicted ticks
         """
         if ticks:
-            ref_sentences = self._ticks_to_sentences(targets)
-            cand_sentences = self._ticks_to_sentences(predictions)
+            ref_sentences = cls._ticks_to_sentences(targets)
+            cand_sentences = cls._ticks_to_sentences(predictions)
         else:
             ref_sentences = [[str(x) for x in seq] for seq in predictions]
             cand_sentences = [[str(x) for x in seq] for seq in targets]
@@ -40,7 +56,8 @@ class BleuScore:
 
         return bleu_score
 
-    def _ticks_to_sentences(self, ticks):
+    @staticmethod
+    def _ticks_to_sentences(ticks):
         """
         Given an array of ticks, converts vector values to strings, returning a list of 8 measure "sentence" concatenations.
         :param ticks: an np array of ticks to convert to sentences
@@ -57,5 +74,57 @@ class BleuScore:
 
         return sentences
 
-if __name__ == '__main__':
 
+def main():
+    root_dir = str(Path(op.abspath(__file__)).parents[2])
+    model_dir = op.join(root_dir, "src", "models")
+    data_song_dir = op.join(root_dir, "data", "processed", "songs")
+    
+    models = [('nc', 'no_cond'),
+              ('ic', 'inter_cond'),
+              ('cc', 'chord_cond'),
+              ('bc', 'barpos_cond'),
+              ('cic', 'chord_inter_cond'),
+              ('cbc', 'chord_barpos_cond'),
+              ('ibc', 'inter_barpos_cond'),
+              ('cibc', 'chord_inter_barpos_cond')]
+
+    scores = {}
+    songs = [op.basename(s) for s in glob.glob(op.join(data_song_dir, '*_0.pkl'))]
+    for abrv, name in models:
+        ref_pns = []
+        ref_dts = []
+        cand_pns = []
+        cand_dts = []
+        midi_dir = op.join(model_dir, name, "midi")
+        for song in songs:
+            gen_ext = "_".join(["4eval", song.split(".")[0]])
+            gen_path = op.join(midi_dir, gen_ext, gen_ext + '_tokens' + ".json")
+            if not op.exists(gen_path):
+                continue
+
+            song_pkl = pickle.load(open(op.join(data_song_dir, song), "rb"))
+            song_pns = [list(itertools.chain(*[g['pitch_numbers'] for g in m['groups']])) for m in song_pkl['measures']]
+            song_dts = [list(itertools.chain(*[g['duration_tags'] for g in m['groups']])) for m in song_pkl['measures']]
+
+            gen_tokens = json.load(open(gen_path, 'r'))
+            gen_pns = gen_tokens['pitch_numbers'] 
+            gen_dts = gen_tokens['duration_tags']
+
+            ref_pns.append(list(itertools.chain(*song_pns)))
+            ref_dts.append(list(itertools.chain(*song_dts)))
+            cand_pns.append(list(itertools.chain(*gen_pns)))
+            cand_dts.append(list(itertools.chain(*gen_dts)))
+
+            if len(song_pns) != len(gen_pns):
+                print("{}: {} vs {}".format(song, len(song_pns), len(gen_pns)))
+
+        scores[name] = {}
+        scores[name]["pitch"] = BleuScore.evaluate_bleu_score(np.array(cand_pns), np.array(ref_pns))
+        scores[name]["duration"] = BleuScore.evaluate_bleu_score(np.array(cand_dts), np.array(ref_dts))
+
+    json.dump(scores, open('bleuScores.json', 'w'), indent=4)
+
+
+if __name__ == '__main__': 
+    main()

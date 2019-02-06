@@ -1,24 +1,32 @@
-import sys
-
-sys.path.append("./mgeval")
-
+import argparse
 import glob
 import os.path as op
-from mgeval import core, utils
-from sklearn.model_selection import LeaveOneOut
-import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 import pdb
+import seaborn as sns
+import sys
+from pathlib import Path
+from sklearn.model_selection import LeaveOneOut
 
+sys.path.append("./mgeval")
+from mgeval import core, utils
+
+ABRV_TO_MODEL = {'nc': 'no_cond',
+                 'ic': 'inter_cond',
+                 'cc': 'chord_cond',
+                 'bc': 'barpos_cond',
+                 'cic': 'chord_inter_cond',
+                 'cbc': 'chord_barpos_cond',
+                 'ibc': 'inter_barpos_cond',
+                 'cibc': 'chord_inter_barpos_cond'}
 
 class MGEval:
     """
     Wrapper around Richard Yang's MGEval
     """
-
     def __init__(self, pred_dir, target_dir):
-        self.pred_set = glob.glob(op.join(pred_dir, "*.mid"))
+        self.pred_set = glob.glob(op.join(pred_dir, "4eval*_0", "4eval*_0_melody.mid"))
         self.target_set = glob.glob(op.join(target_dir, "*.mid"))
 
         pred_samples = len(self.pred_set)
@@ -30,7 +38,6 @@ class MGEval:
             self.num_samples = pred_samples
 
         self.num_samples = 100
-
         self.metrics = core.metrics()
 
     def get_metric(self, metric_name, pred_metric_shape, target_metric_shape, *args, **kwargs):
@@ -76,7 +83,8 @@ class MGEval:
 
         plt.title(metric_name)
         plt.xlabel('Euclidean distance')
-        plt.show()
+        plt.savefig(metric_name + '.png')
+        # plt.show()
 
     def intra_inter_difference(self, metric_name, pred_intra, target_intra, inter):
         transposed = []
@@ -95,8 +103,11 @@ class MGEval:
         print('  Overlap area:', utils.overlap_area(transposed[1][0], transposed[2][0]))
 
 
-if __name__ == "__main__":
-    mge = MGEval("../models/original_nottingham/eval_reference", "../models/original_nottingham/eval_fully_trained")
+def main(model, metric):
+    root_dir = str(Path(op.abspath(__file__)).parents[2])
+    mge = MGEval(pred_dir=op.join(root_dir, "src", "models", ABRV_TO_MODEL[model], "midi"),
+                 target_dir=op.join(root_dir, "data", "raw", "midi"))
+
     # Expected shape of desired metric
     metric_shape = (12, 12)
 
@@ -105,9 +116,23 @@ if __name__ == "__main__":
 
     # Args and kwargs if needed for the desired metric
     args = ()
-    kwargs = { "track_num": 1 }
+    kwargs = {"track_num": 1}
 
     pred_metric, target_metric = mge.get_metric(metric_name, metric_shape, metric_shape, *args, **kwargs)
     inter = mge.inter_set_cross_validation(pred_metric, target_metric)
     pred_intra, target_intra = mge.intra_set_cross_validation(pred_metric, target_metric)
     mge.visualize(metric_name, pred_intra, target_intra, inter)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m', '--model', default="nc", type=str,
+                    choices=("nc", "ic", "cc", "bc", "cic", "cbc", "ibc", "cibc"),
+                    help="which model to evaluate.")
+    parser.add_argument('-mt', '--metric', default="all", type=str,
+                    choices=("total_used_pitch", "bar_used_pitch", "total_used_note", 
+                             "bar_used_note", "total_pitch_class_histogram", "bar_pitch_class_histogram",
+                             "pitch_class_transition_matrix", "pitch_range", "avg_pitch_shift",
+                             "avg_IOI", "note_length_hist", "note_length_transition_matrix", "all"),
+                    help="which model to evaluate.")
+    args = parser.parse_args()
+    main(args.model, args.metric)
