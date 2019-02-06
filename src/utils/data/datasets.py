@@ -4,8 +4,8 @@ import os
 import os.path as op
 import pickle
 import sys
-import torch
-from pathlib import Path
+import torch 
+from pathlib import Path 
 from torch.utils.data.dataset import Dataset
 
 sys.path.append(str(Path(op.abspath(__file__)).parents[1]))
@@ -66,10 +66,16 @@ class BebopPitchDurDataset(Dataset):
                     full_sequence[const.BARPOS_KEY].extend(group[const.BARPOS_KEY])
 
                     chord_vec = group["harmony"]["root"] + group["harmony"]["pitch_classes"]
+                    next_chord_vec = group["next_harmony"]["root"] + group["next_harmony"]["pitch_classes"]
                     # right now each element is actual just pointers to one list, which is really bad
                     # however, this problem will be resolved when converted to tensor/np array
                     for _ in range(len(group[const.PITCH_KEY])): 
                         full_sequence[const.CHORD_KEY].append(chord_vec)
+                        full_sequence[const.CHORD_ROOT_KEY].append(np.argmax(group["harmony"]["root"]))
+                        full_sequence[const.CHORD_PC_KEY].append(group["harmony"]["pitch_classes"])
+                        full_sequence[const.NXT_CHORD_KEY].append(next_chord_vec)
+                        full_sequence[const.NXT_CHORD_ROOT_KEY].append(np.argmax(group["next_harmony"]["root"]))
+                        full_sequence[const.NXT_CHORD_PC_KEY].append(group["next_harmony"]["pitch_classes"])
 
             full_sequence = {k: np.array(v) for k, v in full_sequence.items()}
             for k, full_seq in full_sequence.items():
@@ -78,7 +84,9 @@ class BebopPitchDurDataset(Dataset):
                 self.targets[k].extend(targets)
 
     def _create_data_dict(self):
-        return {const.PITCH_KEY: [], const.DUR_KEY: [], const.CHORD_KEY: [], const.BARPOS_KEY: []}
+        return {const.PITCH_KEY: [], const.DUR_KEY: [], const.BARPOS_KEY: [],
+                const.CHORD_KEY: [], const.CHORD_ROOT_KEY: [], const.CHORD_PC_KEY: [], 
+                const.NXT_CHORD_KEY: [], const.NXT_CHORD_ROOT_KEY: [], const.NXT_CHORD_PC_KEY: []}
                 
     def _get_seqs_and_targets(self, sequence):
         seqs, targets = [], []
@@ -112,6 +120,12 @@ class BebopPitchDurDataset(Dataset):
         """
         seqs = {k: torch.LongTensor(seqs[index]) for k, seqs in self.sequences.items()}
         seqs[const.CHORD_KEY] = seqs[const.CHORD_KEY].float()
+        seqs[const.CHORD_PC_KEY] = seqs[const.CHORD_PC_KEY].float()
+        seqs[const.NXT_CHORD_KEY] = seqs[const.NXT_CHORD_KEY].float()
+        seqs[const.NXT_CHORD_PC_KEY] = seqs[const.NXT_CHORD_PC_KEY].float()
         targets = {k: torch.LongTensor(np.array(targs[index])) for k, targs in self.targets.items()}
         targets[const.CHORD_KEY] = targets[const.CHORD_KEY].float()
+        targets[const.CHORD_PC_KEY] = targets[const.CHORD_PC_KEY].float()
+        targets[const.NXT_CHORD_KEY] = targets[const.NXT_CHORD_KEY].float()
+        targets[const.NXT_CHORD_PC_KEY] = targets[const.NXT_CHORD_PC_KEY].float()
         return (seqs, targets)
