@@ -10,6 +10,8 @@ parser.add_argument('-pn', '--pitch_run_name', type=str, default="ICCC_FinalRun"
                     help="select which pitch run to use")
 parser.add_argument('-dn', '--dur_run_name', type=str, default="ICCC_FinalRun",
                     help="select which dur run to use")
+parser.add_argument('-nr', '--num_repeats', type=int, default=1,
+                    help="if you want to generate more than 1 run through of a song")
 parser.add_argument('-sl', '--seed_length', type=int, default=10,
                     help="number of measures to use as seeds to the network")
 args = parser.parse_args()
@@ -26,9 +28,9 @@ models = [("nc", "no_cond"),
           ("cbc", "chord_barpos_cond"),
           ("ibc", "inter_barpos_cond"),
           ("cibc", "chord_inter_barpos_cond")]
-# songs = [op.basename(s) for s in glob.glob(op.join(data_song_dir, '*_0.pkl'))]
-songs = [op.basename(s) for s in os.listdir(data_song_dir)]
 
+songs = [op.basename(s) for s in glob.glob(op.join(data_song_dir, '*_0.pkl'))]
+# songs = [op.basename(s) for s in os.listdir(data_song_dir)]
 for abrv, name in models:
     print("#"*30 + "\n{}\n".format(name) + "#"*30)
     for song in songs:

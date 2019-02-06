@@ -109,7 +109,6 @@ def convert_chords_to_piano_roll_mat(song_structure):
             output_mat[CHORD_OFFSET:CHORD_OFFSET + len(chord_vec), ticks + begin:ticks + end] = chord_block
     return output_mat
 
-
 root_dir = str(Path(op.abspath(__file__)).parents[2])
 model_dir = op.join(root_dir, 'src', 'models', INIT_TO_MODEL[args.model]['name'])
 
@@ -233,14 +232,36 @@ for _ in range(args.num_repeats):
                 dur_inpt = torch.LongTensor([dur_seq[-1]]).view(1, -1)
                 barpos_inpt = torch.LongTensor([barpos_seq[-1]]).view(1, -1)
                 harmony_inpt = torch.FloatTensor(harmony_seq[-1]).view(1, -1, const.CHORD_DIM)
+
+outdir = op.join(model_dir, 'midi', args.title)
+if not op.exists(outdir):
+    os.makedirs(outdir)
+
+tokens = {'pitch_numbers': [], 'duration_tags': []}
+measure_pns = []
+measure_dts = []
+prev_barpos = -1
+# print(barpos_seq)
+for i, barpos in enumerate(barpos_seq):
+    if barpos <= prev_barpos:
+        tokens['pitch_numbers'].append(measure_pns)
+        tokens['duration_tags'].append(measure_dts)
+        measure_pns = []
+        measure_dts = []
+    measure_pns.append(pitch_seq[i])
+    measure_dts.append(dur_seq[i])
+    prev_barpos = barpos
+tokens['pitch_numbers'].append(measure_pns)
+tokens['duration_tags'].append(measure_dts)
+
+tokens_path = op.join(outdir, "%s_tokens.json" % args.title);
+print('Writing tokens file %s ...' % tokens_path)
+json.dump(tokens, open(tokens_path, 'w'))
         
 melody_pr_mat = convert_melody_to_piano_roll_mat(pitch_seq, dur_seq)
 chords_pr_mat = convert_chords_to_piano_roll_mat(song_structure)
 melody_pm = piano_roll_to_pretty_midi(melody_pr_mat, fs=30)
 chords_pm = piano_roll_to_pretty_midi(chords_pr_mat, fs=30)
-outdir = op.join(model_dir, 'midi', args.title)
-if not op.exists(outdir):
-    os.makedirs(outdir)
 melody_path = op.join(outdir, '%s_melody.mid' % args.title)
 chords_path = op.join(outdir, '%s_chords.mid' % args.title)
 print('Writing melody midi file %s ...' % melody_path)
