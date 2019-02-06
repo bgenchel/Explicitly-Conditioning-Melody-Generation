@@ -1,5 +1,6 @@
 import argparse
 import glob
+import os
 import os.path as op
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,6 +22,19 @@ ABRV_TO_MODEL = {'nc': 'no_cond',
                  'ibc': 'inter_barpos_cond',
                  'cibc': 'chord_inter_barpos_cond'}
 
+METRICS = {"total_used_pitch": {"args": (), "kwargs": {}, "shape": (1,)}, 
+        "bar_used_pitch": {"args": (), "kwargs": {"track_num": 1, "num_bar": 12}, "shape": (12, 1)}, 
+        "total_used_note": {"args": (), "kwargs": {"track_num": 1}, "shape": (1,)}, 
+        "bar_used_note": {"args": (), "kwargs": {"track_num": 1, "num_bar": 12}, "shape": (12, 1)}, 
+        "total_pitch_class_histogram": {"args": (), "kwargs": {}, "shape": (12, 12)},
+        "bar_pitch_class_histogram": {"args": (), "kwargs": {"track_num": 1, "num_bar": 12}, "shape": (12, 12)},
+        "pitch_class_transition_matrix": {"args": (), "kwargs": {}, "shape": (12, 12)},
+        "pitch_range": {"args": (), "kwargs": {}, "shape": (1,)}, 
+        "avg_pitch_shift": {"args": (), "kwargs": {"track_num": 1}, "shape": (1,)},
+        "avg_IOI": {"args": (), "kwargs": {}, "shape": (1,)}, 
+        "note_length_hist": {"args": (), "kwargs": {"track_num": 1}, "shape": (12,)}, 
+        "note_length_transition_matrix": {"args": (), "kwargs": {"track_num": 1}, "shape": (12, 12)}}
+
 class MGEval:
     """
     Wrapper around Richard Yang's MGEval
@@ -37,7 +51,7 @@ class MGEval:
         else:
             self.num_samples = pred_samples
 
-        self.num_samples = 100
+        self.num_samples = 100 
         self.metrics = core.metrics()
 
     def get_metric(self, metric_name, pred_metric_shape, target_metric_shape, *args, **kwargs):
@@ -76,14 +90,14 @@ class MGEval:
 
         return pred_intra_set_distance_cv, target_intra_set_distance_cv
 
-    def visualize(self, metric_name, pred_intra, target_intra, inter):
+    def visualize(self, metric_name, pred_intra, target_intra, inter, outpath):
         for measurement, label in zip([pred_intra, target_intra, inter], ["pred_intra", "target_intra", "inter"]):
             transposed = np.transpose(measurement, (1, 0, 2)).reshape(1, -1)
             sns.kdeplot(transposed[0], label=label)
 
         plt.title(metric_name)
         plt.xlabel('Euclidean distance')
-        plt.savefig(metric_name + '.png')
+        plt.savefig(outpath)
         # plt.show()
 
     def intra_inter_difference(self, metric_name, pred_intra, target_intra, inter):
@@ -103,30 +117,47 @@ class MGEval:
         print('  Overlap area:', utils.overlap_area(transposed[1][0], transposed[2][0]))
 
 
-def main(model, metric):
+def calculate_metric(mge, metric_name, pred_metric_shape, target_metric_shape, args, kwargs, figpath):
+    try:
+        pred_metric, target_metric = mge.get_metric(metric_name,  pred_metric_shape, target_metric_shape, *args, **kwargs)
+        inter = mge.inter_set_cross_validation(pred_metric, target_metric)
+        pred_intra, target_intra = mge.intra_set_cross_validation(pred_metric, target_metric)
+        mge.visualize(metric_name, pred_intra, target_intra, inter, figpath)
+    except Exception as e:
+        print("Error occured while calculating {}: {}".format(metric_name, repr(e)))
+
+def main(model, metric_name):
     root_dir = str(Path(op.abspath(__file__)).parents[2])
-    mge = MGEval(pred_dir=op.join(root_dir, "src", "models", ABRV_TO_MODEL[model], "midi"),
+    mge = MGEval(pred_dir=op.join(root_dir, "src", "models", model, "midi"),
                  target_dir=op.join(root_dir, "data", "raw", "midi"))
 
     # Expected shape of desired metric
-    metric_shape = (12, 12)
+    # metric_shape = (12, 12)
 
-    # Metric name
-    metric_name = "note_length_transition_matrix"
+    # # Metric name
+    # metric_name = "note_length_transition_matrix"
 
-    # Args and kwargs if needed for the desired metric
-    args = ()
-    kwargs = {"track_num": 1}
+    # # Args and kwargs if needed for the desired metric
+    # args = ()
+    # kwargs = {"track_num": 1}
+    if metric_name != "all": 
+        figpath = op.join(os.getcwd(), 'figs', model, metric_name + '.png')
+        if not op.exists(op.dirname(figpath)):
+            os.makedirs(op.dirname(figpath))
+        calculate_metric(mge, metric_name, METRICS[metric_name]["shape"], METRICS[metric_name]["shape"],
+                         METRICS[metric_name]["args"], METRICS[metric_name]["kwargs"], figpath)
+    else:
+        for k, v in METRICS.items():
+            figpath = op.join(os.getcwd(), 'figs', model, k + '.png')
+            if not op.exists(op.dirname(figpath)):
+                os.makedirs(op.dirname(figpath))
+            calculate_metric(mge, k, v["shape"], v["shape"], v["args"], v["kwargs"], figpath)
 
-    pred_metric, target_metric = mge.get_metric(metric_name, metric_shape, metric_shape, *args, **kwargs)
-    inter = mge.inter_set_cross_validation(pred_metric, target_metric)
-    pred_intra, target_intra = mge.intra_set_cross_validation(pred_metric, target_metric)
-    mge.visualize(metric_name, pred_intra, target_intra, inter)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model', default="nc", type=str,
-                    choices=("nc", "ic", "cc", "bc", "cic", "cbc", "ibc", "cibc"),
+                    choices=("nc", "ic", "cc", "bc", "cic", "cbc", "ibc", "cibc", "all"),
                     help="which model to evaluate.")
     parser.add_argument('-mt', '--metric', default="all", type=str,
                     choices=("total_used_pitch", "bar_used_pitch", "total_used_note", 
@@ -135,4 +166,9 @@ if __name__ == "__main__":
                              "avg_IOI", "note_length_hist", "note_length_transition_matrix", "all"),
                     help="which model to evaluate.")
     args = parser.parse_args()
-    main(args.model, args.metric)
+
+    if args.model == "all":
+        for _, model in ABRV_TO_MODEL.items():
+            main(model, args.metric)
+    else:
+        main(ABRV_TO_MODEL[args.model], args.metric)

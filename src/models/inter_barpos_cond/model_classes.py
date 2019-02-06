@@ -26,7 +26,7 @@ class InterBarPosCondLSTM(nn.Module):
 
         encoder_input_dim = embed_dim + cond_embed_dim + const.BARPOS_EMBED_DIM
         self.encoder = nn.Linear(encoder_input_dim, hidden_dim)
-        self.encoder_bn = nn.BatchNorm1d(seq_len)
+        self.encode_bn = nn.BatchNorm1d(seq_len)
 
         self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=self.num_layers, batch_first=True, dropout=dropout)
 

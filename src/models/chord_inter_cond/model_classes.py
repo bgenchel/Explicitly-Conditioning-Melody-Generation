@@ -29,7 +29,7 @@ class ChordInterCondLSTM(nn.Module):
         self.cond_embedding = nn.Embedding(cond_vocab_size, cond_embed_dim)
 
         self.encoder = nn.Linear(embed_dim + cond_embed_dim + const.CHORD_EMBED_DIM, hidden_dim)
-        self.encoder_bn = nn.BatchNorm1d(seq_len)
+        self.encode_bn = nn.BatchNorm1d(seq_len)
 
         self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=self.num_layers, batch_first=True, dropout=dropout)
 
