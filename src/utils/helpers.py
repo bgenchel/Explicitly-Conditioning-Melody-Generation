@@ -26,6 +26,8 @@ def get_args(default_title=""):
                         help="use batch normalization.")
     parser.add_argument('-m', '--model', required=True, choices=("pitch", "duration"), 
                         type=str, help="which model to train.")
+    parser.add_argument('-tt', '--train_type', default="next_step", choices=("next_step", "full_sequence"), 
+                        type=str, help="How to train the model / calculate loss.")
     parser.add_argument('-nc', '--no_cuda', action="store_true",
                         help="don't allow the use of CUDA, even if it's available.")
     parser.add_argument('-k', '--keep', action='store_true',

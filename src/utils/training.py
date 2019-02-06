@@ -25,7 +25,7 @@ class Trainer:
         self.info_dict['run_datetime'] = self.args.run_datetime_str
         self.info_dict.update(vars(self.args))
 
-        dataset = BebopPitchDurDataset(seq_len=self.args.seq_len)
+        dataset = BebopPitchDurDataset(seq_len=self.args.seq_len, train_type=self.args.train_type)
         self.train_loader, self.valid_loader = SplitDataLoader(dataset, batch_size=self.args.batch_size, 
                                                                drop_last=True).split()
 
@@ -41,6 +41,9 @@ class Trainer:
             self.dirpath = op.join(self.dirpath, "test_runs", self.args.title)
         
     def train_model(self, print_interval=250):
+        """
+        :@param: train_type - can be either 'next_step' of 'full_sequence'
+        """
         writer = TensorBoardWriter(op.join(self.dirpath, 'tensorboard'))
         self.save_model_inputs()
 
@@ -102,7 +105,10 @@ class Trainer:
             # zero the parameter gradients
             self.optimizer.zero_grad()
             # forward pass
-            output = self.model(data_batch)[:, -1, :]
+            if self.args.train_type == "next_step":
+                output = self.model(data_batch)[:, -1, :]
+            elif self.args.train_type == "full_sequence":
+                output = self.model(data_batch)
             # backward + optimize
             loss = self.loss_fn(output, target_batch)
             loss.backward()
