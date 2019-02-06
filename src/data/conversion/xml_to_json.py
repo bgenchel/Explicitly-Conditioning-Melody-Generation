@@ -3,6 +3,7 @@ import os
 import os.path as op
 import json
 from pathlib import Path
+import pdb
 
 
 def xml_to_dict(fpath):
@@ -11,10 +12,12 @@ def xml_to_dict(fpath):
             root_dict["measures"] = []
         if root.tag == "measure":
             root_dict["groups"] = []
+            root_dict["attributes"] = {}
         if root.tag == "harmony":
             root_dict["degrees"] = []
 
         for i, child in enumerate(root):
+            # pdb.set_trace()
             child_dict = {'attributes': child.attrib}
             if len(list(child)) == 0:
                 child_dict['text'] = child.text
@@ -31,6 +34,8 @@ def xml_to_dict(fpath):
                 if not len(root_dict["groups"]):
                     root_dict["groups"].append({"harmony": {}, "notes": []})
                 root_dict["groups"][-1]["notes"].append(child_dict)
+            elif child.tag == "attributes":
+                root_dict["attributes"].update(child_dict)
             else:
                 root_dict[child.tag] = child_dict
         return root_dict
