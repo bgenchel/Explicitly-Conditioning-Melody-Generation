@@ -12,8 +12,8 @@ def main():
                'path': op.join(xml_dir, fname)} for fname in fnames]
 
     for fdict in fdicts:
-        outpath = op.join(root_dir, 'data', 'raw', 'midi', fdict['basename'] + '.midi')
-        mscore_path = '/usr/bin/mscore'
+        outpath = op.join(root_dir, 'data', 'raw', 'midi', fdict['basename'] + '.mid')
+        mscore_path = '/Applications/MuseScore 2.app/Contents/MacOS/mscore'
         subprocess.call([mscore_path, fdict['path'], '-o', outpath])
     return
 
