@@ -94,11 +94,11 @@ class ChordInterCondLSTM(nn.Module):
         
         root_embeds = self.chord_root_embed(chord_roots)
         pc_embeds = self.chord_pc_encoder(chord_pcs)
-        chord_embeds = self.chord_encoder(torch.cat[root_embeds, pc_embeds], 2)
+        chord_embeds = self.chord_encoder(torch.cat([root_embeds, pc_embeds], 2))
 
         nxt_root_embeds = self.chord_root_embed(nxt_chord_roots)
         nxt_pc_embeds = self.chord_pc_encoder(nxt_chord_pcs)
-        nxt_chord_embeds = self.chord_encoder(torch.cat[nxt_root_embeds, nxt_pc_embeds], 2)
+        nxt_chord_embeds = self.chord_encoder(torch.cat([nxt_root_embeds, nxt_pc_embeds], 2))
 
         x_embeds = self.embedding(x)
         cond_embeds = self.cond_embedding(conds)
