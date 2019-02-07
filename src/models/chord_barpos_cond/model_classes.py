@@ -53,6 +53,7 @@ class ChordBarPosCondLSTM(nn.Module):
             nn.Linear(mid_dim, output_dim)]
         if batch_norm:
             decoder_layers.insert(1, nn.BatchNorm1d(seq_len))
+        self.decoder = nn.Sequential(*decoder_layers)
 
         self.softmax = nn.LogSoftmax(dim=2)
 
@@ -87,7 +88,7 @@ class ChordBarPosCondLSTM(nn.Module):
 
         root_embeds = self.chord_root_embed(chord_roots)
         pc_embeds = self.chord_pc_encoder(chord_pcs)
-        chord_embeds = self.chord_encoder(torch.cat[root_embeds, pc_embeds], 2)
+        chord_embeds = self.chord_encoder(torch.cat([root_embeds, pc_embeds], 2))
 
         x_embeds = self.embedding(x)
         barpos_embeds = self.barpos_embedding(barpos)
