@@ -30,6 +30,8 @@ def get_args(default_title=""):
                         type=str, help="How to train the model / calculate loss.")
     parser.add_argument('-nc', '--no_cuda', action="store_true",
                         help="don't allow the use of CUDA, even if it's available.")
+    parser.add_argument('-cd', '--cuda_device', type=int, default=0, choices=(0, 1),
+                        help="Which GPU to use.")
     parser.add_argument('-k', '--keep', action='store_true',
                         help="save model files and other about this run")
     return parser.parse_args()

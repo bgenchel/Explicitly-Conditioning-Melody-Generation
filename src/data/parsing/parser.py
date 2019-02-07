@@ -745,6 +745,8 @@ class PitchDurParser(Parser):
                     for pn in group["pitch_numbers"]]
                 group["harmony"]["root"] = rotate(group["harmony"]["root"], steps)
                 group["harmony"]["pitch_classes"] = rotate(group["harmony"]["pitch_classes"], steps)
+                group["next_harmony"]["root"] = rotate(group["harmony"]["root"], steps)
+                group["next_harmony"]["pitch_classes"] = rotate(group["harmony"]["pitch_classes"], steps)
                 transposed["measures"][i]["groups"][j] = group
         return transposed
 

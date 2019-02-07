@@ -1,0 +1,20 @@
+run_datetime:       	 Feb07-19_01:03:34
+title:              	 Feb07-19_01:03:34
+charlie_parker:     	 False
+epochs:             	 30
+batch_size:         	 64
+seq_len:            	 64
+hidden_dim:         	 256
+learning_rate:      	 0.001
+dropout:            	 0.0
+batch_norm:         	 True
+model:              	 pitch
+train_type:         	 next_step
+no_cuda:            	 False
+cuda_device:        	 1
+keep:               	 True
+run_datetime_str:   	 Feb07-19_01:03:34
+best_model:         	 {'epoch': 6, 'train_loss': 0.9330968979908072, 'valid_loss': 1.4922537137822407}
+epochs_completed:   	 31
+final_training_loss:	 0.23780247989963393
+final_valid_loss:   	 2.1004486789063708
