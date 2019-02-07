@@ -20,19 +20,44 @@ class ChordCondLSTM(nn.Module):
         self.batch_norm = batch_norm
         self.no_cuda = no_cuda
 
-        self.chord_fc1 = nn.Linear(const.CHORD_DIM, const.CHORD_EMBED_DIM)
-        self.chord_bn = nn.BatchNorm1d(seq_len)
-        self.chord_fc2 = nn.Linear(const.CHORD_EMBED_DIM, const.CHORD_EMBED_DIM)
+        # self.chord_fc1 = nn.Linear(const.CHORD_DIM, const.CHORD_EMBED_DIM)
+        # self.chord_bn = nn.BatchNorm1d(seq_len)
+        # self.chord_fc2 = nn.Linear(const.CHORD_EMBED_DIM, const.CHORD_EMBED_DIM)
+        self.chord_root_embed = nn.Embedding(const.CHORD_ROOT_DIM, const.CHORD_ROOT_EMBED_DIM)
+
+        self.chord_pc_encoder = nn.Sequential(
+            nn.Linear(const.CHORD_PC_DIM, (const.CHORD_PC_DIM + const.CHORD_PC_EMBED_DIM) // 2),
+            nn.ReLU(),
+            nn.Linear((const.CHORD_PC_DIM + const.CHORD_PC_EMBED_DIM) // 2, const.CHORD_PC_EMBED_DIM))
+
+        chord_encoder_layers = [
+            nn.Linear(const.CHORD_ROOT_EMBED_DIM + const.CHORD_PC_EMBED_DIM, const.CHORD_EMBED_DIM),
+            nn.ReLU(),
+            nn.Linear(const.CHORD_EMBED_DIM, const.CHORD_EMBED_DIM)]
+        if self.batch_norm:
+            chord_encoder_layers.insert(1, nn.BatchNorm1d(seq_len))
+        self.chord_encoder = nn.Sequential(*chord_encoder_layers)
 
         self.embedding = nn.Embedding(vocab_size, embed_dim)
-        self.encoder = nn.Linear(embed_dim + const.CHORD_EMBED_DIM, hidden_dim)
-        self.encode_bn = nn.BatchNorm1d(seq_len)
+
+        encoder_layers = [
+            nn.Linear(embed_dim + const.CHORD_EMBED_DIM, hidden_dim),
+            nn.ReLU()]
+        if batch_norm:
+            encoder_layers.insert(1, nn.BatchNorm1d(seq_len))
+        self.encoder = nn.Sequential(*encoder_layers)
+
         self.lstm = nn.LSTM(hidden_dim, hidden_dim, num_layers=self.num_layers, batch_first=True, dropout=dropout)
 
         mid_dim = (hidden_dim + output_dim) // 2
-        self.decode1 = nn.Linear(hidden_dim, mid_dim)
-        self.decode_bn = nn.BatchNorm1d(seq_len)
-        self.decode2 = nn.Linear(mid_dim, output_dim)
+        decoder_layers = [
+            nn.Linear(hidden_dim, mid_dim),
+            nn.ReLU(),
+            nn.Linear(mid_dim, output_dim)]
+        if batch_norm:
+            decoder_layers.insert(1, nn.BatchNorm1d(seq_len))
+        self.decoder = nn.Sequential(*decoder_layers)
+
         self.softmax = nn.LogSoftmax(dim=2)
 
         self.hidden_and_cell = None
@@ -60,26 +85,20 @@ class ChordCondLSTM(nn.Module):
         self.hidden_and_cell = (new_hidden, new_cell)
 
     def forward(self, data):
-        x, chords = data
-        chord_embeds = self.chord_fc1(chords)
-        if self.batch_norm:
-            chord_embeds = self.chord_bn(chord_embeds)
-        chord_embeds = self.chord_fc2(F.relu(chord_embeds))
+        x, chord_roots, chord_pcs = data
+
+        root_embeds = self.chord_root_embed(chord_roots)
+        pc_embeds = self.chord_pc_encoder(chord_pcs)
+        chord_embeds = self.chord_encoder(torch.cat([root_embeds, pc_embeds], 2))
 
         x_embeds = self.embedding(x)
-        encoding = self.encoder(torch.cat([chord_embeds, x_embeds], 2)) # Concatenate along 3rd dimension
-        if self.batch_norm:
-            encoding = self.encode_bn(encoding)
-        encoding = F.relu(encoding)
 
+        encoding = self.encoder(torch.cat([x_embeds, chord_embeds], 2)) # Concatenate along 3rd dimension
         lstm_out, self.hidden_and_cell = self.lstm(encoding, self.hidden_and_cell)
-        decoding = self.decode1(lstm_out)
-        if self.batch_norm:
-            decoding = self.decode_bn(decoding)
-        decoding = self.decode2(F.relu(decoding))
 
-        output = self.softmax(decoding)
-        return output
+        decoding = self.decoder(lstm_out)
+
+        return self.softmax(decoding)
 
 class PitchLSTM(ChordCondLSTM):
     def __init__(self, **kwargs):
@@ -88,11 +107,13 @@ class PitchLSTM(ChordCondLSTM):
 
     def data_assembler(self, data_dict):
         data = data_dict[const.PITCH_KEY]
-        harmony = data_dict[const.CHORD_KEY]
+        chord_root = data_dict[const.CHORD_ROOT_KEY]
+        chord_pc = data_dict[const.CHORD_PC_KEY]
         if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
-            harmony = harmony.cuda()
-        return (data, harmony)
+            chord_root = chord_root.cuda()
+            chord_pc = chord_pc.cuda()
+        return (data, chord_root, chord_pc)
 
     def target_assembler(self, target_dict):
         target = target_dict[const.PITCH_KEY]
@@ -107,11 +128,13 @@ class DurationLSTM(ChordCondLSTM):
 
     def data_assembler(self, data_dict):
         data = data_dict[const.DUR_KEY]
-        harmony = data_dict[const.CHORD_KEY]
+        chord_root = data_dict[const.CHORD_ROOT_KEY]
+        chord_pc = data_dict[const.CHORD_PC_KEY]
         if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
-            harmony = harmony.cuda()
-        return (data, harmony)
+            chord_root = chord_root.cuda()
+            chord_pc = chord_pc.cuda()
+        return (data, chord_root, chord_pc)
 
     def target_assembler(self, target_dict):
         target = target_dict[const.DUR_KEY]
