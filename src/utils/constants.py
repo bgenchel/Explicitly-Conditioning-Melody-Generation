@@ -5,15 +5,24 @@ Constant Values
 PITCH_KEY = "pitch_numbers"
 DUR_KEY = "duration_tags"
 CHORD_KEY = "harmony"
+NXT_CHORD_KEY = "next_harmony"
+CHORD_ROOT_KEY = "harmony_root"
+CHORD_PC_KEY = "harmony_pitch_classes"
+NXT_CHORD_ROOT_KEY = "next_harmony_root"
+NXT_CHORD_PC_KEY = "next_harmony_pitch_classes"
 BARPOS_KEY = "bar_positions"
 
 # Model Params
 PITCH_DIM = 89
 DUR_DIM = 19
 CHORD_DIM = 24
+CHORD_ROOT_DIM = 12
+CHORD_PC_DIM = 12
 BARPOS_DIM = 96
 PITCH_EMBED_DIM = 16
 DUR_EMBED_DIM = 4
+CHORD_ROOT_EMBED_DIM = 2
+CHORD_PC_EMBED_DIM = 8
 CHORD_EMBED_DIM = 8
 BARPOS_EMBED_DIM = 16
 NUM_RNN_LAYERS = 2
@@ -22,6 +31,21 @@ NUM_RNN_LAYERS = 2
 NOTES_MAP = {'rest': 88, 'B#': 0, 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 
              'Eb': 3, 'E': 4, 'Fb': 4, 'E#': 5, 'F': 5, 'F#': 6, 'Gb': 6, 
              'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11, 'Cb': 11}
+INVERSE_NOTES_MAP = {
+    0: 'C',
+    1: 'C#',
+    2: 'D',
+    3: 'D#',
+    4: 'E',
+    5: 'F',
+    6: 'F#',
+    7: 'G',
+    8: 'G#',
+    9: 'A',
+    10: 'A#',
+    11: 'B',
+    12: 'rest'
+}
 
 DURATIONS_MAP = {
     '32nd-triplet': 0, 
