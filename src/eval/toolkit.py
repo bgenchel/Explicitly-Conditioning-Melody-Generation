@@ -59,6 +59,7 @@ class MGEval:
         target_metric = np.zeros((self.num_samples,) + target_metric_shape)
 
         for sample in range(self.num_samples):
+            # print(self.pred_set[sample])
             pred_metric[sample] = getattr(self.metrics, metric_name)(core.extract_feature(self.pred_set[sample]), *args, **kwargs)
             target_metric[sample] = getattr(self.metrics, metric_name)(core.extract_feature(self.target_set[sample]), *args, **kwargs)
 
@@ -169,6 +170,7 @@ if __name__ == "__main__":
 
     if args.model == "all":
         for _, model in ABRV_TO_MODEL.items():
+            print(model)
             main(model, args.metric)
     else:
         main(ABRV_TO_MODEL[args.model], args.metric)

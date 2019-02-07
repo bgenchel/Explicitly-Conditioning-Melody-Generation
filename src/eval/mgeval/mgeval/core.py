@@ -179,7 +179,7 @@ class metrics(object):
         for i in range(0, 128):
             pitch_class = i % 12
             histogram[pitch_class] += np.sum(piano_roll, axis=1)[i]
-        histogram = histogram // sum(histogram)
+        histogram = histogram / sum(histogram)
         return histogram
 
     def bar_pitch_class_histogram(self, feature, track_num=1, bpm=120, num_bar=None):
@@ -261,10 +261,10 @@ class metrics(object):
         elif normalize == 1:
             sums = np.sum(transition_matrix, axis=1)
             sums[sums == 0] = 1
-            return transition_matrix // sums.reshape(-1, 1)
+            return transition_matrix / sums.reshape(-1, 1)
 
         elif normalize == 2:
-            return transition_matrix // sum(sum(transition_matrix))
+            return transition_matrix / sum(sum(transition_matrix))
 
         else:
             print("invalid normalization mode, return unnormalized matrix")
@@ -279,8 +279,7 @@ class metrics(object):
         'p_range': a scalar for each sample.
         """
         piano_roll = feature['pretty_midi'].instruments[0].get_piano_roll(fs=100)
-        used_pitch = np.sum(piano_roll, axis=1) > 0
-        pitch_index = np.where(used_pitch is True)
+        pitch_index = np.where(np.sum(piano_roll, axis=1) > 0)
         p_range = np.max(pitch_index) - np.min(pitch_index)
         return p_range
 
@@ -433,7 +432,7 @@ class metrics(object):
 
         elif normalize is True:
 
-            return note_length_hist // np.sum(note_length_hist)
+            return note_length_hist / np.sum(note_length_hist)
 
     def note_length_transition_matrix(self, feature, track_num=1, normalize=0, pause_event=False):
         """
@@ -551,11 +550,11 @@ class metrics(object):
 
             sums = np.sum(transition_matrix, axis=1)
             sums[sums == 0] = 1
-            return transition_matrix // sums.reshape(-1, 1)
+            return transition_matrix / sums.reshape(-1, 1)
 
         elif normalize == 2:
 
-            return transition_matrix // sum(sum(transition_matrix))
+            return transition_matrix / sum(sum(transition_matrix))
 
         else:
             print("invalid normalization mode, return unnormalized matrix")
