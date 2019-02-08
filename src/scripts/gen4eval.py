@@ -46,5 +46,3 @@ for abrv, name in models:
                              '-ss', song, '-sl', str(args.seed_length), '-t', outname])
         except RuntimeError:
             continue
-        if i > 0:
-            break

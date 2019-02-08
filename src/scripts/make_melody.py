@@ -327,19 +327,25 @@ for _ in range(args.num_repeats):
                 barpos_seq.append(curr_barpos)
                 harmony_seq.append(chord)
 
-                roll(pitch_inpt, -1)
+                pitch_inpt = roll(pitch_inpt, -1)
                 pitch_inpt[-1] = torch.LongTensor([pitch_seq[-1]])
-                roll(dur_inpt, -1)
+
+                dur_inpt = roll(dur_inpt, -1)
                 dur_inpt[-1] = torch.LongTensor([dur_seq[-1]])
-                roll(barpos_inpt, -1)
+
+                barpos_inpt = roll(barpos_inpt, -1)
                 barpos_inpt[-1] = torch.LongTensor([barpos_seq[-1]])
-                roll(chord_root_inpt, -1)
+
+                chord_root_inpt = roll(chord_root_inpt, -1)
                 chord_root_inpt[-1] = torch.LongTensor([chord_root])
-                roll(chord_pc_inpt, -1)
+
+                chord_pc_inpt = roll(chord_pc_inpt, -1)
                 chord_pc_inpt[-1] = torch.FloatTensor(chord_pc)
-                roll(nxt_chord_root_inpt, -1)
+
+                nxt_chord_root_inpt = roll(nxt_chord_root_inpt, -1)
                 nxt_chord_root_inpt[-1] = torch.LongTensor([nxt_chord_root])
-                roll(nxt_chord_pc_inpt, -1)
+
+                nxt_chord_pc_inpt = roll(nxt_chord_pc_inpt, -1)
                 nxt_chord_pc_inpt[-1] = torch.FloatTensor(nxt_chord_pc)
                 # pitch_inpt = torch.LongTensor([pitch_seq[-1]]).view(1, -1)
                 # dur_inpt = torch.LongTensor([dur_seq[-1]]).view(1, -1)
