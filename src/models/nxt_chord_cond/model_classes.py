@@ -111,8 +111,8 @@ class PitchLSTM(ChordCondLSTM):
         nxt_chord_pc = data_dict[const.NXT_CHORD_PC_KEY]
         if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
-            nxt_chord_root = chord_root.cuda()
-            nxt_chord_pc = chord_pc.cuda()
+            nxt_chord_root = nxt_chord_root.cuda()
+            nxt_chord_pc = nxt_chord_pc.cuda()
         return (data, nxt_chord_root, nxt_chord_pc)
 
     def target_assembler(self, target_dict):
@@ -132,8 +132,8 @@ class DurationLSTM(ChordCondLSTM):
         nxt_chord_pc = data_dict[const.NXT_CHORD_PC_KEY]
         if torch.cuda.is_available() and (not self.no_cuda):
             data = data.cuda()
-            nxt_chord_root = chord_root.cuda()
-            nxt_chord_pc = chord_pc.cuda()
+            nxt_chord_root = nxt_chord_root.cuda()
+            nxt_chord_pc = nxt_chord_pc.cuda()
         return (data, nxt_chord_root, nxt_chord_pc)
 
     def target_assembler(self, target_dict):
