@@ -1,34 +1,34 @@
 {
     "no_cond": {
-        "pitch": 0.0,
-        "duration": 5.415739284054448e-232
+        "pitch": 0.28915994412676,
+        "duration": 0.6803058895081352
     },
     "inter_cond": {
-        "pitch": 0.0,
-        "duration": 4.5966956187201214e-232
+        "pitch": 0.3300978447681017,
+        "duration": 0.7282907927530547
     },
     "chord_cond": {
-        "pitch": 0.0,
-        "duration": 5.4833282200540096e-232
+        "pitch": 0.32667842034698147,
+        "duration": 0.6666129529772221
     },
     "barpos_cond": {
-        "pitch": 0.0,
-        "duration": 5.463726598329251e-232
+        "pitch": 0.30171823264481185,
+        "duration": 0.6894288930357824
     },
     "chord_inter_cond": {
-        "pitch": 0.0,
-        "duration": 4.802432745123601e-232
+        "pitch": 0.34015728681973234,
+        "duration": 0.6909929204922124
     },
     "chord_barpos_cond": {
-        "pitch": 0.0,
-        "duration": 5.547369796174931e-232
+        "pitch": 0.33470606277372006,
+        "duration": 0.7096050947524186
     },
     "inter_barpos_cond": {
-        "pitch": 0.0,
-        "duration": 5.6492219734841065e-232
+        "pitch": 0.29640494853624993,
+        "duration": 0.6968343355068856
     },
     "chord_inter_barpos_cond": {
-        "pitch": 0.0,
-        "duration": 5.5693232379401294e-232
+        "pitch": 0.3396450344932441,
+        "duration": 0.7286959351122066
     }
 }

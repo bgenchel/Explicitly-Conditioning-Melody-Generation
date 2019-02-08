@@ -9,6 +9,7 @@ import pickle
 from nltk.translate.bleu_score import corpus_bleu, sentence_bleu
 from pathlib import Path
 from tqdm import tqdm
+import pdb
 
 TICKS_PER_BEAT = 24
 TICKS_PER_MEASURE = 4 * TICKS_PER_BEAT
@@ -16,12 +17,18 @@ TICKS_PER_SENTENCE = 8 * TICKS_PER_MEASURE
 
 ABRV_TO_MODEL = {'nc': 'no_cond',
                  'ic': 'inter_cond',
-                 'cc': 'chord_cond',
-                 'bc': 'barpos_cond',
+                 'bc': 'barpos_cond', 
+                 'cc': 'chord_cond', 
+                 'nxc': 'nxt_chord_cond', 
+                 'cnc': 'chord_nxtchord_cond', 
                  'cic': 'chord_inter_cond',
+                 'cnic': 'chord_nxtchord_inter_cond',
                  'cbc': 'chord_barpos_cond',
+                 'cnbc': 'chord_nxtchord_barpos_cond',
                  'ibc': 'inter_barpos_cond',
-                 'cibc': 'chord_inter_barpos_cond'}
+                 'cibc': 'chord_inter_barpos_cond',
+                 'cnibc': 'chord_nxtchord_inter_barpos_cond'}
+
 
 class BleuScore:
 
@@ -76,31 +83,39 @@ class BleuScore:
 
 
 def main():
+    print('ENTERED MAIN')
     root_dir = str(Path(op.abspath(__file__)).parents[2])
     model_dir = op.join(root_dir, "src", "models")
     data_song_dir = op.join(root_dir, "data", "processed", "songs")
     
     models = [('nc', 'no_cond'),
               ('ic', 'inter_cond'),
-              ('cc', 'chord_cond'),
               ('bc', 'barpos_cond'),
+              ('cc', 'chord_cond'),
+              ('nxc', 'nxt_chord_cond'),
+              ('cnc', 'chord_nxtchord_cond'),
               ('cic', 'chord_inter_cond'),
+              ('cnic', 'chord_nxtchord_inter_cond'),
               ('cbc', 'chord_barpos_cond'),
+              ('cnbc', 'chord_nxtchord_barpos_cond'),
               ('ibc', 'inter_barpos_cond'),
-              ('cibc', 'chord_inter_barpos_cond')]
+              ('cibc', 'chord_inter_barpos_cond'),
+              ('cnibc', 'chord_nxtchord_inter_barpos_cond')]
 
     scores = {}
-    songs = [op.basename(s) for s in glob.glob(op.join(data_song_dir, '*_0.pkl'))]
+    songs = [op.basename(s) for s in glob.glob(op.join(data_song_dir, '*.pkl'))]
     for abrv, name in models:
+        print('ENTERED FOR LO0P')
         ref_pns = []
         ref_dts = []
         cand_pns = []
         cand_dts = []
         midi_dir = op.join(model_dir, name, "midi")
         for song in songs:
-            gen_ext = "_".join(["4eval", song.split(".")[0]])
+            gen_ext = "_".join(["4eval", 'Folk', song.split(".")[0]])
             gen_path = op.join(midi_dir, gen_ext, gen_ext + '_tokens' + ".json")
             if not op.exists(gen_path):
+                pdb.set_trace()
                 continue
 
             song_pkl = pickle.load(open(op.join(data_song_dir, song), "rb"))
