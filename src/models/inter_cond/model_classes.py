@@ -78,6 +78,7 @@ class InterCondLSTM(nn.Module):
         encoding = F.relu(encoding)
 
         lstm_out, self.hidden_and_cell = self.lstm(encoding, self.hidden_and_cell)
+
         decoding = self.decode1(lstm_out)
         if self.batch_norm:
             decoding = self.decode_bn(decoding)
