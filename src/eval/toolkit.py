@@ -8,19 +8,25 @@ import pdb
 import seaborn as sns
 import sys
 from pathlib import Path
+from collections import OrderedDict
 from sklearn.model_selection import LeaveOneOut
 
 sys.path.append("./mgeval")
 from mgeval import core, utils
 
-ABRV_TO_MODEL = {'nc': 'no_cond',
+ABRV_TO_MODEL = OrderedDict({'nc': 'no_cond',
                  'ic': 'inter_cond',
-                 'cc': 'chord_cond',
-                 'bc': 'barpos_cond',
+                 'bc': 'barpos_cond', 
+                 'cc': 'chord_cond', 
+                 'nxc': 'nxt_chord_cond', 
+                 'cnc': 'chord_nxtchord_cond', 
                  'cic': 'chord_inter_cond',
+                 'cnic': 'chord_nxtchord_inter_cond',
                  'cbc': 'chord_barpos_cond',
+                 'cnbc': 'chord_nxtchord_barpos_cond',
                  'ibc': 'inter_barpos_cond',
-                 'cibc': 'chord_inter_barpos_cond'}
+                 'cibc': 'chord_inter_barpos_cond',
+                 'cnibc': 'chord_nxtchord_inter_barpos_cond'})
 
 METRICS = {"total_used_pitch": {"args": (), "kwargs": {}, "shape": (1,)}, 
         "bar_used_pitch": {"args": (), "kwargs": {"track_num": 1, "num_bar": 12}, "shape": (12, 1)}, 
@@ -101,28 +107,40 @@ class MGEval:
         plt.savefig(outpath)
         # plt.show()
 
-    def intra_inter_difference(self, metric_name, pred_intra, target_intra, inter):
+    def intra_inter_difference(self, metric_name, pred_intra, target_intra, inter, outpath):
         transposed = []
 
         for measurement, label in zip([pred_intra, target_intra, inter], ["pred_intra", "target_intra", "inter"]):
             transposed_meas = np.transpose(measurement, (1, 0, 2)).reshape(1, -1)
             transposed.append(transposed_meas)
 
-        print(metric_name + ':')
-        print('------------------------')
-        print(' Predictions')
-        print('  KL divergence:', utils.kl_dist(transposed[0][0], transposed[2][0]))
-        print('  Overlap area:', utils.overlap_area(transposed[0][0], transposed[2][0]))
-        print(' Targets')
-        print('  KL divergence:', utils.kl_dist(transposed[1][0], transposed[2][0]))
-        print('  Overlap area:', utils.overlap_area(transposed[1][0], transposed[2][0]))
+        fp = open(outpath, 'w')
+        fp.write(metric_name + ':\n')
+        fp.write('-------------------------\n')
+        fp.write(' Predictions\n')
+        fp.write('     KL divergence: {}\n'.format(utils.kl_dist(transposed[0][0], transposed[2][0])))
+        fp.write('     Overlap area: {}\n'.format(utils.overlap_area(transposed[0][0], transposed[2][0])))
+        fp.write(' Targets\n')
+        fp.write('     KL divergence: {}\n'.format(utils.kl_dist(transposed[1][0], transposed[2][0])))
+        fp.write('     Overlap area: {}\n'.format(utils.overlap_area(transposed[1][0], transposed[2][0])))
+        fp.close()
+
+        # print(metric_name + ':')
+        # print('------------------------')
+        # print(' Predictions')
+        # print('  KL divergence:', utils.kl_dist(transposed[0][0], transposed[2][0]))
+        # print('  Overlap area:', utils.overlap_area(transposed[0][0], transposed[2][0]))
+        # print(' Targets')
+        # print('  KL divergence:', utils.kl_dist(transposed[1][0], transposed[2][0]))
+        # print('  Overlap area:', utils.overlap_area(transposed[1][0], transposed[2][0]))
 
 
-def calculate_metric(mge, metric_name, pred_metric_shape, target_metric_shape, args, kwargs, figpath):
+def calculate_metric(mge, metric_name, pred_metric_shape, target_metric_shape, args, kwargs, statspath, figpath):
     try:
         pred_metric, target_metric = mge.get_metric(metric_name,  pred_metric_shape, target_metric_shape, *args, **kwargs)
         inter = mge.inter_set_cross_validation(pred_metric, target_metric)
         pred_intra, target_intra = mge.intra_set_cross_validation(pred_metric, target_metric)
+        mge.intra_inter_difference(metric_name, pred_intra, target_intra, inter, statspath)
         mge.visualize(metric_name, pred_intra, target_intra, inter, figpath)
     except Exception as e:
         print("Error occured while calculating {}: {}".format(metric_name, repr(e)))
@@ -142,24 +160,34 @@ def main(model, metric_name):
     # args = ()
     # kwargs = {"track_num": 1}
     if metric_name != "all": 
-        figpath = op.join(os.getcwd(), 'figs', model, metric_name + '.png')
+        statspath = op.join(os.getcwd(), 'mgeval_results', model, metric_name + '.txt')
+        figpath = op.join(os.getcwd(), 'mgeval_results', model, metric_name + '.png')
+        if not op.exists(op.dirname(statspath)):
+            os.makedirs(op.dirname(statspath))
         if not op.exists(op.dirname(figpath)):
             os.makedirs(op.dirname(figpath))
         calculate_metric(mge, metric_name, METRICS[metric_name]["shape"], METRICS[metric_name]["shape"],
-                         METRICS[metric_name]["args"], METRICS[metric_name]["kwargs"], figpath)
+                         METRICS[metric_name]["args"], METRICS[metric_name]["kwargs"], statspath, figpath)
     else:
         for k, v in METRICS.items():
-            figpath = op.join(os.getcwd(), 'figs', model, k + '.png')
+            statspath = op.join(os.getcwd(), 'mgeval_results', model, k + '.txt')
+            figpath = op.join(os.getcwd(), 'mgeval_results', model, k + '.png')
+            if not op.exists(op.dirname(statspath)):
+                os.makedirs(op.dirname(statspath))
             if not op.exists(op.dirname(figpath)):
                 os.makedirs(op.dirname(figpath))
-            calculate_metric(mge, k, v["shape"], v["shape"], v["args"], v["kwargs"], figpath)
+            calculate_metric(mge, k, v["shape"], v["shape"], v["args"], v["kwargs"], statspath, figpath)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-m', '--model', default="nc", type=str,
-                    choices=("nc", "ic", "cc", "bc", "cic", "cbc", "ibc", "cibc", "all"),
-                    help="which model to evaluate.")
+    parser.add_argument('-m', '--model', type=str, default="all", choices=(list(ABRV_TO_MODEL.keys()) + ['all']),
+                        help="which model to evaluate.\n \
+                              \t\tall, nc - no_cond, ic - inter_cond, bc - barpos_cond, cc - chord_cond, \n \
+                              \t\tnxc - next_chord_cond, cnc - chord_nextchord_cond, cic - chord_inter__cond, \n \
+                              \t\tcnic - chord_nextchord_inter_cond, cbc - chord_barpos_cond, \n \
+                              \t\tcnbc - chord_nextchord_barpos_cond, ibc - inter_barpos_cond \n \
+                              \t\tcibc - chord_inter_barpos_cond, cnibc - chord_nextchord_inter_barpos_cond.")
     parser.add_argument('-mt', '--metric', default="all", type=str,
                     choices=("total_used_pitch", "bar_used_pitch", "total_used_note", 
                              "bar_used_note", "total_pitch_class_histogram", "bar_pitch_class_histogram",
