@@ -46,7 +46,7 @@ class MGEval:
     Wrapper around Richard Yang's MGEval
     """
     def __init__(self, pred_dir, target_dir):
-        self.pred_set = glob.glob(op.join(pred_dir, "4eval*_0", "4eval*_0_melody.mid"))
+        self.pred_set = glob.glob(op.join(pred_dir, "4eval*", "4eval*_melody.mid"))
         self.target_set = glob.glob(op.join(target_dir, "*.mid"))
 
         pred_samples = len(self.pred_set)

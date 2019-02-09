@@ -1,0 +1,8 @@
+total_used_pitch:
+-------------------------
+ Predictions
+     KL divergence: 0.07886142775978186
+     Overlap area: 0.8416856263755143
+ Targets
+     KL divergence: 0.09395115886242258
+     Overlap area: 0.8958219745903545

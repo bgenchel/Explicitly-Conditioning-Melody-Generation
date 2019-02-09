@@ -88,7 +88,7 @@ def main():
     data_song_dir = op.join(root_dir, "data", "processed", "songs")
     
     scores = {}
-    songs = [op.basename(s) for s in glob.glob(op.join(data_song_dir, '*_0.pkl'))]
+    songs = [op.basename(s) for s in glob.glob(op.join(data_song_dir, '*.pkl'))]
     for abrv, name in ABRV_TO_MODEL.items():
         print(name)
         ref_pns = []
@@ -97,7 +97,7 @@ def main():
         cand_dts = []
         midi_dir = op.join(model_dir, name, "midi")
         for song in songs:
-            gen_ext = "_".join(["4eval", 'Bebop', song.split(".")[0]])
+            gen_ext = "_".join(["4eval", 'Folk', song.split(".")[0]])
             gen_path = op.join(midi_dir, gen_ext, gen_ext + '_tokens' + ".json")
             if not op.exists(gen_path):
                 pdb.set_trace()
