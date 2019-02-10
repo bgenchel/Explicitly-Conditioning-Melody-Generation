@@ -1,0 +1,8 @@
+pitch_class_transition_matrix:
+-------------------------
+ Predictions
+     KL divergence: 0.053254581542079314
+     Overlap area: 0.6083738136494231
+ Targets
+     KL divergence: 0.6767808995053128
+     Overlap area: 0.9406836306192523
