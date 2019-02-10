@@ -142,8 +142,8 @@ def calculate_metric(mge, metric_name, pred_metric_shape, target_metric_shape, a
         pred_metric, target_metric = mge.get_metric(metric_name,  pred_metric_shape, target_metric_shape, *args, **kwargs)
         inter = mge.inter_set_cross_validation(pred_metric, target_metric)
         pred_intra, target_intra = mge.intra_set_cross_validation(pred_metric, target_metric)
-        import pdb
-        pdb.set_trace()
+        # import pdb
+        # pdb.set_trace()
         mge.intra_inter_difference(metric_name, pred_intra, target_intra, inter, statspath)
         mge.visualize(metric_name, pred_intra, target_intra, inter, figpath)
     except Exception as e:
