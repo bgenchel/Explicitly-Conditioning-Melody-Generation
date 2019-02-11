@@ -82,7 +82,6 @@ class BleuScore:
 
 
 def main():
-    print('ENTERED MAIN')
     root_dir = str(Path(op.abspath(__file__)).parents[2])
     model_dir = op.join(root_dir, "src", "models")
     data_song_dir = op.join(root_dir, "data", "processed", "songs")
