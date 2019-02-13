@@ -106,8 +106,9 @@ class Trainer:
             # zero the parameter gradients
             self.optimizer.zero_grad()
             # forward pass
+            output = self.model(data_batch)
             if self.args.train_type == "next_step":
-                output = self.model(data_batch)[:, -1, :]
+                output = output[:, -1, :]
             elif self.args.train_type == "full_sequence":
                 target_batch = target_batch.view(np.prod(target_batch.size()))
                 output = output.view(np.prod(output.size()[:-1]), -1)
