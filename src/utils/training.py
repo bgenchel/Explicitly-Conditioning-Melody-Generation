@@ -1,4 +1,5 @@
 import json
+import numpy as np
 import os
 import os.path as op
 import pickle
@@ -131,7 +132,12 @@ class Trainer:
                 data_batch = self.model.data_assembler(data_batch)
                 target_batch = self.model.target_assembler(target_batch)
                 self.model.init_hidden_and_cell(self.args.batch_size)
-                output = self.model(data_batch)[:, -1, :]
+                output = self.model(data_batch)
+                if self.args.train_type == "next_step":
+                    output = output[:, -1, :]
+                else:
+                    target_batch = target_batch.view(np.prod(target_batch.size()))
+                    output = output.view(np.prod(output.size()[:-1]), -1)
                 loss = self.loss_fn(output, target_batch)
                 total_loss += float(loss.item())
                 batch_count += 1

@@ -14,7 +14,7 @@ def get_args(default_title=""):
                         help="number of training epochs")
     parser.add_argument('-b', '--batch_size', default=16, type=int,
                         help="number of training epochs")
-    parser.add_argument('-sl', '--seq_len', default=1, type=int,
+    parser.add_argument('-sl', '--seq_len', default=32, type=int,
                         help="number of previous steps to consider in prediction.")
     parser.add_argument('-hd', '--hidden_dim', default=256, type=int,
                         help="size of hidden state.")
@@ -26,7 +26,7 @@ def get_args(default_title=""):
                         help="use batch normalization.")
     parser.add_argument('-m', '--model', required=True, choices=("pitch", "duration"), 
                         type=str, help="which model to train.")
-    parser.add_argument('-tt', '--train_type', default="next_step", choices=("next_step", "full_sequence"), 
+    parser.add_argument('-tt', '--train_type', default="full_sequence", choices=("next_step", "full_sequence"), 
                         type=str, help="How to train the model / calculate loss.")
     parser.add_argument('-nc', '--no_cuda', action="store_true",
                         help="don't allow the use of CUDA, even if it's available.")
