@@ -1,0 +1,8 @@
+avg_pitch_shift:
+-------------------------
+ Predictions
+     KL divergence: 0.004996858412217366
+     Overlap area: 0.7839374972144453
+ Targets
+     KL divergence: 0.004201968960601397
+     Overlap area: 0.8946805727700002

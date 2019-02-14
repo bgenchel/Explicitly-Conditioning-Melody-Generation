@@ -1,8 +1,0 @@
-{
-    "hidden_dim": 256,
-    "seq_len": 64,
-    "batch_size": 64,
-    "dropout": 0.15,
-    "batch_norm": true,
-    "no_cuda": false
-}
