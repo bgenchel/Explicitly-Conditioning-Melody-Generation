@@ -40,9 +40,9 @@ parser.add_argument('-m', '--model', type=str, default="all", choices=(list(ABRV
                           \t\tcnic - chord_nextchord_inter_cond, cbc - chord_barpos_cond, \n \
                           \t\tcnbc - chord_nextchord_barpos_cond, ibc - inter_barpos_cond \n \
                           \t\tcibc - chord_inter_barpos_cond, cnibc - chord_nextchord_inter_barpos_cond.")
-parser.add_argument('-pn', '--pitch_run_name', type=str, default="MUME_Bebop-Feb12",
+parser.add_argument('-pn', '--pitch_run_name', type=str, default="MUME_Folk-Feb12",
                     help="select which pitch run to use")
-parser.add_argument('-dn', '--dur_run_name', type=str, default="MUME_Bebop-Feb12",
+parser.add_argument('-dn', '--dur_run_name', type=str, default="MUME_Folk-Feb12",
                     help="select which dur run to use")
 parser.add_argument('-nr', '--num_repeats', type=int, default=1,
                     help="if you want to generate more than 1 run through of a song")
