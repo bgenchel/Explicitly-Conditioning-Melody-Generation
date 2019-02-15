@@ -1,8 +1,8 @@
 pitch_range:
 -------------------------
  Predictions
-     KL divergence: 0.02800597928852487
-     Overlap area: 0.8383526536486733
+     KL divergence: 0.0501269829411395
+     Overlap area: 0.799166513654275
  Targets
-     KL divergence: 0.15154053753146168
-     Overlap area: 0.7304207347964741
+     KL divergence: 0.12495210429982344
+     Overlap area: 0.6736468394766857

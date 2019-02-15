@@ -1,8 +1,8 @@
 bar_pitch_class_histogram:
 -------------------------
  Predictions
-     KL divergence: 0.02956539819423642
-     Overlap area: 0.6517591628192875
+     KL divergence: 0.39205565868778486
+     Overlap area: 0.496697798178603
  Targets
-     KL divergence: 0.12531079270252624
-     Overlap area: 0.5593263941539147
+     KL divergence: 0.07181468575848066
+     Overlap area: 0.5514593157041479
