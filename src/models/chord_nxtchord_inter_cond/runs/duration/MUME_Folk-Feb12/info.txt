@@ -1,0 +1,20 @@
+run_datetime:       	 Feb13-19_14:49:42
+title:              	 Feb13-19_14:49:42_FolkNew
+charlie_parker:     	 False
+epochs:             	 30
+batch_size:         	 64
+seq_len:            	 64
+hidden_dim:         	 256
+learning_rate:      	 0.001
+dropout:            	 0.2
+batch_norm:         	 True
+model:              	 duration
+train_type:         	 full_sequence
+no_cuda:            	 False
+cuda_device:        	 0
+keep:               	 True
+run_datetime_str:   	 Feb13-19_14:49:42
+best_model:         	 {'epoch': 30, 'train_loss': 0.05152979497892243, 'valid_loss': 0.05202949109646836}
+epochs_completed:   	 31
+final_training_loss:	 0.05152979497892243
+final_valid_loss:   	 0.05202949109646836

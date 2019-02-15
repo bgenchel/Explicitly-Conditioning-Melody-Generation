@@ -235,6 +235,8 @@ class Harmony(object):
     _seventh_pitch_classes_binary = None
     _type_index
 
+    _kind = None
+
     def __init__(self, harmony_dict):
         if not len(harmony_dict):
             self.harmony_dict = None
@@ -279,6 +281,14 @@ class Harmony(object):
         if "bass-alter" in bass_dict.keys():
             retval += self._get_alter_label(int(bass_dict["bass-alter"]["text"]))
         return retval
+
+    def get_chord_kind(self):
+        if self.harmony_dict is None:
+            return None
+
+        if self._kind is None:
+            self._kind = self.harmony_dict["kind"]["text"]
+        return self._kind
 
     def get_chord_symbol(self):
         if self.harmony_dict is None:

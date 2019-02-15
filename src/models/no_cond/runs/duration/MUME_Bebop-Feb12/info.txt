@@ -1,0 +1,20 @@
+run_datetime:       	 Feb12-19_21:08:31
+title:              	 Feb12-19_21:08:31_Bebop
+charlie_parker:     	 False
+epochs:             	 30
+batch_size:         	 64
+seq_len:            	 64
+hidden_dim:         	 256
+learning_rate:      	 0.001
+dropout:            	 0.2
+batch_norm:         	 True
+model:              	 duration
+train_type:         	 full_sequence
+no_cuda:            	 False
+cuda_device:        	 0
+keep:               	 True
+run_datetime_str:   	 Feb12-19_21:08:31
+best_model:         	 {'epoch': 28, 'train_loss': 0.13533246545454405, 'valid_loss': 0.13562148807611327}
+epochs_completed:   	 31
+final_training_loss:	 0.13526655416799135
+final_valid_loss:   	 0.13573006850218713

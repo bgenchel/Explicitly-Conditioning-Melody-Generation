@@ -1,0 +1,54 @@
+{
+    "no_cond": {
+        "pitch": 0.0982003288427298,
+        "duration": 0.8750427765305455
+    },
+    "inter_cond": {
+        "pitch": 0.10062575026858882,
+        "duration": 0.5684421102175773
+    },
+    "barpos_cond": {
+        "pitch": 0.11189803182286134,
+        "duration": 0.6955113056742662
+    },
+    "chord_cond": {
+        "pitch": 0.1327264255643092,
+        "duration": 0.6876526867254988
+    },
+    "nxt_chord_cond": {
+        "pitch": 0.1122645051915642,
+        "duration": 0.6630109510568575
+    },
+    "chord_nxtchord_cond": {
+        "pitch": 0.15279173326514878,
+        "duration": 0.6664079883456773
+    },
+    "chord_inter_cond": {
+        "pitch": 0.13012448624148246,
+        "duration": 0.5690530716059854
+    },
+    "chord_nxtchord_inter_cond": {
+        "pitch": 0.15680142915458,
+        "duration": 0.5722961683699087
+    },
+    "chord_barpos_cond": {
+        "pitch": 0.12053150422516057,
+        "duration": 0.6543514280684479
+    },
+    "chord_nxtchord_barpos_cond": {
+        "pitch": 0.1459752205241021,
+        "duration": 0.6382907810083396
+    },
+    "inter_barpos_cond": {
+        "pitch": 0.1288317358218675,
+        "duration": 0.607030558710271
+    },
+    "chord_inter_barpos_cond": {
+        "pitch": 0.13248197948439214,
+        "duration": 0.5929525385835889
+    },
+    "chord_nxtchord_inter_barpos_cond": {
+        "pitch": 0.12792341543199814,
+        "duration": 0.5664331870540346
+    }
+}
