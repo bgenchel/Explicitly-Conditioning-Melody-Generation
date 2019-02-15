@@ -32,6 +32,7 @@ def generate_songs(model_abrv, model_name, seed_length, dataset, songs):
         except RuntimeError:
             continue
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model', type=str, default="all", choices=(list(ABRV_TO_MODEL.keys()) + ['all']),
