@@ -1,0 +1,11 @@
+note_length_transition_matrix:
+-------------------------
+ Predictions to Inter
+     KL divergence: 0.707842698049935
+     Overlap area: 0.41011862967719664
+ Targets to Inter
+     KL divergence: 0.11955331577872727
+     Overlap area: 0.4871180901246687
+ Predictions to Target
+     KL divergence: 0.31115002877231696
+     Overlap area: 0.8226151850260547
