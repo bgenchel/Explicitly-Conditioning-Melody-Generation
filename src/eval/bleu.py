@@ -126,4 +126,4 @@ if __name__ == '__main__':
     parser.add_argument('-ds', '--dataset', type=str, choices=('Folk', 'Bebop'), required=True,
                         help="Which dataset to evaluate against.")
     args = parser.parse_args()
-    main(dataset)
+    main(args.dataset)
