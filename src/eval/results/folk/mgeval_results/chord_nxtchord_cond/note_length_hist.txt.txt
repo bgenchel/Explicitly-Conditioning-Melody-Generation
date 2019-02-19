@@ -1,0 +1,11 @@
+note_length_hist:
+-------------------------
+ Predictions to Inter
+     KL divergence: 3.0631930504614697
+     Overlap area: 0.2874224414226551
+ Targets to Inter
+     KL divergence: 1.6462136408742645
+     Overlap area: 0.36249067372450794
+ Predictions to Target
+     KL divergence: 0.17127616277592883
+     Overlap area: 0.7279150983826971

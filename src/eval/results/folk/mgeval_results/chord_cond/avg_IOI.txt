@@ -1,8 +1,0 @@
-avg_IOI:
--------------------------
- Predictions
-     KL divergence: 0.34109157189665457
-     Overlap area: 0.5716054213144638
- Targets
-     KL divergence: 0.7119712019518472
-     Overlap area: 0.29807751694359663

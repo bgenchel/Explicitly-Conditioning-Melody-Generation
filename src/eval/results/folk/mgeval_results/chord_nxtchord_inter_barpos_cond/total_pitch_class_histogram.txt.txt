@@ -1,0 +1,11 @@
+total_pitch_class_histogram:
+-------------------------
+ Predictions to Inter
+     KL divergence: 0.6541758471727168
+     Overlap area: 0.4610644431273603
+ Targets to Inter
+     KL divergence: 0.057808736496948315
+     Overlap area: 0.8558760869216984
+ Predictions to Target
+     KL divergence: 0.9366563817217677
+     Overlap area: 0.5521877210869225

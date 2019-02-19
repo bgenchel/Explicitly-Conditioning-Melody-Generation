@@ -1,8 +1,0 @@
-bar_used_note:
--------------------------
- Predictions
-     KL divergence: 0.011890089880293227
-     Overlap area: 0.8795922274643326
- Targets
-     KL divergence: 0.11605140018186691
-     Overlap area: 0.8765443900980906
