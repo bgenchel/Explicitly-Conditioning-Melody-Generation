@@ -1,5 +1,6 @@
 import argparse
 import glob
+import json
 import os
 import os.path as op
 import matplotlib.pyplot as plt
@@ -123,18 +124,18 @@ class MGEval:
                                'p2t_ovl': utils.overlap_area(transposed[0][0], transposed[1][0])})
 
         txt_fp = open(outpath + '.txt', 'w')
-        fp.write(metric_name + ':\n')
-        fp.write('-------------------------\n')
-        fp.write(' Predictions to Inter\n')
-        fp.write('     KL divergence: {}\n'.format(results['p2i_kl']))
-        fp.write('     Overlap area: {}\n'.format(results['p2i_ovl']))
-        fp.write(' Targets to Inter\n')
-        fp.write('     KL divergence: {}\n'.format(results['t2i_kl']))
-        fp.write('     Overlap area: {}\n'.format(results['t2i_ovl']))
-        fp.write(' Predictions to Target\n')
-        fp.write('     KL divergence: {}\n'.format(results['p2t_kl']))
-        fp.write('     Overlap area: {}\n'.format(results['p2t_ovl']))
-        fp.close()
+        txt_fp.write(metric_name + ':\n')
+        txt_fp.write('-------------------------\n')
+        txt_fp.write(' Predictions to Inter\n')
+        txt_fp.write('     KL divergence: {}\n'.format(results['p2i_kl']))
+        txt_fp.write('     Overlap area: {}\n'.format(results['p2i_ovl']))
+        txt_fp.write(' Targets to Inter\n')
+        txt_fp.write('     KL divergence: {}\n'.format(results['t2i_kl']))
+        txt_fp.write('     Overlap area: {}\n'.format(results['t2i_ovl']))
+        txt_fp.write(' Predictions to Target\n')
+        txt_fp.write('     KL divergence: {}\n'.format(results['p2t_kl']))
+        txt_fp.write('     Overlap area: {}\n'.format(results['p2t_ovl']))
+        txt_fp.close()
 
         json_fp = open(outpath + '.json', 'w')
         json.dump(results, json_fp)
