@@ -115,26 +115,29 @@ class MGEval:
             transposed_meas = np.transpose(measurement, (1, 0, 2)).reshape(1, -1)
             transposed.append(transposed_meas)
 
-        fp = open(outpath, 'w')
+        results = OrderedDict({'p2i_kl': utils.kl_dist(transposed[0][0], transposed[2][0]),
+                               'p2i_ovl': utils.overlap_area(transposed[0][0], transposed[2][0]),
+                               't2i_kl': utils.kl_dist(transposed[1][0], transposed[2][0]),
+                               't2i_ovl': utils.overlap_area(transposed[1][0], transposed[2][0]),
+                               'p2t_kl': utils.kl_dist(transposed[0][0], transposed[1][0]),
+                               'p2t_ovl': utils.overlap_area(transposed[0][0], transposed[1][0])})
+
+        txt_fp = open(outpath + '.txt', 'w')
         fp.write(metric_name + ':\n')
         fp.write('-------------------------\n')
-        fp.write(' Predictions\n')
-        fp.write('     KL divergence: {}\n'.format(utils.kl_dist(transposed[0][0], transposed[2][0])))
-        fp.write('     Overlap area: {}\n'.format(utils.overlap_area(transposed[0][0], transposed[2][0])))
-        fp.write(' Targets\n')
-        fp.write('     KL divergence: {}\n'.format(utils.kl_dist(transposed[1][0], transposed[2][0])))
-        fp.write('     Overlap area: {}\n'.format(utils.overlap_area(transposed[1][0], transposed[2][0])))
+        fp.write(' Predictions to Inter\n')
+        fp.write('     KL divergence: {}\n'.format(results['p2i_kl']))
+        fp.write('     Overlap area: {}\n'.format(results['p2i_ovl']))
+        fp.write(' Targets to Inter\n')
+        fp.write('     KL divergence: {}\n'.format(results['t2i_kl']))
+        fp.write('     Overlap area: {}\n'.format(results['t2i_ovl']))
+        fp.write(' Predictions to Target\n')
+        fp.write('     KL divergence: {}\n'.format(results['p2t_kl']))
+        fp.write('     Overlap area: {}\n'.format(results['p2t_ovl']))
         fp.close()
 
-        # print(metric_name + ':')
-        # print('------------------------')
-        # print(' Predictions')
-        # print('  KL divergence:', utils.kl_dist(transposed[0][0], transposed[2][0]))
-        # print('  Overlap area:', utils.overlap_area(transposed[0][0], transposed[2][0]))
-        # print(' Targets')
-        # print('  KL divergence:', utils.kl_dist(transposed[1][0], transposed[2][0]))
-        # print('  Overlap area:', utils.overlap_area(transposed[1][0], transposed[2][0]))
-
+        json_fp = open(outpath + '.json', 'w')
+        json.dump(results, json_fp)
 
 def calculate_metric(mge, metric_name, pred_metric_shape, target_metric_shape, args, kwargs, statspath, figpath):
     try:
@@ -161,7 +164,7 @@ def main(model, metric_name):
     # args = ()
     # kwargs = {"track_num": 1}
     if metric_name != "all": 
-        statspath = op.join(os.getcwd(), 'mgeval_results', model, metric_name + '.txt')
+        statspath = op.join(os.getcwd(), 'mgeval_results', model, metric_name)
         figpath = op.join(os.getcwd(), 'mgeval_results', model, metric_name + '.png')
         if not op.exists(op.dirname(statspath)):
             os.makedirs(op.dirname(statspath))
